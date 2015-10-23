@@ -1,23 +1,52 @@
 
-	interface v1.0
-	
-		index.html
-			checkUsernameAvailable.js	//	korisnik pri registraciji utipka username, ova skripta vraća je li zauzeto
-			login.js					//	frontend šalje username i password, backend vraća da li je valid (vraćamo prazan json), invalid (za svaki atribut string pogreške)	(1)
-			registration.js				//	kao i pod (1)
-			
-		editProfile.partial.html
-			editProfile.js				//	kao i pod (1)
-			getProfileInfo.js			
-			
-		contacts.partial.html
-			search.js					//	vraća kolekciju kontakata json basicUser{username, ime, prezime, slika}
-			getContacts.js
-			
-		profile.partial.html
-			setPost.js					//	vraća status gledanog profila
-			getPost.js					//	postavlja status, samo ako je profil od vlasnika sessiona
-			getProfileInfo.js			//	vraća info gledanog profila
-			getGallery.js				//	vraća kolekciju svih(za početak) slika, source-ovi za lazy load
-			getImage.js					//	prima source slike, vraćam sliku
-			uploadImage.js				//	uploada sliku, samo ako je profil od vlasnika sessiona
+interface v1.01
+
+	index.html
+		-	vraća true ako je username dostupan
+		boolean	checkUsernameAvailable.js {username}
+
+		-	vraća true ako je korisnik autentificiran
+		boolean	login.js {username, password}
+
+		-	vraća prazan json ako je sve oke, inače error za odgovarajuće polje
+		{...} registration.js {username, password, email, ...}
+
+
+	editProfile.partial.html
+		-	vraća prazan json ako je sve oke, inače error za odgovarajuće polje
+		{...} editProfile.js {first_name, last_name, city, ...}
+
+		-	vraća profilne podatke korisnika vezanog za user_id
+		<!>	što ako pošalje user_id nepostojećeg korisnika?
+		{...} getProfileInfo.js {user_id}
+
+
+	contacts.partial.html
+		-	vraća rezultat pretrage, pretpostavlja da je
+			search_string = ime | prezime | ime + prezime
+		{username, ime, prezime, slika} search.js {search_string}
+
+		-	vraća popis kontakata korisnika vezanog za user_id
+		<!>	da li je moguće zatražiti listu kontakata nekoga tko nije moj prijatelj?
+		{list{ime, prezime, slika}} getContacts.js {user_id}
+		
+	profile.partial.html
+		-	postavlja post
+		<!>	vlasnik profilne stranice i vlasnik sessiona moraju biti ista osoba
+		void post.js {status}
+		
+		-	vraća postove korisnika vezanog za user_id
+		<?>	lazy load
+		{list{post}} getPosts.js {user_id}
+		
+		getProfileInfo.js
+		
+		-	vraća listu source-ova slika korisnika vezanog za user_id
+		<!>	lazy load
+		{list{slika_src}} getGallery.js {user_id}
+		
+		-	vraća serijaliziranu sliku za pruženi source
+		{serijalizirana_slika} getImage.js {source_slike}
+		
+		-	dostupno ako je profil vlasnika sessiona
+		void uploadImage.js	{serijalizirana_slika?}
