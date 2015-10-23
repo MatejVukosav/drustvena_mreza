@@ -6,7 +6,7 @@
 		-	user_name 					(?)		UNIQUE
 		-	password_hash				(INT)	
 		-	email						(?)		UNIQUE
-		-	profile_id					(INT)	FK
+		-	profile_id					(INT)	FK(profile)
 		-	registration_date			(DATE)
 	
 		profile
@@ -14,24 +14,26 @@
 		-	first_name					(?)
 		-	last_name					(?)
 		-	image_id					(INT)
-		-	relationship_status_id		(INT) FK
-		-	country_id					(INT) FK
+		-	relationship_status_id		(INT) 	FK(relationship_status)
+		-	country_id					(INT) 	FK(country)
 		-	city						(?)
 		-	address						(?)
 		-	job							(?)
 		
 		relationship_status
-		-	relationship_status_id		(INT) PK
+		-	relationship_status_id		(INT) 	PK
 		-	relationship_status			(?)	{Single, Complicated, In a relationship, Doomed}
 	
-		
 		relationship_type
-		-	relationship_type_id		(INT) PK
-		-	relationship_type			() {friends, colleagues, }
+		-	relationship_type_id		(INT) 	PK
+		-	relationship_type			(?) {friends, colleagues, }
 		
 		relationship
-		-	relationship_id
-		-	user_id1
-		-	user_id2
-		-	relationship_type_id
+		-	relationship_id				(INT)	PK
+		-	user_id1					(INT)	FK(user)
+		-	user_id2					(INT)	FK(user)
+		-	relationship_type_id		(INT)	FK(relationship_type)
 	
+		country	(?)
+		-	country_id					(INT)	PK
+		-	country						(?)
