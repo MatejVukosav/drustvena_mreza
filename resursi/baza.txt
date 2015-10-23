@@ -1,0 +1,37 @@
+
+	baza v1.0
+
+		user
+		-	user_id 					(INT)	PK
+		-	user_name 					(?)		UNIQUE
+		-	password_hash				(INT)	
+		-	email						(?)		UNIQUE
+		-	profile_id					(INT)	FK
+		-	registration_date			(DATE)
+	
+		profile
+		-	profile_id					(INT)	PK
+		-	first_name					(?)
+		-	last_name					(?)
+		-	image_id					(INT)
+		-	relationship_status_id		(INT) FK
+		-	country_id					(INT) FK
+		-	city						(?)
+		-	address						(?)
+		-	job							(?)
+		
+		relationship_status
+		-	relationship_status_id		(INT) PK
+		-	relationship_status			(?)	{Single, Complicated, In a relationship, Doomed}
+	
+		
+		relationship_type
+		-	relationship_type_id		(INT) PK
+		-	relationship_type			() {friends, colleagues, }
+		
+		relationship
+		-	relationship_id
+		-	user_id1
+		-	user_id2
+		-	relationship_type_id
+	

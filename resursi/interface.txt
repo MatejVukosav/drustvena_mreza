@@ -1,0 +1,23 @@
+
+	interface v1.0
+	
+		index.html
+			checkUsernameAvailable.js	//	korisnik pri registraciji utipka username, ova skripta vraća je li zauzeto
+			login.js					//	frontend šalje username i password, backend vraća da li je valid (vraćamo prazan json), invalid (za svaki atribut string pogreške)	(1)
+			registration.js				//	kao i pod (1)
+			
+		editProfile.partial.html
+			editProfile.js				//	kao i pod (1)
+			getProfileInfo.js			
+			
+		contacts.partial.html
+			search.js					//	vraća kolekciju kontakata json basicUser{username, ime, prezime, slika}
+			getContacts.js
+			
+		profile.partial.html
+			setPost.js					//	vraća status gledanog profila
+			getPost.js					//	postavlja status, samo ako je profil od vlasnika sessiona
+			getProfileInfo.js			//	vraća info gledanog profila
+			getGallery.js				//	vraća kolekciju svih(za početak) slika, source-ovi za lazy load
+			getImage.js					//	prima source slike, vraćam sliku
+			uploadImage.js				//	uploada sliku, samo ako je profil od vlasnika sessiona
