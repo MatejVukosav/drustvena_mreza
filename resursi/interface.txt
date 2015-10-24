@@ -1,5 +1,7 @@
 
 interface v1.01
+//napomena, gdje god se vraća true(npr., {"username" = "true"})
+//može se vratiti i prazno(npr., {})
 
 	index.html
 		-	vraća true ako je username dostupan
