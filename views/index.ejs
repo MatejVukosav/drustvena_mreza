@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8"> 
+
+		<!-- mobile first approach, the screen adapts to the device -->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+		<!-- jQuery library -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+		<!-- Latest compiled JavaScript -->
+		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	</head>
+
+	<body class="page-background">
+		<style>
+			.text-orange{
+				color: orange;
+			}
+			.page-background {
+				background-color: ;
+			}
+
+			label{
+				float:left;
+				width: 8em;
+				margin-right: 1em;
+			}
+
+			.vertical-margin-sm {
+				margin-bottom: 0.5em;
+				margin-top: 0.2em;
+			}
+
+			input {
+				width: 100%;
+				box-sizing: border-box;
+			}
+
+			.btn-float-right{
+				float: right;
+			}
+
+			.valign-middle {
+				position: relative;
+				top: 30%;
+			}
+		</style>
+
+		<!-- The visual header of the page -->
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="alert alert-info alert-block">
+					<p><strong>Network!</strong> Registration page
+					</p>
+				</div>
+				<div class="alert alert-info">
+				</div>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+			<!-- Login part of the page -->
+			<div class="row">
+				<div class="col-xs-5"></div>
+				<div class="col-xs-6">
+					<h4 class="text-orange">Already have an account? Sign in!</h4>
+					<div class="well" align="right">
+						<div class="row">
+							<div class="col-xs-6">
+								<label>Username:</label>
+							</div>
+							<div class="col-xs-6">
+								<label>Password:</label>
+							</div>
+						</div>
+						<div class="row">
+							<form id="loginForm" method="post" action="/login.js">
+								<div class="col-xs-6">
+									<input class="input" type="text" id="usernameLogin" name="username">
+								</div>
+								<div class="col-xs-6">
+									<input class="input" type="password" id="passwordLogin" name="password">
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-1">
+					<br><br><br><br>
+					<button class="btn btn-success btn-lg" method="post" form="loginForm">Sign in</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-5"></div>
+				<div class="col-xs-5">
+					<div id="loginAlert" class="alert alert-danger" style="visibility:hidden; display : none;">
+						The username or password is invalid!
+					</div>
+				</div>
+				<div class="col-xs-2"></div>
+			</div>
+		</div>
+
+		<!-- registration part of the page -->
+		<h2 align="center" class="text-orange">Don't have an account?<br> Register, it's free!</h2>
+		<div class="row">
+			<div class="col-xs-4"></div>
+			<div class="col-xs-4">
+				<form id="registrationForm" method="post" action="/registration.js">
+					<h3>Account information</h3>
+					<h9><i>Fields marked with an asterix are required.</i></h9>
+					<div class="well">
+						<div class="row vertical-margin-sm">
+							<div class="col-xs-4">
+								<label>Username:*</label>
+							</div>
+							<div class="col-xs-8">
+								<input type="text" id="username" class="input-block-level" 
+								name="username"
+									   data-toggle="popover" data-trigger = "manual">
+							</div>
+						</div>
+						<div class="row vertical-margin-sm">
+							<div class="col-xs-4">
+								<label>Password:*</label>
+							</div>
+							<div class="col-xs-8">
+								<input type="password" id="password" name="password"
+									   data-toggle="popover" data-trigger="manual">
+							</div>
+						</div>
+						<div class="row vertical-margin-sm">
+							<div class="col-xs-4">
+								<label>Retype Password:*</label>
+							</div>
+							<div class="col-xs-8">
+								<input type="password" id="retypePassword" data-toggle="popover" data-trigger = "manual">
+								<p id="passwordMatch">Passwords do not match.</p>
+							</div>
+						</div>
+						<div class="row vertical-margin-sm">
+							<div class="col-xs-4">
+								<label>Email:*</label>
+							</div>
+							<div class="col-xs-8">
+								<input type="email" id="email" name="email" oninput="checkEmail()"
+									   data-toggle="popover" data-trigger = "manual">
+							</div>
+						</div> 
+					</div>
+
+					<h3>Personal information</h3>
+					<div class="well">
+						<div class="row vertical-margin-sm">
+							<div class="col-xs-4">
+								<label>First Name:</label>
+							</div>
+							<div class="col-xs-8">
+								<input type="text" id="firstName" name="firstName">
+							</div>
+						</div>
+						<div class="row vertical-margin-sm">
+							<div class="col-xs-4">
+								<label>Middle Name:</label>
+							</div>
+							<div class="col-xs-8">
+								<input type="text" id="middleName" name="middleName">
+							</div>
+						</div>
+						<div class="row vertical-margin-sm">
+							<div class="col-xs-4">
+								<label>Last Name:</label>
+							</div>
+							<div class="col-xs-8">
+								<input type="text" id="lastName" name="lastName">
+							</div>
+						</div> 
+					</div>
+				</form>
+
+				<button class="btn btn-info btn-lg" form="registrationForm">
+					Sign up
+				</button>
+
+				<div id="registerAlert" class="alert alert-danger" style="visibility:hidden; display:none;">
+					Registration info invalid!
+				</div>
+			</div>
+		</div>
+		</div>               
+
+	<script>
+		$(document).ready(function(){
+			$("#passwordMatch").hide();
+			$("#retypePassword").keyup(function(){
+				var password=$("#password").val();
+				var retypePassword=$("#retypePassword").val();
+				if(password!=retypePassword){
+					$("#passwordMatch").show();
+				}
+				else{
+					$("#passwordMatch").hide();
+				}
+			});
+		}); 
+	</script>
+	</body>
+</html>
