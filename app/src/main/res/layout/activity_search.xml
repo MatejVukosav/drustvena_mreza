@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/discoveriMainlayout"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose minimum 3 stores"
+        android:id="@+id/discoverInfo"
+        />
+
+    <com.malinskiy.superrecyclerview.SuperRecyclerView
+        android:id="@+id/discoverRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_empty="@layout/discover_empty_view"
+        app:layout_moreProgress="@layout/discover_view_more_progress"
+        app:mainLayoutId="@layout/layout_recyclerview_verticalscroll"
+        app:recyclerClipToPadding="false"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="List is empty."
+            android:gravity="center"
+            />
+
+
+        <!-- app:recyclerPadding="16dp"
+        app:scrollbarStyle="insideInset"
+        -->
+    </com.malinskiy.superrecyclerview.SuperRecyclerView>
+
+
+</LinearLayout>

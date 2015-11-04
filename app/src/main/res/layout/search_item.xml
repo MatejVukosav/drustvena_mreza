@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    >
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/discoverItemTopRoot"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profile_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/com_facebook_profile_picture_blank_portrait"
+            app:civ_border_color="#FF000000"
+            app:civ_border_width="2dp" />
+
+        />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/profile_image"
+            android:layout_toRightOf="@id/profile_image"
+            android:layout_marginLeft="@dimen/small_spacing"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/discoverUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="\@ user name" />
+
+            <TextView
+                android:id="@+id/discoverStoreName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="\@ store name" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/discoverFollow"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="follow"
+            android:background="@android:color/transparent"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/small_spacing"
+            />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/discoverItemTopRoot"
+        android:orientation="horizontal"
+        android:background="@color/BurlyWood"
+        android:id="@+id/discoverLinearLayoutUserPictures"
+        >
+
+        <android.widget.Space
+            android:layout_width="@dimen/small_spacing"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/discoveritemPicture1"
+            tools:src="@android:drawable/ic_menu_add"
+            android:layout_weight="1"
+            />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/discoveritemPicture2"
+            tools:src="@android:drawable/ic_menu_add"
+            android:layout_weight="1"
+            />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/discoveritemPicture3"
+            tools:src="@android:drawable/ic_menu_add"
+            android:layout_weight="1"
+            />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/discoveritemPicture4"
+            tools:src="@android:drawable/ic_menu_add"
+            android:layout_weight="1"
+
+
+            />
+
+        <android.widget.Space
+            android:layout_width="@dimen/small_spacing"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+    <!--  <com.malinskiy.superrecyclerview.SuperRecyclerView
+          android:layout_below="@+id/discoverItemTopRoot"
+          android:id="@+id/discoverItemRecyclerView"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          />
+  -->
+
+</RelativeLayout>
