@@ -1,203 +1,170 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8"> 
 
-		<!-- mobile first approach, the screen adapts to the device -->
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Network!</title>
 
-		<!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" crossorigin="anonymous">
 
-		<!-- jQuery library -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" crossorigin="anonymous">
+    
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
-		<!-- Latest compiled JavaScript -->
-		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-	</head>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" crossorigin="anonymous"></script>
 
-	<body class="page-background">
-		<style>
-			.text-orange{
-				color: orange;
-			}
-			.page-background {
-				background-color: ;
-			}
+    <style>
+        body {
+            margin: 65px auto 15px auto;
+        }
 
-			label{
-				float:left;
-				width: 8em;
-				margin-right: 1em;
-			}
+        .text-orange {
+            color: orange;
+        }
 
-			.vertical-margin-sm {
-				margin-bottom: 0.5em;
-				margin-top: 0.2em;
-			}
+        .text-center {
+            text-align: center;
+        }
 
-			input {
-				width: 100%;
-				box-sizing: border-box;
-			}
+        .form-inline label {
+            display: block;
+        }
 
-			.btn-float-right{
-				float: right;
-			}
+        .login {
+            max-width: 600px;
+        }
 
-			.valign-middle {
-				position: relative;
-				top: 30%;
-			}
-		</style>
+        .register {
+            max-width: 700px;
+        }
 
-		<!-- The visual header of the page -->
-		<div class="row">
-			<div class="col-xs-12">
-				<div class="alert alert-info alert-block">
-					<p><strong>Network!</strong> Registration page
-					</p>
-				</div>
-				<div class="alert alert-info">
-				</div>
-			</div>
-		</div>
+    </style>
 
-		<div class="container-fluid">
-			<!-- Login part of the page -->
-			<div class="row">
-				<div class="col-xs-5"></div>
-				<div class="col-xs-6">
-					<h4 class="text-orange">Already have an account? Sign in!</h4>
-					<div class="well" align="right">
-						<div class="row">
-							<div class="col-xs-6">
-								<label>Username:</label>
-							</div>
-							<div class="col-xs-6">
-								<label>Password:</label>
-							</div>
-						</div>
-						<div class="row">
-							<form id="loginForm" method="post" action="/login.js">
-								<div class="col-xs-6">
-									<input class="input" type="text" id="usernameLogin" name="username">
-								</div>
-								<div class="col-xs-6">
-									<input class="input" type="password" id="passwordLogin" name="password">
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-				<div class="col-xs-1">
-					<br><br><br><br>
-					<button class="btn btn-success btn-lg" method="post" form="loginForm">Sign in</button>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-5"></div>
-				<div class="col-xs-5">
-					<div id="loginAlert" class="alert alert-danger" style="visibility:hidden; display : none;">
-						The username or password is invalid!
-					</div>
-				</div>
-				<div class="col-xs-2"></div>
-			</div>
-		</div>
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-header">
+            <a class="navbar-brand">Network!</a>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <!-- Login part of the page -->
+        <div class="col-md-4 login">
+            <h4 class="text-orange text-center">Already have an account?</h4>
+            <form action="/login.js" method="post" id="loginForm" class="form-inline">
+                <fieldset class="well">
+                    <legend class="text-orange">Sign in!</legend>
+                    <div id="loginAlert" class="alert alert-danger controls" style="display: none;">
+                        The username or password is invalid!
+                    </div>
+                    <div class="form-group">
+                        <label for="usernameLogin">Username</label>
+                        <input class="form-control input-lg" type="text" id="usernameLogin" name="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordLogin">Password</label>
+                        <input class="form-control input-lg" type="password" id="passwordLogin" name="password">
+                    </div>
+                </fieldset>
+                <div class="control-group text-center">
+                    <input type="submit" class="btn btn-success input-lg" value="Sign in" />
+                    <button class="btn btn-link">Forgot password?</button>
+                </div>
+            </form>
+        </div>
 
-		<!-- registration part of the page -->
-		<h2 align="center" class="text-orange">Don't have an account?<br> Register, it's free!</h2>
-		<div class="row">
-			<div class="col-xs-4"></div>
-			<div class="col-xs-4">
-				<form id="registrationForm" method="post" action="/registration.js">
-					<h3>Account information</h3>
-					<h9><i>Fields marked with an asterix are required.</i></h9>
-					<div class="well">
-						<div class="row vertical-margin-sm">
-							<div class="col-xs-4">
-								<label>Username:*</label>
-							</div>
-							<div class="col-xs-8">
-								<input type="text" id="username" class="input-block-level" 
-								name="username"
-									   data-toggle="popover" data-trigger = "manual">
-							</div>
-						</div>
-						<div class="row vertical-margin-sm">
-							<div class="col-xs-4">
-								<label>Password:*</label>
-							</div>
-							<div class="col-xs-8">
-								<input type="password" id="password" name="password"
-									   data-toggle="popover" data-trigger="manual">
-							</div>
-						</div>
-						<div class="row vertical-margin-sm">
-							<div class="col-xs-4">
-								<label>Retype Password:*</label>
-							</div>
-							<div class="col-xs-8">
-								<input type="password" id="retypePassword" data-toggle="popover" data-trigger = "manual">
-								<p id="passwordMatch">Passwords do not match.</p>
-							</div>
-						</div>
-						<div class="row vertical-margin-sm">
-							<div class="col-xs-4">
-								<label>Email:*</label>
-							</div>
-							<div class="col-xs-8">
-								<input type="email" id="email" name="email" oninput="checkEmail()"
-									   data-toggle="popover" data-trigger = "manual">
-							</div>
-						</div> 
-					</div>
+        <div class="col-md-8 register">
+            <!-- registration part of the page -->
+            <h2 class="text-orange text-center">Don't have an account?<br/> Register, it's free!</h2>
 
-					<h3>Personal information</h3>
-					<div class="well">
-						<div class="row vertical-margin-sm">
-							<div class="col-xs-4">
-								<label>First Name:</label>
-							</div>
-							<div class="col-xs-8">
-								<input type="text" id="firstName" name="firstName">
-							</div>
-						</div>
-						<div class="row vertical-margin-sm">
-							<div class="col-xs-4">
-								<label>Middle Name:</label>
-							</div>
-							<div class="col-xs-8">
-								<input type="text" id="middleName" name="middleName">
-							</div>
-						</div>
-						<div class="row vertical-margin-sm">
-							<div class="col-xs-4">
-								<label>Last Name:</label>
-							</div>
-							<div class="col-xs-8">
-								<input type="text" id="lastName" name="lastName">
-							</div>
-						</div> 
-					</div>
-				</form>
+            <form action="/registration.js" method="post" id="registrationForm" class="form-horizontal">
 
-				<button class="btn btn-info btn-lg" form="registrationForm">
-					Sign up
-				</button>
+                <fieldset class="well">
+                    <legend>Account information</legend>
+                    <em>All input fields are required</em>
+                    
+                    <div class="control-group">
+                        <!-- Username -->
+                        <label class="control-label col-sm-2" for="username">Username</label>
+                        <div class="controls col-sm-10">
+                            <input type="text" id="username" name="username" placeholder="homer.the.best" class="form-control">
+                            <p class="help-block">Username can contain any letters or numbers, without spaces</p>
+                        </div>
+                    </div>
 
-				<div id="registerAlert" class="alert alert-danger" style="visibility:hidden; display:none;">
-					Registration info invalid!
-				</div>
-			</div>
-		</div>
-		</div>               
+                    <div class="control-group">
+                        <!-- E-mail -->
+                        <label class="control-label col-sm-2" for="email">E-mail</label>
+                        <div class="controls col-sm-10">
+                            <input type="text" id="email" name="email" placeholder="hsimpson@springfield-nuclear.com" class="form-control">
+                            <p class="help-block">Please provide your E-mail</p>
+                        </div>
+                    </div>
 
-	<script>
+                    <div class="control-group">
+                        <!-- Password-->
+                        <label class="control-label col-sm-2" for="password">Password</label>
+                        <div class="controls col-sm-10">
+                            <input type="password" id="password" name="password" placeholder="********" class="form-control">
+                            <p class="help-block">Password should be at least 4 characters</p>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <!-- Password -->
+                        <label class="control-label col-sm-2" for="retypePassword">Password (Confirm)</label>
+                        <div class="controls col-sm-10">
+                            <input type="password" id="retypePassword" name="password_confirm" placeholder="********" class="form-control">
+                            <p class="help-block alert-danger" id="passwordMatch" style="display:none">Passwords do not match</p>
+                        </div>
+                    </div>
+
+                </fieldset>
+
+                <fieldset class="well">
+                    <legend>Personal information</legend>
+
+                    <div class="control-group col-md-4">
+                        <!-- First Name -->
+                        <label class="control-label" for="firstName">First name</label>
+                        <input type="text" id="firstName" name="firstName" placeholder="Homer" class="form-control">
+                    </div>
+
+                    <div class="control-group col-md-4">
+                        <!-- Middle Name -->
+                            <label class="control-label" for="middleName">Middle name</label>
+                            <input type="text" id="middleName" name="middleName" placeholder="Jay" class="form-control">
+                    </div>
+
+                    <div class="control-group col-md-4">
+                        <!-- Last Name -->
+                        <label class="control-label" for="lastName">Last name</label>
+                        <input type="text" id="lastName" name="lastName" placeholder="Simpson" class="form-control">
+                    </div>
+
+                </fieldset>
+
+
+                <div class="control-group">
+                    <!-- Button -->
+                    <div class="controls">
+                        <input type="submit" class="btn btn-info input-lg" value="Sign up" />
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <script>
 		$(document).ready(function(){
-			$("#passwordMatch").hide();
-			$("#retypePassword").keyup(function(){
+			$("#retypePassword").blur(function(){
 				var password=$("#password").val();
 				var retypePassword=$("#retypePassword").val();
 				if(password!=retypePassword){
@@ -207,7 +174,7 @@
 					$("#passwordMatch").hide();
 				}
 			});
-		}); 
-	</script>
-	</body>
+		});
+    </script>
+</body>
 </html>
