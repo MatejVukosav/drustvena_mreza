@@ -31,15 +31,15 @@ module.exports=function(app,passport){
       passport.authenticate('local', { successRedirect: '/homepage',
                           failureRedirect: '/index'}, function(err, user, info) {
          if(err) {
-            return res.render('index');
+            return res.redirect('/index');
          } 
 
          if(!user) {
-            return res.render('index');
+            return res.redirect('/index');
          }
          return req.logIn(user, function(err) {
             if(err) {
-               return res.render('index');
+               return res.redirect('/index');
             } else {
                return res.redirect('/homepage');
             }
