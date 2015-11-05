@@ -4,7 +4,7 @@ var config = {
    host: 'localhost',  // your host
    user: 'root', // your database user
    password: 'root', // your database password
-   database: 'nesto',
+   database: 'drustvena_mreza',
    charset: 'utf8'
 };
 
