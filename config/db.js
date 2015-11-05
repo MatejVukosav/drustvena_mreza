@@ -4,8 +4,8 @@ var config = {
    host: 'localhost',  // your host
    user: 'root', // your database user
    password: 'root', // your database password
-   database: 'dbUsers',
-   charset: 'UTF8_GENERAL_CI'
+   database: 'drustvena_mreza',
+   charset: 'utf8'
 };
 
 var DB = Bookshelf.initialize({
