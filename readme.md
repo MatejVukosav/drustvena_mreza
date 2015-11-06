@@ -6,7 +6,7 @@ LOKALNA INSTALACIJA:
     
 2. preuzeti i instalirati MySQL server i Workbench
     preporučano preko web installera, odabrati samo dvije gore spomenute komponente (ostale nam nisu potrebne)
-    (https://dev.mysql.com/downloads/installer/)
+    (https://dev.mysql.com/downloads/installer/, tj. https://dev.mysql.com/downloads/file/?id=459895)
     
 3. U workbenchu izvršiti SQL kôd iz datoteke sql.sql kako bi se formirala početna baza s tablicama naziva drustvena_mreza
 
