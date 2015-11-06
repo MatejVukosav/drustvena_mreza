@@ -10,7 +10,7 @@ LOKALNA INSTALACIJA:
     
 3. U workbenchu izvršiti SQL kôd iz datoteke sql.sql kako bi se formirala početna baza s tablicama naziva drustvena_mreza
 
-4. Provjeriti odgovara li port MySQL servera onome u app/db.js, ako ne, promijeniti taj parametar
+4. Provjeriti odgovara li port MySQL servera onome u config/db.js, ako ne, promijeniti taj parametar
 
 5. U direktoriju gdje je smješten repozitorij otvoriti Command Prompt / Terminal i naredbom "node server.js" pokrenuti
 
