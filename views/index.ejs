@@ -21,7 +21,7 @@
 
     <style>
         body {
-            margin: 65px auto 15px auto;
+            margin: 15px auto;
         }
 
         .text-orange {
@@ -36,52 +36,76 @@
             display: block;
         }
 
+        legend {
+            background: white;
+            padding: 5px 20px;
+            border-radius: 15px;
+            border-bottom: 3px solid orange;
+        }
+
+        .login label, .col-md-4 label {
+            border-bottom: 1px solid darkorange;
+        }
+
+        .logo {
+        }
+
+        h1 {
+            color: darkorange;
+            font: 1.2em sans-serif;
+            text-transform: uppercase;
+        }
+
         .login {
-            max-width: 600px;
+            margin-bottom: 25px;
         }
 
         .register {
-            max-width: 700px;
+            max-width: 600px;
+        }
+
+        .popover {
+            position: fixed;
         }
 
     </style>
 
 </head>
 <body>
-    <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="navbar-header">
-            <a class="navbar-brand">Network!</a>
-        </div>
-    </nav>
-    <div class="container-fluid">
+    <div class="container">
         <!-- Login part of the page -->
-        <div class="col-md-4 login">
-            <h4 class="text-orange text-center">Already have an account?</h4>
-            <form action="/login.js" method="post" id="loginForm" class="form-inline">
-                <fieldset class="well">
-                    <legend class="text-orange">Sign in!</legend>
-                    <div id="loginAlert" class="alert alert-danger controls" style="display: none;">
-                        The username or password is invalid!
+        <div class="col-md-4 col-xs-12 login">
+            <div class="col-md-12 col-sm-4 col-xs-12 logo">
+                <img alt="Bubbles Social Network logotype" src="bubbles-logo.png" class="" />
+            </div>
+            <div class="col-md-12 col-sm-8 col-xs-12">
+                <h3 class="text-orange text-center">Have an account?</h3>
+                <form action="/login.js" method="post" id="loginForm" class="form-inline">
+                    <fieldset class="well">
+                        <legend>Sign in</legend>
+                        <div id="loginAlert" class="alert alert-danger controls" style="display: none;">
+                            The username or password is invalid!
+                        </div>
+                        <div class="form-group">
+                            <label for="usernameLogin" class="control-label">Username</label>
+                            <input class="form-control input-lg" type="text" id="usernameLogin" name="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="passwordLogin" class="control-label">Password</label>
+                            <input class="form-control input-lg" type="password" id="passwordLogin" name="password">
+                        </div>
+                    </fieldset>
+                    <div class="control-group text-center">
+                        <input type="submit" class="btn btn-success input-lg" id="login-button" value="Sign in" />
+                        <button class="btn btn-link input-lg">Forgotten password?</button>
                     </div>
-                    <div class="form-group">
-                        <label for="usernameLogin">Username</label>
-                        <input class="form-control input-lg" type="text" id="usernameLogin" name="username">
-                    </div>
-                    <div class="form-group">
-                        <label for="passwordLogin">Password</label>
-                        <input class="form-control input-lg" type="password" id="passwordLogin" name="password">
-                    </div>
-                </fieldset>
-                <div class="control-group text-center">
-                    <input type="submit" class="btn btn-success input-lg" value="Sign in" />
-                    <button class="btn btn-link">Forgot password?</button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
 
         <div class="col-md-8 register">
             <!-- registration part of the page -->
-            <h2 class="text-orange text-center">Don't have an account?<br/> Register, it's free!</h2>
+            <h3 class="text-orange text-center">Don't have an account?<br/><strong>Sign up</strong>, it's free!</h3>
 
             <form action="/registration.js" method="post" id="registrationForm" class="form-horizontal">
 
@@ -93,7 +117,7 @@
                         <!-- Username -->
                         <label class="control-label col-sm-2" for="username">Username</label>
                         <div class="controls col-sm-10">
-                            <input type="text" id="username" name="username" placeholder="homer.the.best" class="form-control">
+                            <input type="text" id="username" name="username" placeholder="" class="form-control" data-toggle="popover" data-trigger = "manual">
                             <p class="help-block">Username can contain any letters or numbers, without spaces</p>
                         </div>
                     </div>
@@ -102,8 +126,8 @@
                         <!-- E-mail -->
                         <label class="control-label col-sm-2" for="email">E-mail</label>
                         <div class="controls col-sm-10">
-                            <input type="text" id="email" name="email" placeholder="hsimpson@springfield-nuclear.com" class="form-control">
-                            <p class="help-block">Please provide your E-mail</p>
+                            <input type="email" id="email" name="email" placeholder="" class="form-control" data-toggle="popover" data-trigger = "manual">
+                            <p class="help-block">Please provide your e-mail for password reset purposes</p>
                         </div>
                     </div>
 
@@ -111,8 +135,8 @@
                         <!-- Password-->
                         <label class="control-label col-sm-2" for="password">Password</label>
                         <div class="controls col-sm-10">
-                            <input type="password" id="password" name="password" placeholder="********" class="form-control">
-                            <p class="help-block">Password should be at least 4 characters</p>
+                            <input type="password" id="password" name="password" placeholder="" class="form-control" data-toggle="popover" data-trigger = "manual">
+                            <p class="help-block">Password should be at least 8 characters</p>
                         </div>
                     </div>
 
@@ -120,7 +144,7 @@
                         <!-- Password -->
                         <label class="control-label col-sm-2" for="retypePassword">Password (Confirm)</label>
                         <div class="controls col-sm-10">
-                            <input type="password" id="retypePassword" name="password_confirm" placeholder="********" class="form-control">
+                            <input type="password" id="retypePassword" placeholder class="form-control" data-toggle="popover" data-trigger = "manual">
                             <p class="help-block alert-danger" id="passwordMatch" style="display:none">Passwords do not match</p>
                         </div>
                     </div>
@@ -133,19 +157,19 @@
                     <div class="control-group col-md-4">
                         <!-- First Name -->
                         <label class="control-label" for="firstName">First name</label>
-                        <input type="text" id="firstName" name="firstName" placeholder="Homer" class="form-control">
+                        <input type="text" id="firstName" name="firstName" placeholder="" class="form-control">
                     </div>
 
                     <div class="control-group col-md-4">
                         <!-- Middle Name -->
                             <label class="control-label" for="middleName">Middle name</label>
-                            <input type="text" id="middleName" name="middleName" placeholder="Jay" class="form-control">
+                            <input type="text" id="middleName" name="middleName" placeholder="" class="form-control">
                     </div>
 
                     <div class="control-group col-md-4">
                         <!-- Last Name -->
                         <label class="control-label" for="lastName">Last name</label>
-                        <input type="text" id="lastName" name="lastName" placeholder="Simpson" class="form-control">
+                        <input type="text" id="lastName" name="lastName" placeholder="" class="form-control">
                     </div>
 
                 </fieldset>
@@ -154,7 +178,13 @@
                 <div class="control-group">
                     <!-- Button -->
                     <div class="controls">
-                        <input type="submit" class="btn btn-info input-lg" value="Sign up" />
+                        <div id="alertID" class="alert alert-danger" style="display:none;"></div>
+                        <div class="col-md-4 col-sm-4">
+                            <input type="submit" id="register-button" class="btn btn-info input-lg" value="Sign up" />
+                        </div>
+                        <div class="col-md-8 col-sm-8 control-label">
+                            By signin up, you agree to our <a href="/tos">Terms of Service</a>
+                        </div>
                     </div>
                 </div>
 
@@ -162,19 +192,15 @@
         </div>
     </div>
 
+    <script src="utility.js"></script>
+    <script src="registrationPage.js"></script>
     <script>
-		$(document).ready(function(){
-			$("#retypePassword").blur(function(){
-				var password=$("#password").val();
-				var retypePassword=$("#retypePassword").val();
-				if(password!=retypePassword){
-					$("#passwordMatch").show();
-				}
-				else{
-					$("#passwordMatch").hide();
-				}
-			});
-		});
+        $("#login-button").click(login);
+        $("#username").blur(checkUsernameDelayed);
+        $("#password").blur(checkPassword);
+        $("#retypePassword").blur(comparePasswords);
+        $("#email").blur(checkEmail);
+        $("#register-button").click(register);
     </script>
 </body>
 </html>

@@ -5,7 +5,8 @@ var config = {
    user: 'root', // your database user
    password: 'root', // your database password
    database: 'drustvena_mreza',
-   charset: 'utf8'
+   charset: 'utf8',
+	port: '3306'
 };
 
 var DB = Bookshelf.initialize({
