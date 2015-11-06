@@ -4,7 +4,7 @@
 
     <string name="login_with_password">Prijavi se</string>
     <string name="register">Registriraj se</string>
-    <string name="title_activity_core">Core</string>
+    <string name="title_activity_core">Bubles</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -31,6 +31,15 @@
     <string name="tab_2">Search</string>
     <string name="tab_3">Inbox</string>
     <string name="tab_4">User Wall</string>
+
+    <!-- NAVIGATION DRAWER -->
+    <string name="submenu">Customise your profile</string>
+    <string name="submenu_1">Edit profile</string>
+    <string name="submenu_2">Settings</string>
+    <string name="submenu_3">Invite friends</string>
+    <string name="submenu_4">Ask Help</string>
+    <string name="submenu_5">Log out</string>
+
 
     <!-- DISCOVER -->
     <string name="follow">follow</string>

@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- APP COLORS -->
-    <color name="primary">#ff0099cc</color>
-    <color name="primary_text">#13131B</color>
-    <color name="accent">#ffaa66cc</color>
+    <color name="primary">#FFA500</color>
+    <color name="primary_dark">#FF8C00</color>
+    <color name="primary_red">#FF4500</color>
+    <color name="primary_accent">#FF4500</color>
 
-    <color name="fab_color_pressed">#FF0097</color>
-    <color name="fab_color_normal">#FF69B4</color>
-    <color name="fab_color_ripple">#FF69B4</color>
-    <color name="tab_core_color">#E671B8</color>
+    <color name="tab_core_color">@color/primary_dark</color>
+    <color name="navigation_header_color">@color/android_green</color>
+    <color name="post_background">@color/white</color>
+    <color name="posts_separator">@color/WhiteSmoke</color>
+
+    <color name="fab_color_pressed">@color/green</color>
+    <color name="fab_color_normal">@color/GreenYellow</color>
+    <color name="fab_color_ripple">@color/blue</color>
+    <color name="forgot_your_password">@color/DarkTurquoise</color>
+
 
     <!-- Android style -->
     <color name="android_green">#A4C639</color>

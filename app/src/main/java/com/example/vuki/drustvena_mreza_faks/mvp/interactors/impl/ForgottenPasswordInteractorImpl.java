@@ -19,7 +19,7 @@ public class ForgottenPasswordInteractorImpl implements ForgottenPasswordInterac
     @Override
     public void resetPassword(ForgottenPasswordListener listener, String email) {
         forgottenPasswordListener = listener;
-        SocialNetworkApplication.getApiService().postResetpassword(email, forgottenPasswordCallback);
+        SocialNetworkApplication.getApiService().postResetPassword(email, forgottenPasswordCallback);
     }
 
     private Callback<ForgottenPasswordResponse> forgottenPasswordCallback = new Callback<ForgottenPasswordResponse>() {

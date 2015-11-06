@@ -12,23 +12,20 @@ public class Post {
     @SerializedName("id")
     long id;
 
-    @SerializedName("content")
-    private String content;
+    @SerializedName("message")
+    private String message;
 
 
     @SerializedName("created_at")
     private String createdAt;
 
 
-    @SerializedName("user")
-    private User user;
-
     @SerializedName("likes_num")
     private int likes_num;
 
 
-    @SerializedName("comment_num")
-    private int comment_num;
+    @SerializedName("commentNum")
+    private int commentNum;
 
     @SerializedName("creator")
     private User creator;
@@ -52,12 +49,12 @@ public class Post {
         this.id = id;
     }
 
-    public String getContent() {
-        return content;
+    public String getMessage() {
+        return message;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getCreatedAt() {
@@ -68,13 +65,6 @@ public class Post {
         this.createdAt = createdAt;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public int getLikes_num() {
         return likes_num;
@@ -84,12 +74,12 @@ public class Post {
         this.likes_num = likes_num;
     }
 
-    public int getComment_num() {
-        return comment_num;
+    public int getCommentNum() {
+        return commentNum;
     }
 
-    public void setComment_num(int comment_num) {
-        this.comment_num = comment_num;
+    public void setCommentNum(int commentNum) {
+        this.commentNum = commentNum;
     }
 
     public User getCreator() {

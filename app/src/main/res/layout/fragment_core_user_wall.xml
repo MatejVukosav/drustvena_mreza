@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/user_wall_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="wall"
-        android:gravity="center"
-        />
+        android:layout_height="550dp"
+        app:layout_empty="@layout/discover_empty_view"
+        app:layout_moreProgress="@layout/discover_view_more_progress"
+        tools:context=".RecyclerView" />
 
 </LinearLayout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="@string/submenu_1"
+        android:icon="@drawable/ic_user_profile"/>
+    <item
+        android:title="@string/submenu_2"
+        android:icon="@android:drawable/ic_lock_lock"/>
+    <item
+        android:title="@string/submenu_3"
+        android:icon="@android:drawable/ic_media_ff"/>
+    <item
+        android:title="@string/submenu_4"
+        android:icon="@android:drawable/ic_dialog_email"/>
+
+    <item
+        android:title="@string/submenu_5"
+        android:icon="@android:drawable/ic_menu_add"/>
+
+
+</menu>

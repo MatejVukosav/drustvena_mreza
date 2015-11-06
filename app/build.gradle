@@ -17,6 +17,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+
+
 }
 
 dependencies {
@@ -36,8 +44,6 @@ dependencies {
     //INTRO
     compile 'com.github.paolorotolo:appintro:3.2.0'
 
-
-
     //REST
     compile 'com.squareup.okhttp:okhttp:2.4.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.4.0'
@@ -45,7 +51,6 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     //GLIDE
     compile 'com.github.bumptech.glide:glide:3.6.1'
-
 
     //BINDING
     compile 'com.jakewharton:butterknife:7.0.1'
@@ -58,4 +63,7 @@ dependencies {
 
     //CIRCULAR IMAGE FOR PROGILE PICTURE
     compile 'de.hdodenhof:circleimageview:2.0.0'
+//material search
+    compile(name: 'material-search', ext: 'aar')
+
 }

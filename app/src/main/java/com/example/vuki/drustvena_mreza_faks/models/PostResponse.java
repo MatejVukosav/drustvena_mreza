@@ -5,10 +5,9 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 /**
- * Created by Vuki on 4.11.2015..
+ * Created by Vuki on 6.11.2015..
  */
 public class PostResponse implements Serializable {
-
     @SerializedName("response")
     private Post post;
 

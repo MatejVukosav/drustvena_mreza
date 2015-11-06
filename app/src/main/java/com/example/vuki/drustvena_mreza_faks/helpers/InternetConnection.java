@@ -13,7 +13,17 @@ import com.example.vuki.drustvena_mreza_faks.R;
  * Created by Vuki on 4.11.2015..
  */
 public class InternetConnection {
-    Context context;
+    static Context context;
+    private static InternetConnection instance = new InternetConnection();
+
+    public static InternetConnection getInstance(Context ctx) {
+        context = ctx.getApplicationContext();
+        return instance;
+
+    }
+
+    public InternetConnection() {}
+
 
     public InternetConnection(Context context) {
         this.context = context;
@@ -25,22 +35,23 @@ public class InternetConnection {
         this.internetConnectionCallback = internetConnectionCallback;
     }
 
-    public interface OnCheckInternetConnection{
+    public interface OnCheckInternetConnection {
         void OnInternetCheck(boolean hasInternetConnection);
     }
+
     ConnectivityManager connectivityManager;
     Resources r;
 
-    public void checkInternetConnection(){
+    public void checkInternetConnection() {
         boolean isConnected;
-        connectivityManager= (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo=connectivityManager.getActiveNetworkInfo();
-        isConnected=networkInfo !=null && networkInfo.isAvailable() && networkInfo.isConnected();
+        connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        isConnected = networkInfo != null && networkInfo.isAvailable() && networkInfo.isConnected();
 
         //if not connected
-        if(!isConnected){
-            r=context.getResources();
-            AlertDialog.Builder builder=new AlertDialog.Builder(context);
+        if (!isConnected) {
+            r = context.getResources();
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(r.getString(R.string.check_internet_connection))
                     .setMessage(r.getString(R.string.unable_to_connect))
                     .setPositiveButton(r.getString(R.string.internet_positive_button), new DialogInterface.OnClickListener() {
@@ -57,8 +68,8 @@ public class InternetConnection {
                     })
                     .create();
             builder.show();
-        }else{
-            if(internetConnectionCallback!=null){
+        } else {
+            if (internetConnectionCallback != null) {
                 internetConnectionCallback.OnInternetCheck(true);
             }
         }

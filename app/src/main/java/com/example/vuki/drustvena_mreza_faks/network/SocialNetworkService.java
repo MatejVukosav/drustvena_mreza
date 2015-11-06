@@ -5,6 +5,7 @@ import com.example.vuki.drustvena_mreza_faks.models.CommentResponse;
 import com.example.vuki.drustvena_mreza_faks.models.ForgottenPasswordResponse;
 import com.example.vuki.drustvena_mreza_faks.models.LoginRequest;
 import com.example.vuki.drustvena_mreza_faks.models.LoginResponse;
+import com.example.vuki.drustvena_mreza_faks.models.PostsResponse;
 import com.example.vuki.drustvena_mreza_faks.models.Register;
 import com.example.vuki.drustvena_mreza_faks.models.RegisterResponse;
 import com.example.vuki.drustvena_mreza_faks.models.UserResponse;
@@ -30,8 +31,10 @@ public interface SocialNetworkService {
     void postRegister(@Body Register register, Callback<RegisterResponse> callback);
 
     @POST("/api/v1/users/register")
-    void postResetpassword(@Body String email, Callback<ForgottenPasswordResponse> callback);
+    void postResetPassword(@Body String email, Callback<ForgottenPasswordResponse> callback);
 
+    @GET("/api/v1/posts")
+    void getPosts(Callback<PostsResponse> callback);
 
     @GET("/api/v1/posts")
     void getUsers(Callback<UsersResponse> callback);

@@ -24,10 +24,10 @@ public class User {
     private UserAuthorized authorized;
 
     @SerializedName("image_url")
-    private String postImage;
+    private String profileImage;
 
-    public String getPostImage() {
-        return postImage;
+    public String getProfileImage() {
+        return profileImage;
     }
 
     public String getToken() {
@@ -50,6 +50,29 @@ public class User {
         return authorized;
     }
 
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setAuthorized(UserAuthorized authorized) {
+        this.authorized = authorized;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
 
 /*
     public String getBirthday() {

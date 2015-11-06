@@ -10,7 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.example.vuki.drustvena_mreza_faks.R;
-import com.example.vuki.drustvena_mreza_faks.adapters.SearchAdapter;
+import com.example.vuki.drustvena_mreza_faks.adapters.SearchUserAdapter;
 import com.malinskiy.superrecyclerview.OnMoreListener;
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
 import com.malinskiy.superrecyclerview.swipe.SparseItemRemoveAnimator;
@@ -29,7 +29,7 @@ public abstract class SearchActivity extends AppCompatActivity
         , OnMoreListener
         , SwipeDismissRecyclerViewTouchListener.DismissCallbacks {
 
-    private SearchAdapter mAdapter;
+    private SearchUserAdapter mAdapter;
     private SparseItemRemoveAnimator mSparseAnimator;
     private RecyclerView.LayoutManager mLayoutManager;
     private Handler mHandler;
@@ -41,11 +41,16 @@ public abstract class SearchActivity extends AppCompatActivity
     public static String followS;
     public static String unfollowS;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
         ButterKnife.bind(this);
+
+
+
+
 
         followS = getResources().getString(R.string.follow);
         unfollowS = getResources().getString(R.string.unfollow);
@@ -55,7 +60,7 @@ public abstract class SearchActivity extends AppCompatActivity
     /*    for (int i = 0; i < 25; i++)
          list.add("stvar" + i);*/
 
-       // mAdapter = new SearchAdapter(this, LoginActivity.users);
+       // mAdapter = new SearchUserAdapter(this, LoginActivity.users);
        // mRecycler.setAdapter(mAdapter);
 
         mLayoutManager = getLayoutManager();
@@ -112,8 +117,8 @@ public abstract class SearchActivity extends AppCompatActivity
         i++;
         mHandler.postDelayed(new Runnable() {
             public void run() {
-              //  for (int i = 0; i < 5; i++)
-                  //  mAdapter.add(LoginActivity.user2);
+                //  for (int i = 0; i < 5; i++)
+                //  mAdapter.add(LoginActivity.user2);
             }
         }, 300);
     }
@@ -135,4 +140,7 @@ public abstract class SearchActivity extends AppCompatActivity
         }
 
     }
+
+
+
 }

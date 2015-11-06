@@ -1,6 +1,6 @@
 package com.example.vuki.drustvena_mreza_faks.mvp.views;
 
-import com.example.vuki.drustvena_mreza_faks.models.User;
+import com.example.vuki.drustvena_mreza_faks.models.Post;
 
 import java.util.List;
 
@@ -9,7 +9,11 @@ import java.util.List;
  */
 public interface HomeView extends BaseView {
 
-    void onUsersListReceived(List<User>users);
-    void onUsersListEmpty();
+    void onPostsListReceived(List<Post>posts);
+    void onPictureClicked();
+    void onUserClicked();
+    void onCommentNumClicked();
+    void onLikeNumClicked();
+    void onPostsListEmpty();
     void onTokenExpired();
 }

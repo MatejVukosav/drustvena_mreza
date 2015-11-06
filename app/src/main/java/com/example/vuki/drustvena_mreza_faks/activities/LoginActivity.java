@@ -38,6 +38,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
     @Bind(R.id.password_text_input)
     TextInputLayout passwordTxtInput;
 
+
     private String TAG = getClass().getSimpleName();
 
 
@@ -74,7 +75,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
     @OnClick(R.id.login_btn)
     public void onLoginClick() {
         if (SocialNetworkApplication.DEBUG) {
-            Intent intent = new Intent(this, RegistrationActivity.class);
+            Intent intent = new Intent(this, CoreActivity.class);
             startActivity(intent);
         } else {
             presenter.login(mLoginEmail.getText().toString(), mLoginPassword.getText().toString());
@@ -84,6 +85,12 @@ public class LoginActivity extends BaseActivity implements LoginView {
     @OnClick(R.id.login_register_btn)
     public void onRegisterClick(){
         Intent intent = new Intent(this, RegistrationActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.login_forgot_password)
+    public void onForgottenpasswordClick(){
+        Intent intent = new Intent(LoginActivity.this, ForgottenPasswordActivity.class);
         startActivity(intent);
     }
 

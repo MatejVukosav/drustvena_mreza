@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_weight="2"
+    android:background="@color/post_background"
+    android:layout_marginTop="15dp"
+    tools:background="@color/green">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/core_home_num_of_likes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="num_of_likes" />
+
+
+        <android.widget.Space
+            android:layout_width="2dp"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:id="@+id/core_home_num_of_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="num_of_comments"
+            android:layout_marginLeft="15dp"
+            />
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:orientation="horizontal"
+        android:layout_weight="1">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/ic_thumb_up"
+            android:drawableStart="@drawable/ic_thumb_up"
+            android:drawablePadding="6dp"
+
+            android:text="Like" />
+
+
+        <android.widget.Space
+            android:layout_width="2dp"
+            android:layout_height="wrap_content" />
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/messenger_bubble_large_white"
+            android:drawableStart="@drawable/messenger_bubble_large_white"
+            android:drawablePadding="6dp"
+          android:layout_marginLeft="30dp"
+            android:text="Comment" />
+
+    </LinearLayout>
+
+</LinearLayout>

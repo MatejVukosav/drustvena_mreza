@@ -59,6 +59,18 @@
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Forgot your password?"
+                android:textColor="@color/forgot_your_password"
+                android:id="@+id/login_forgot_password"
+                />
+
+            <android.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
             <Button
                 android:id="@+id/login_btn"
                 android:layout_width="match_parent"
