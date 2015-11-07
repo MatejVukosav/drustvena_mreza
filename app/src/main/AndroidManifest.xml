@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.vuki.drustvena_mreza_faks" >
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -28,16 +28,24 @@
             android:label="@string/title_activity_core"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
-
         <activity
             android:name=".activities.ForgottenPasswordActivity"
             android:label="@string/title_activity_core"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
-
-
-
-
+        <activity
+            android:name=".activities.EditProfileActivity"
+            android:label="@string/title_activity_core"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity android:name=".activities.SettingsActivity" >
+        </activity>
+        <activity android:name=".activities.InviteFriendsActivity" >
+        </activity>
+        <activity android:name=".activities.AskForHelpActivity" >
+        </activity>
+        <activity android:name=".activities.ReportBugActivity" >
+        </activity>
     </application>
 
 </manifest>

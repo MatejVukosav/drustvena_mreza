@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/android_green"
+    android:background="@color/navigation_header_color"
     >
 
     <LinearLayout
@@ -19,8 +19,8 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/ic_user_profile"
-            android:id="@+id/core_user_id"
+            android:src="@drawable/ic_account_circle_black_xxxhdpi"
+            android:id="@+id/core_navigation_header_profile_picture"
             app:civ_border_color="@color/blue" />
 
         <TextView
@@ -30,10 +30,10 @@
             android:layout_marginLeft="@dimen/default_spacing"
             android:layout_marginStart="@dimen/default_spacing"
             android:padding="@dimen/default_spacing"
-            android:id="@+id/core_username"
-            android:text="user name"
+            android:id="@+id/core_navigation_header_username"
+            android:text="User name"
             android:textSize="20sp"
-            tools:text="user_name" />
+            tools:text="User_name" />
     </LinearLayout>
 
     <android.widget.Space

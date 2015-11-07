@@ -10,6 +10,9 @@ import com.bumptech.glide.Glide;
  */
 public class AdapterHelpers {
 
+    public static String profilePic="https://www.bhdani.ba/portal/arhiva-67-281/235/miso1.jpg";
+    public static String userName="Mišo Kovač";
+
     public static void setImage(Context context,String url, ImageView imageView) {
         Glide.with(context)
                 .load(url)

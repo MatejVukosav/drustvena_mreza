@@ -7,7 +7,7 @@
     <color name="primary_accent">#FF4500</color>
 
     <color name="tab_core_color">@color/primary_dark</color>
-    <color name="navigation_header_color">@color/android_green</color>
+    <color name="navigation_header_color">@color/primary_red</color>
     <color name="post_background">@color/white</color>
     <color name="posts_separator">@color/WhiteSmoke</color>
 

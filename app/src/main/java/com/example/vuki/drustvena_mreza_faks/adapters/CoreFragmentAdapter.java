@@ -46,10 +46,12 @@ public class CoreFragmentAdapter extends FragmentPagerAdapter {
         return numOfTabs;
     }
 
+
     @Override
     public CharSequence getPageTitle(int position) {
         return Titles[position];
     }
+
 
 
 

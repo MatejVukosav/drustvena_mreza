@@ -28,20 +28,26 @@
 
     <!-- TAB -->
     <string name="tab_1">Home</string>
-    <string name="tab_2">Search</string>
-    <string name="tab_3">Inbox</string>
-    <string name="tab_4">User Wall</string>
+    <string name="tab_2">Inbox</string>
+    <string name="tab_3">Add friend</string>
+    <string name="tab_4">User wall</string>
 
     <!-- NAVIGATION DRAWER -->
     <string name="submenu">Customise your profile</string>
     <string name="submenu_1">Edit profile</string>
     <string name="submenu_2">Settings</string>
     <string name="submenu_3">Invite friends</string>
-    <string name="submenu_4">Ask Help</string>
-    <string name="submenu_5">Log out</string>
+    <string name="submenu_4">Ask For Help</string>
+    <string name="submenu_5">Report bug</string>
+    <string name="submenu_6">Log out</string>
+
+    <!-- ACTION BAR FRAWER TOGGLE-->
+    <string name="openDrawer">Open</string>
+    <string name="closeDrawer">Close</string>
 
 
-    <!-- DISCOVER -->
+
+    <!-- SEARCH -->
     <string name="follow">follow</string>
     <string name="unfollow">unfollow</string>
 
