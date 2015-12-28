@@ -58,10 +58,10 @@ public class UserWallAdapter extends RecyclerView.Adapter<UserWallAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View v;//= LayoutInflater.from(parent.getContext()).inflate(R.layout.model_home_item, parent, false);
+        View v;//= LayoutInflater.from(parent.getContext()).inflate(R.layout.model_home_item_picture, parent, false);
         switch (viewType) {
             case TYPE_IMAGE:
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_home_item, parent, false);
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_home_item_picture, parent, false);
                 break;
             case TYPE_STATUS_ONLY:
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_home_item_status, parent, false);
@@ -96,12 +96,14 @@ public class UserWallAdapter extends RecyclerView.Adapter<UserWallAdapter.ViewHo
     @Override
     public void onBindViewHolder(UserWallAdapter.ViewHolder holder, int position) {
 
+
         //header item
         if (holder.getItemViewType() == TYPE_HEADER) {
             //AdapterHelpers.setImage(context,R.drawable.lisica,holder.userWallPicture);
             holder.userWallUsername.setText(mUser.getUsername());
 
         } else {
+            int itemPosition=position-1;
 
             Post post = data.get(position);
 
@@ -141,7 +143,7 @@ public class UserWallAdapter extends RecyclerView.Adapter<UserWallAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return data.size()+1;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

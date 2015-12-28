@@ -1,16 +1,20 @@
 package com.example.vuki.drustvena_mreza_faks.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.vuki.drustvena_mreza_faks.R;
+import com.example.vuki.drustvena_mreza_faks.activities.ShowComments;
+import com.example.vuki.drustvena_mreza_faks.helpers.AdapterHelpers;
 import com.example.vuki.drustvena_mreza_faks.helpers.NotesHelpers;
 import com.example.vuki.drustvena_mreza_faks.models.HomeFeedOneModel;
 
@@ -24,7 +28,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * Created by vuki on 18.10.15..
  */
-public class CoreHomeRecyclerViewAdapter extends RecyclerView.Adapter<CoreHomeRecyclerViewAdapter.ViewHolder> {
+public class CoreHomeRecyclerViewAdapter extends RecyclerView.Adapter<CoreHomeRecyclerViewAdapter.ViewHolder>  {
 
 
     static List<HomeFeedOneModel> data;
@@ -33,25 +37,32 @@ public class CoreHomeRecyclerViewAdapter extends RecyclerView.Adapter<CoreHomeRe
     static Context context;
 
 
+
     private static final int TYPE_IMAGE = 1;
     private static final int TYPE_STATUS_ONLY = 0;
 
+    private static final int ADD_NEW_STATUS = 2;
 
-    public CoreHomeRecyclerViewAdapter(List<HomeFeedOneModel> data, Context context) {
+
+    public CoreHomeRecyclerViewAdapter(List<HomeFeedOneModel> data, Context context ) {
         this.data = data;
         this.context = context;
+
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View v;//= LayoutInflater.from(parent.getContext()).inflate(R.layout.model_home_item, parent, false);
+        View v;//= LayoutInflater.from(parent.getContext()).inflate(R.layout.model_home_item_picture, parent, false);
         switch (viewType) {
             case TYPE_STATUS_ONLY:
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_home_item_status, parent, false);
                 break;
             case TYPE_IMAGE:
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_home_item, parent, false);
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_home_item_picture, parent, false);
+                break;
+            case ADD_NEW_STATUS:
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_add_status, parent, false);
                 break;
             default:
                 v = new View(context);
@@ -62,47 +73,57 @@ public class CoreHomeRecyclerViewAdapter extends RecyclerView.Adapter<CoreHomeRe
 
     @Override
     public int getItemViewType(int position) {
-        //if content type = 0 it is post
-     /*   if (data.get(position).getContentTypeId() == 0) {
-            return 0;
+        if (position == 0) {
+            return ADD_NEW_STATUS;
         } else {
-            return 1;
-        }*/
+            return TYPE_STATUS_ONLY;
+        }
 
-        return 0;
+    }
 
+    @Override
+    public int getItemCount() {
+        return data.size()+1;
     }
 
 
     @Override
     public void onBindViewHolder(CoreHomeRecyclerViewAdapter.ViewHolder holder, int position) {
-        HomeFeedOneModel homeFeedOneModel = data.get(position);
 
-        String message = "";
-        int numOfLikes;
-        int numOfDislikes;
-        String createdAt = "";
-        String author = "";
+        if (position == ADD_NEW_STATUS - 2) {
+            if (false) {
+                AdapterHelpers.setImage(context, R.drawable.dvorac1, holder.addNewStatusUserImage);
+            }
 
-        if (homeFeedOneModel.getAuthor() != null) {
-            author = homeFeedOneModel.getAuthor();
-        }
-        holder.username.setText(author);
+        } else {
+            int itemPosition = position - 1;
+            HomeFeedOneModel homeFeedOneModel = data.get(itemPosition);
 
-        if (homeFeedOneModel.getContent() != null) {
-            message = homeFeedOneModel.getContent();
-        }
+            String message = "";
+            int numOfLikes;
+            int numOfDislikes;
+            String createdAt = "";
+            String author = "";
 
-        if (homeFeedOneModel.getCreatedAt() != null) {
-            createdAt = homeFeedOneModel.getCreatedAt();
-        }
+            if (homeFeedOneModel.getAuthor() != null) {
+                author = homeFeedOneModel.getAuthor();
+            }
+            holder.username.setText(author);
 
-        numOfLikes = homeFeedOneModel.getNumOfLikes();
-        numOfDislikes = homeFeedOneModel.getNumOfDislikes();
+            if (homeFeedOneModel.getContent() != null) {
+                message = homeFeedOneModel.getContent();
+            }
 
-        holder.message.setText(message);
-        holder.numOfLikes.setText(String.valueOf(numOfLikes));
-        holder.postTime.setText(createdAt);
+            if (homeFeedOneModel.getCreatedAt() != null) {
+                createdAt = homeFeedOneModel.getCreatedAt();
+            }
+
+            numOfLikes = homeFeedOneModel.getNumOfLikes();
+            numOfDislikes = homeFeedOneModel.getNumOfDislikes();
+
+            holder.message.setText(message);
+            holder.numOfLikes.setText(String.valueOf(numOfLikes));
+            holder.postTime.setText(createdAt);
 
      /*   long now = getTimeNow();
         Calendar calYesterday = Calendar.getInstance();
@@ -112,13 +133,14 @@ public class CoreHomeRecyclerViewAdapter extends RecyclerView.Adapter<CoreHomeRe
         holder.postTime.setText(relativeTimeSpan);*/
 
 
-        //AdapterHelpers.setImage(context, R.drawable.lisica, holder.personal_picture);
+            //AdapterHelpers.setImage(context, R.drawable.lisica, holder.personal_picture);
 
 
-        //sa slikom
+            //sa slikom
       /*  if (post.getContetnTypeId() == TYPE_IMAGE) {
             AdapterHelpers.setImage(context, R.drawable.dvorac1, holder.itemPicture);
         }*/
+        }
 
     }
 
@@ -130,36 +152,52 @@ public class CoreHomeRecyclerViewAdapter extends RecyclerView.Adapter<CoreHomeRe
     }
 
 
-    @Override
-    public int getItemCount() {
-        return data.size();
-    }
 
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @Nullable
         @Bind(R.id.core_home_item_picture)
         ImageView itemPicture;
+        @Nullable
         @Bind(R.id.core_home_username)
         TextView username;
+        @Nullable
         @Bind(R.id.core_home_user_personal_picture)
         CircleImageView personal_picture;
-
+        @Nullable
         @Bind(R.id.core_home_num_of_likes)
         TextView numOfLikes;
+        @Nullable
         @Bind(R.id.like_btn)
         Button likeBtn;
-
+        @Nullable
         @Bind(R.id.core_home_comments)
         TextView numOfComments;
+        @Nullable
         @Bind(R.id.comments_btn)
         Button commentsBtn;
-
+        @Nullable
         @Bind(R.id.core_home_message)
         TextView message;
-
+        @Nullable
         @Bind(R.id.core_home_post_time)
         TextView postTime;
+
+        @Nullable
+        @Bind(R.id.add_new_status)
+        EditText addNewStatusText;
+
+        @Nullable
+        @Bind(R.id.add_new_status_btn)
+        Button addNewStatusButton;
+
+        @Nullable
+        @Bind(R.id.comment_list_recycler_view)
+        RecyclerView commentRecyclerView;
+
+        @Nullable
+        @Bind(R.id.add_new_status_user_image)
+        CircleImageView addNewStatusUserImage;
 
 
         public ViewHolder(View itemView) {
@@ -172,6 +210,10 @@ public class CoreHomeRecyclerViewAdapter extends RecyclerView.Adapter<CoreHomeRe
             if (commentsBtn != null) {
                 commentsBtn.setOnClickListener(this);
             }
+            if (addNewStatusButton != null) {
+                addNewStatusButton.setOnClickListener(this);
+            }
+
 
         }
 
@@ -179,21 +221,54 @@ public class CoreHomeRecyclerViewAdapter extends RecyclerView.Adapter<CoreHomeRe
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.comments_btn:
-                    getComments();
+                    getComments(commentRecyclerView, getAdapterPosition());
                     break;
                 case R.id.like_btn:
                     getLike();
+                    break;
+                case R.id.add_new_status_btn:
+                    postStatus(addNewStatusText.getText().toString());
                     break;
             }
         }
     }
 
-    private static void getComments() {
-        NotesHelpers.toastMessage(context, "komentari");
+    private static void getComments(RecyclerView recyclerView, int position) {
+        Intent intent=new Intent(context, ShowComments.class);
+        context.startActivity(intent);
+
+     /*   List<ParentListItem> parentListItems = new ArrayList<>();
+        ChildItem childItem=new ChildItem();
+        childItem.setComments(MockUsers.getComments(5));
+        parentListItems.add(childItem);
+
+        //fill comment list
+        CommentsExpendableAdapter commentsExpendableAdapter=new CommentsExpendableAdapter(context,parentListItems);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(commentsExpendableAdapter);
+
+        LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.model_comment_parent, null);
+        ButterKnife.findById(linearLayout, R.layout.model_comment_parent);
+        Button button = ButterKnife.findById(linearLayout, R.id.comments_btn);
+*/
+        // button.performClick();
     }
 
     private static void getLike() {
+        /*
+        ADD LIKE
+
+         */
         NotesHelpers.toastMessage(context, "lajkoovi");
+    }
+
+    private static void postStatus(String postMessage) {
+        /*
+
+        POST STATUS
+         */
+        NotesHelpers.toastMessage(context, "novi_statuuus " + postMessage);
+
     }
 
 }

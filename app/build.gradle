@@ -68,5 +68,7 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.0.0'
 //material search
     compile(name: 'material-search', ext: 'aar')
+//EXPANDABLE RECYCLER VIEW
+    compile 'com.bignerdranch.android:expandablerecyclerview:2.0.4'
 
 }

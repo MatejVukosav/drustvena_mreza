@@ -14,6 +14,10 @@ public class Comment implements Serializable {
     long id;
     @SerializedName("content")
     private String content;
+
+    @SerializedName("username")
+     String username;
+
     @SerializedName("user_id")
     int userId;
     @SerializedName("created_at")
@@ -64,4 +68,50 @@ public class Comment implements Serializable {
     public String getMiddleName() {
         return middleName;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+
 }

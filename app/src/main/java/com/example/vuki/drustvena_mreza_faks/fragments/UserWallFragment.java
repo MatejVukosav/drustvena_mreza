@@ -53,8 +53,14 @@ public class UserWallFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_core_user_wall, container, false);
         ButterKnife.bind(this, v);
 
-        populateRecyclerView();
+
+        getApiCall();
         return v;
+    }
+
+    private void getApiCall(){
+
+        populateRecyclerView();
     }
 
     private void populateRecyclerView() {

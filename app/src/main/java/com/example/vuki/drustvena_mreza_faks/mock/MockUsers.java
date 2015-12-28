@@ -1,5 +1,6 @@
 package com.example.vuki.drustvena_mreza_faks.mock;
 
+import com.example.vuki.drustvena_mreza_faks.models.Comment;
 import com.example.vuki.drustvena_mreza_faks.models.Post;
 import com.example.vuki.drustvena_mreza_faks.models.Posts;
 import com.example.vuki.drustvena_mreza_faks.models.User;
@@ -26,8 +27,28 @@ public class MockUsers {
         return users;
     }
 
+    public static List<Comment> getComments(int numOfComments) {
+        List<Comment> commentList = new ArrayList<>();
+
+        for (int i = 0; i < numOfComments; i++) {
+            commentList.add(geComment());
+        }
+        return commentList;
+    }
+    public static Comment geComment() {
+        Comment comment = new Comment();
+        comment.setUsername("vukicaa");
+        comment.setMessage("ovaj post je baas suuuper!!");
+        comment.setFirstName("vukiFirst");
+        comment.setLastName("vukiLast");
+
+        return comment;
+    }
+
+
     public static User getUser() {
         User user = new User();
+        user.setUsername("vukicaa");
         user.setEmail("vuki146@gmail.com");
         user.setFirstName("vukiFirst");
         user.setLastName("vukiLast");

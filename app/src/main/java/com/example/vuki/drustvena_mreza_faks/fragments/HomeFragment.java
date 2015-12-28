@@ -30,7 +30,7 @@ import retrofit.Retrofit;
 /**
  * Created by Vuki on 4.11.2015..
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment  {
     private static String TAG;
     Context context;
 
@@ -119,6 +119,7 @@ public class HomeFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
     }
+
 
 
 
