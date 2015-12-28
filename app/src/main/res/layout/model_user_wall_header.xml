@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="140dp">
+
+        <ImageView
+            android:id="@+id/user_wall_picture"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/com_facebook_profile_picture_blank_portrait" />
+
+        <TextView
+            android:id="@+id/user_wall_username"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/user_wall_picture"
+            android:gravity="center"
+            android:text="username"
+            android:textStyle="bold"
+            android:textSize="30sp" />
+
+    </RelativeLayout>
+
+    <android.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/user_wall_username"
+        android:background="@color/black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_weight="3">
+
+
+        <TextView
+            android:id="@+id/user_wall_about"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            style="@style/UserWallAboutTextStyle"
+            android:text="ABOUT"/>
+        <TextView
+            android:id="@+id/user_wall_photos"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            style="@style/UserWallAboutTextStyle"
+            android:text="PHOTOS"/>
+        <TextView
+            android:id="@+id/user_wall_friends"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            style="@style/UserWallAboutTextStyle"
+            android:text="FRIENDS" />
+
+    </LinearLayout>
+
+</LinearLayout>
