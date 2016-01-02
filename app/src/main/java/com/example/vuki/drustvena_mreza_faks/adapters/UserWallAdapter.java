@@ -2,7 +2,9 @@ package com.example.vuki.drustvena_mreza_faks.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -16,10 +18,12 @@ import com.example.vuki.drustvena_mreza_faks.R;
 import com.example.vuki.drustvena_mreza_faks.activities.UserWallAbout;
 import com.example.vuki.drustvena_mreza_faks.activities.UserWallFriends;
 import com.example.vuki.drustvena_mreza_faks.activities.UserWallPhotos;
+import com.example.vuki.drustvena_mreza_faks.helpers.BundleKeys;
 import com.example.vuki.drustvena_mreza_faks.helpers.NotesHelpers;
-import com.example.vuki.drustvena_mreza_faks.listeners.ItemClickListener;
+import com.example.vuki.drustvena_mreza_faks.models.HomeFeedOneModel;
 import com.example.vuki.drustvena_mreza_faks.models.Post;
 import com.example.vuki.drustvena_mreza_faks.models.User;
+import com.example.vuki.drustvena_mreza_faks.network.ApiManager;
 
 import java.util.Calendar;
 import java.util.List;
@@ -28,6 +32,10 @@ import java.util.Random;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * Created by Vuki on 7.11.2015..
@@ -35,8 +43,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class UserWallAdapter extends RecyclerView.Adapter<UserWallAdapter.ViewHolder> {
 
 
-    static List<Post> data;
-    private ItemClickListener<Post> itemClickListener;
+    static List<Post> mData;
     private static int i = 0;
     private static int j = 0;
     static Context context;
@@ -48,10 +55,9 @@ public class UserWallAdapter extends RecyclerView.Adapter<UserWallAdapter.ViewHo
     private static final int TYPE_HEADER = 2;
 
 
-    public UserWallAdapter(User user,List<Post> data, ItemClickListener<Post> itemClickListener, Context context) {
-        this.data = data;
-        this.itemClickListener = itemClickListener;
-        this.context = context;
+    public UserWallAdapter(User user,List<Post> mData,  Context context) {
+        this.mData = mData;
+       this.context = context;
         this.mUser=user;
     }
 
@@ -103,9 +109,9 @@ public class UserWallAdapter extends RecyclerView.Adapter<UserWallAdapter.ViewHo
             holder.userWallUsername.setText(mUser.getUsername());
 
         } else {
-            int itemPosition=position-1;
 
-            Post post = data.get(position);
+            int itemPosition=position-1;
+            Post post = mData.get(itemPosition);
 
             Random rand = new Random();
             holder.message.setText("Ovo je status i bas je kul gfgkfggfgjjggfbvghbbnvghgfkbvtbvzitbztbzbkkgbgbkgbhkgbhkgbhkgbhkgbhkgbhgbhghkknh");
@@ -129,8 +135,101 @@ public class UserWallAdapter extends RecyclerView.Adapter<UserWallAdapter.ViewHo
            /* if (holder.getItemViewType() == TYPE_IMAGE) {
                 AdapterHelpers.setImage(context, R.drawable.dvorac1, holder.itemPicture);
             }*/
+
+           /* String message = "";
+            int numOfLikes;
+            int numOfDislikes;
+            String createdAt = "";
+            String author = "";
+
+            if (homeFeedOneModel.getAuthor() != null) {
+                author = homeFeedOneModel.getAuthor();
+            }
+            holder.username.setText(author);
+
+            if (homeFeedOneModel.getContent() != null) {
+                message = homeFeedOneModel.getContent();
+            }
+
+            if (homeFeedOneModel.getCreatedAt() != null) {
+                createdAt = homeFeedOneModel.getCreatedAt();
+            }
+
+            numOfLikes = homeFeedOneModel.getNumOfLikes();
+            numOfDislikes = homeFeedOneModel.getNumOfDislikes();
+
+            holder.message.setText(message);
+            holder.numOfLikes.setText(String.valueOf(numOfLikes));
+            holder.postTime.setText(createdAt);
+
+            //I didn't like post
+              if (homeFeedOneModel.getiLike() == 0) {
+            holder.likeBtn.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context, R.drawable.thumb_up_outline_black_24dp), null, null, null);
+            holder.likeBtn.setTextColor(ContextCompat.getColor(context, R.color.not_liked));
+            //if not liked
+        } else {
+            holder.likeBtn.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context, R.drawable.thumb_up_24dp), null, null, null);
+
+            holder.likeBtn.setTextColor(ContextCompat.getColor(context, R.color.liked));
         }
 
+            holder.username.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(context, UserWallFromFriend.class);
+                    Bundle b=new Bundle();
+                    b.putInt(BundleKeys.FRIEND_USER_ID,mData.get(itemPosition).getAuthorId());
+                    context.startActivity(intent);
+                }
+            });
+
+            holder.likeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setLike(mData.get(position).getId(), holder, homeFeedOneModel);
+                    notifyItemChanged(position);
+                }
+            });
+*/
+        }
+
+    }
+
+    private static void turnOnLike(HomeFeedOneModel homeFeedOneModel, ViewHolder holder) {
+        //if liked
+        if (homeFeedOneModel.getiLike() == 0) {
+            holder.likeBtn.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context, R.drawable.thumb_up_outline_black_24dp), null, null, null);
+            homeFeedOneModel.setiLike(1);
+            holder.likeBtn.setTextColor(ContextCompat.getColor(context, R.color.not_liked));
+            //if not liked
+        } else {
+            holder.likeBtn.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context, R.drawable.thumb_up_24dp), null, null, null);
+            homeFeedOneModel.setiLike(0);
+            holder.likeBtn.setTextColor(ContextCompat.getColor(context, R.color.liked));
+        }
+    }
+
+    private static void setLike(int postId, final ViewHolder holder, final HomeFeedOneModel homeFeedOneModel) {
+        //TODO send like
+        Call<Void> setLikeCall = ApiManager.getInstance().getService().postLike(postId);
+        setLikeCall.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Response<Void> response, Retrofit retrofit) {
+                if (response.isSuccess()) {
+                    turnOnLike(homeFeedOneModel, holder);
+                } else {
+                    NotesHelpers.toastMessage(context, "Response is not success");
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                NotesHelpers.toastMessage(context, "Failure: " + t.getMessage());
+            }
+        });
+
+
+        NotesHelpers.toastMessage(context, "lajkoovi");
     }
 
     private long getTimeNow() {
@@ -143,7 +242,7 @@ public class UserWallAdapter extends RecyclerView.Adapter<UserWallAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return data.size()+1;
+        return mData.size()+1;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -229,13 +328,13 @@ public class UserWallAdapter extends RecyclerView.Adapter<UserWallAdapter.ViewHo
                     getLike();
                     break;
                 case R.id.user_wall_about:
-                    getAbout();
+                    getAbout(mUser.getUserId());
                     break;
                 case R.id.user_wall_photos:
-                    getPhotos();
+                    getPhotos(mUser.getUserId());
                     break;
                 case R.id.user_wall_friends:
-                    getFriends();
+                    getFriends(mUser.getUserId());
                     break;
             }
         }
@@ -249,21 +348,28 @@ public class UserWallAdapter extends RecyclerView.Adapter<UserWallAdapter.ViewHo
             NotesHelpers.toastMessage(context, "lajkoovi");
         }
 
-        private static void getAbout() {
+        private static void getAbout(int userId) {
             NotesHelpers.toastMessage(context, "about");
             Intent intent=new Intent(context, UserWallAbout.class);
+
+            Bundle b=new Bundle();
+            b.putInt(BundleKeys.USER_ABOUT,userId);
+            intent.putExtras(b);
             context.startActivity(intent);
         }
 
-        private static void getPhotos() {
+        private static void getPhotos(int userId) {
             NotesHelpers.toastMessage(context, "photos");
             Intent intent=new Intent(context, UserWallPhotos.class);
             context.startActivity(intent);
         }
 
-        private static void getFriends() {
+        private static void getFriends(int userId) {
             NotesHelpers.toastMessage(context, "friends");
             Intent intent=new Intent(context, UserWallFriends.class);
+            Bundle b=new Bundle();
+            b.putInt(BundleKeys.FRIEND_USER_ID,userId);
+            intent.putExtras(b);
             context.startActivity(intent);
         }
 

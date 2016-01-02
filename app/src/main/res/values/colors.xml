@@ -19,6 +19,9 @@
     <color name="post_text_background_color">@color/Cornsilk</color>
     <color name="post_top_background_color">@color/Azure</color>
 
+    <color name="liked">@color/holo_blue_light</color>
+    <color name="not_liked">@color/black</color>
+
 
 
 

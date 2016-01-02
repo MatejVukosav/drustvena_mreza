@@ -26,7 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.vuki.drustvena_mreza_faks.R;
-import com.example.vuki.drustvena_mreza_faks.adapters.CoreFragmentAdapter;
+import com.example.vuki.drustvena_mreza_faks.adapters.HomeFragmentAdapter;
 import com.example.vuki.drustvena_mreza_faks.adapters.SearchAdapter;
 import com.example.vuki.drustvena_mreza_faks.helpers.InternetConnection;
 import com.example.vuki.drustvena_mreza_faks.helpers.NotesHelpers;
@@ -38,7 +38,6 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
@@ -77,7 +76,7 @@ public class CoreActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     String[] tabText;
-    CoreFragmentAdapter pagerAdapter;
+    HomeFragmentAdapter pagerAdapter;
     int numOfTabs;
     Context context;
 
@@ -117,17 +116,6 @@ public class CoreActivity extends AppCompatActivity {
     private void init() {
         context = this;
 
-        //set navigation view user name
-        String username = "";
-        if (ApiManager.getInstance().getUser() != null) {
-            username = ApiManager.getInstance().getUser().getUsername();
-
-        View headerLayout = navigationView.getHeaderView(0);
-        TextView user = (TextView) headerLayout.findViewById(R.id.core_navigation_header_username);
-        user.setText(username);
-        }
-
-
         numOfTabs = getResources().getInteger(R.integer.tabs_number);
 
         TAB_HOME = getResources().getInteger(R.integer.tabs_number_1_home);
@@ -159,8 +147,18 @@ public class CoreActivity extends AppCompatActivity {
      * Set items in user header
      */
     private void setHeaderItems() {
-        TextView mHaderUsername = (TextView) navigationView.findViewById(R.id.core_navigation_header_username);
-        CircleImageView mHeaderProfileCircleImage = (CircleImageView) navigationView.findViewById(R.id.core_navigation_header_profile_picture);
+     /*   TextView mHaderUsername = (TextView) navigationView.findViewById(R.id.core_navigation_header_username);
+        CircleImageView mHeaderProfileCircleImage = (CircleImageView) navigationView.findViewById(R.id.core_navigation_header_profile_picture);*/
+
+        //set navigation view user name
+        String username = "";
+        if (ApiManager.getInstance().getUser() != null) {
+            username = ApiManager.getInstance().getUser().getUsername();
+
+            View headerLayout = navigationView.getHeaderView(0);
+            TextView user = (TextView) headerLayout.findViewById(R.id.core_navigation_header_username);
+            user.setText(username);
+        }
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -195,7 +193,6 @@ public class CoreActivity extends AppCompatActivity {
                         bugMessage = "";
                         messageTitle = "Ask_for_help_Bubbles";
                         SendEmailHelper.sendEmail(context, receiver, messageTitle, bugMessage);
-
 
                         break;
                     case R.id.menu_navigation_report_bug:
@@ -282,13 +279,12 @@ public class CoreActivity extends AppCompatActivity {
 
     private void setupViewPager(int tabsCount) {
         CharSequence tabCharSeq[] = tabText;
-        pagerAdapter = new CoreFragmentAdapter(getSupportFragmentManager(), tabCharSeq, tabsCount);
+        pagerAdapter = new HomeFragmentAdapter(getSupportFragmentManager(), tabCharSeq, tabsCount);
         initTabLayout(pagerAdapter);
     }
 
     private void initTabLayout(PagerAdapter adapter) {
         viewPager.setAdapter(adapter);
-
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
@@ -363,17 +359,14 @@ public class CoreActivity extends AppCompatActivity {
                         setTabIcon(customTab, R.mipmap.ic_error_black_24dp);
                     }
                 }
-
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         };
 
         tabLayout.setOnTabSelectedListener(listener);
-
         setMaterialSearchView();
 
     }
@@ -412,7 +405,7 @@ public class CoreActivity extends AppCompatActivity {
                 String itemContext = parent.getItemAtPosition(position).toString();
                 NotesHelpers.toastMessage(getApplicationContext(), itemContext);
 
-                Intent intent = new Intent(CoreActivity.this, UserWall.class);
+                Intent intent = new Intent(CoreActivity.this, UserWallFromFriend.class);
                 startActivity(intent);
             }
         });

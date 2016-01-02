@@ -35,7 +35,7 @@ public class SearchUsersFragment extends Fragment {
 
     Context context;
 
-    public static SearchUsersFragment newInstance() {
+    public static SearchUsersFragment newInstance(int pageId) {
         return new SearchUsersFragment();
     }
 
@@ -47,6 +47,9 @@ public class SearchUsersFragment extends Fragment {
 
     @Override
     public void onResume() {
+      //  NotesHelpers.logMessage("vv", "SEARCH USERS");
+
+
         super.onResume();
 
         Call<SearchUsersResponse> searchUsersResponseCall = ApiManager.getInstance().getService().getAllUsersExceptFriends();
@@ -67,7 +70,8 @@ public class SearchUsersFragment extends Fragment {
 
             @Override
             public void onFailure(Throwable t) {
-                NotesHelpers.toastMessage(context, getResources().getString(R.string.error_something_is_wrong));
+                NotesHelpers.toastMessage(context, "Failure "+ t.getMessage());
+                t.printStackTrace();
 
             }
         });
@@ -79,10 +83,6 @@ public class SearchUsersFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_core_search_users, container, false);
         ButterKnife.bind(this, v);
         context = getContext();
-
-
-
-
 
         return v;
     }

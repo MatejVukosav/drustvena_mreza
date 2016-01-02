@@ -12,4 +12,12 @@ public class CommentsResponse implements Serializable {
 
     @SerializedName("comments")
     List<Comment> comments;
+
+    public CommentsResponse(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
 }

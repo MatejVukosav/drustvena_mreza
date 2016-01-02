@@ -19,6 +19,9 @@ public class HomeFeedOneModel implements Serializable {
     @SerializedName("username")
     private String author;
 
+    @SerializedName("author_id")
+    private int authorId;
+
     @SerializedName("content_type_id")
     private int contentTypeId;
 
@@ -45,6 +48,7 @@ public class HomeFeedOneModel implements Serializable {
     @SerializedName("dislikes")
     int numOfDislikes;
 
+    //0 if liked
     @SerializedName("iLike")
     int iLike;
 
@@ -101,5 +105,17 @@ public class HomeFeedOneModel implements Serializable {
 
     public int getiDislike() {
         return iDislike;
+    }
+
+    public void setiLike(int iLike) {
+        this.iLike = iLike;
+    }
+
+    public void setiDislike(int iDislike) {
+        this.iDislike = iDislike;
+    }
+
+    public int getAuthorId() {
+        return authorId;
     }
 }

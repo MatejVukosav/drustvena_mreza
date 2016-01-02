@@ -14,12 +14,12 @@ import com.example.vuki.drustvena_mreza_faks.fragments.UserWallFragment;
 /**
  * Created by vuki on 14.10.15..
  */
-public class CoreFragmentAdapter extends FragmentPagerAdapter {
+public class HomeFragmentAdapter extends FragmentPagerAdapter {
     int numOfTabs;
     CharSequence Titles[];
 
 
-    public CoreFragmentAdapter(FragmentManager fm, CharSequence Titles[], int numOfTabs) {
+    public HomeFragmentAdapter(FragmentManager fm, CharSequence Titles[], int numOfTabs) {
         super(fm);
         this.numOfTabs=numOfTabs;
         this.Titles=Titles;
@@ -27,15 +27,16 @@ public class CoreFragmentAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+        //NotesHelpers.logMessage("vv", "Pozicija fragmenta: " + position);
         switch (position) {
             case 0:
-                return HomeFragment.newInstance();
+                return HomeFragment.newInstance(0);
             case 1:
-                return InboxFragment.newInstance();
+                return InboxFragment.newInstance(1);
             case 2:
-                return SearchUsersFragment.newInstance();
+                return SearchUsersFragment.newInstance(2);
             case 3:
-                return UserWallFragment.newInstance();
+                return UserWallFragment.newInstance(3);
             default:
                 return null;
         }

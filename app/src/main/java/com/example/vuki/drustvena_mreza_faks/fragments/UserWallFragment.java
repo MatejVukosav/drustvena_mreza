@@ -1,5 +1,6 @@
 package com.example.vuki.drustvena_mreza_faks.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,39 +12,38 @@ import android.view.ViewGroup;
 
 import com.example.vuki.drustvena_mreza_faks.R;
 import com.example.vuki.drustvena_mreza_faks.adapters.UserWallAdapter;
-import com.example.vuki.drustvena_mreza_faks.listeners.ItemClickListener;
-import com.example.vuki.drustvena_mreza_faks.mock.MockUsers;
+import com.example.vuki.drustvena_mreza_faks.helpers.NotesHelpers;
 import com.example.vuki.drustvena_mreza_faks.models.Post;
+import com.example.vuki.drustvena_mreza_faks.models.TimelineResponse;
 import com.example.vuki.drustvena_mreza_faks.network.ApiManager;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * Created by Vuki on 4.11.2015..
  */
 public class UserWallFragment extends Fragment {
 
-    public static UserWallFragment newInstance() {
+    public static UserWallFragment newInstance(int pageId) {
         return new UserWallFragment();
     }
 
     @Bind(R.id.user_wall_recycler_view)
     RecyclerView recyclerView;
+    static Context context;
 
-    private ItemClickListener<Post> itemClickListener = new ItemClickListener<Post>() {
-        @Override
-        public void onItemClick(Post item) {
-
-           /* Intent intent=new Intent(getActivity(), ItemDetailActivity.class);
-            intent.putExtra(ItemDetailActivity.TAG, item);
-            startActivity(intent);*/
-        }
-    };
 
     @Override
     public void onResume() {
         super.onResume();
+        //  NotesHelpers.logMessage("vv", "USER_WALL");
         apiCall();
     }
 
@@ -52,25 +52,47 @@ public class UserWallFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_core_user_wall, container, false);
         ButterKnife.bind(this, v);
-
+        context = getContext();
 
         getApiCall();
         return v;
     }
 
-    private void getApiCall(){
+    private void getApiCall() {
+//TODO dohvatit user wall od usera
 
-        populateRecyclerView();
+        Call<TimelineResponse> timelineResponseCall = ApiManager.getInstance().getService().getUserContent();
+        timelineResponseCall.enqueue(new Callback<TimelineResponse>() {
+            @Override
+            public void onResponse(Response<TimelineResponse> response, Retrofit retrofit) {
+                if (response.isSuccess()) {
+                    if (response.body().getPost() != null) {
+                        populateRecyclerView(response.body().getPost());
+                    } else {
+                        NotesHelpers.toastMessage(context, "Error " + "Response body is empty");
+                    }
+                } else {
+                    NotesHelpers.toastMessage(context, "Response is not success");
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                NotesHelpers.toastMessage(context, "Failure " + t.getMessage());
+                t.printStackTrace();
+            }
+        });
+
+
     }
 
-    private void populateRecyclerView() {
-        UserWallAdapter adapter = new UserWallAdapter(ApiManager.getInstance().getUser(),MockUsers.getFivePosts(15).getPosts(), itemClickListener, getActivity());
+    private void populateRecyclerView(List<Post> posts) {
+        UserWallAdapter adapter = new UserWallAdapter(ApiManager.getInstance().getUser(), posts, getActivity());
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
     }
 
-    private void apiCall(){
-
+    private void apiCall() {
 
 
     }

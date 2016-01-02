@@ -47,8 +47,17 @@ public class User implements Serializable{
     private String city;
 
     @Nullable
-    @SerializedName("country")
-    private String country;
+    @SerializedName("country_id")
+    private String countryId;
+
+    @Nullable
+    @SerializedName("relationshio_status_id")
+    private int relationshipStatusId;
+
+
+    @Nullable
+    @SerializedName("gender_id")
+    private int genderId;
 
 
     @SerializedName("is_authorized")
@@ -60,7 +69,7 @@ public class User implements Serializable{
     public User() {
     }
 
-    public User( String username, String email, String firstName, String lastName, String middleName, String adress, String city, String country) {
+    public User( String username, String email, String firstName, String lastName, String middleName, String adress, String city, String countryId) {
         this.username = username;
         this.email = email;
         this.firstName = firstName;
@@ -68,7 +77,7 @@ public class User implements Serializable{
         this.middleName = middleName;
         this.adress = adress;
         this.city = city;
-        this.country = country;
+        this.countryId = countryId;
     }
 
     public String getToken() {
@@ -85,32 +94,56 @@ public class User implements Serializable{
 
     @Nullable
     public String getFirstName() {
-        return firstName;
+        if(firstName!=null) {
+            return firstName;
+        }else{
+            return "";
+        }
     }
 
     @Nullable
     public String getLastName() {
-        return lastName;
+        if(lastName!=null) {
+            return lastName;
+        }else{
+            return "";
+        }
     }
 
     @Nullable
     public String getMiddleName() {
-        return middleName;
+        if(middleName!=null) {
+            return middleName;
+        }else{
+            return "";
+        }
     }
 
     @Nullable
     public String getAdress() {
-        return adress;
+        if(adress!=null) {
+            return adress;
+        }else{
+            return "";
+        }
     }
 
     @Nullable
     public String getCity() {
-        return city;
+        if(city!=null) {
+            return city;
+        }else{
+            return "";
+        }
     }
 
     @Nullable
-    public String getCountry() {
-        return country;
+    public String getCountryId() {
+        if(countryId !=null) {
+            return countryId;
+        }else{
+            return "";
+        }
     }
 
     public UserAuthorized getAuthorized() {
@@ -153,8 +186,8 @@ public class User implements Serializable{
         this.city = city;
     }
 
-    public void setCountry(@Nullable String country) {
-        this.country = country;
+    public void setCountryId(@Nullable String countryId) {
+        this.countryId = countryId;
     }
 
     public void setAuthorized(UserAuthorized authorized) {
@@ -167,5 +200,15 @@ public class User implements Serializable{
 
     public int getUserId() {
         return userId;
+    }
+
+    @Nullable
+    public int getRelationshipStatusId() {
+        return relationshipStatusId;
+    }
+
+    @Nullable
+    public int getGenderId() {
+        return genderId;
     }
 }

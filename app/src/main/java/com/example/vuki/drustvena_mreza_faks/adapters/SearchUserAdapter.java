@@ -40,6 +40,7 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Vi
         this.friendList=friendList;
     }
 
+
     @Override
     public SearchUserAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_search_user_item, parent, false);
@@ -53,8 +54,8 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Vi
         User user = users.get(position);
         holder.username.setText(user.getUsername());
         String country = "";
-        if (user.getCountry() != null) {
-            country = user.getCountry();
+        if (user.getCountryId() != null) {
+            country = user.getCountryId();
         }
 
         String city = "";

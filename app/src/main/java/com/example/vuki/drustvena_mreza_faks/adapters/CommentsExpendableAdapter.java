@@ -22,8 +22,11 @@ import butterknife.ButterKnife;
 /**
  * Created by Vuki on 28.12.2015..
  */
-public class CommentsExpendableAdapter extends ExpandableRecyclerAdapter<CommentsExpendableAdapter.ParentVH,CommentsExpendableAdapter.ChildVH> {
+public class CommentsExpendableAdapter extends ExpandableRecyclerAdapter<CommentsExpendableAdapter.ParentVH, CommentsExpendableAdapter.ChildVH> {
+    /*
 
+    NOT IN USE
+     */
     Context context;
     private static final int TYPE_PARENT = 0;
     private static final int TYPE_CHILD = 1;
@@ -124,7 +127,7 @@ public class CommentsExpendableAdapter extends ExpandableRecyclerAdapter<Comment
          */
         public ChildVH(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 

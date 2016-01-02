@@ -40,8 +40,7 @@ public class ForgottenPasswordActivity extends AppCompatActivity{
 
         //TODO send repair mail with password
 
-
-        if(enterTheMail.getText().toString().isEmpty() || enterTheMail.getText().toString().isEmpty()){
+        if(enterTheMail.getText().toString().isEmpty()){
             NotesHelpers.logMessage(TAG, "login error");
             Snackbar.make(findViewById(R.id.forgottenPassRoot), "You must enter email to repair your password.", Snackbar.LENGTH_SHORT).show();
         }else{

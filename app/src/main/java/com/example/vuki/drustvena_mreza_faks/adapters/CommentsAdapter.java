@@ -13,11 +13,17 @@ import android.widget.TextView;
 import com.example.vuki.drustvena_mreza_faks.R;
 import com.example.vuki.drustvena_mreza_faks.helpers.NotesHelpers;
 import com.example.vuki.drustvena_mreza_faks.models.Comment;
+import com.example.vuki.drustvena_mreza_faks.models.User;
+import com.example.vuki.drustvena_mreza_faks.network.ApiManager;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * Created by Vuki on 28.12.2015..
@@ -25,14 +31,17 @@ import butterknife.ButterKnife;
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
 
     static Context context;
-    static List<Comment> commentList;
+    static List<Comment> mCommentList;
 
     private final int ADD_NEW_COMMENT = 1;
     private final int SHOW_COMMENT = 0;
 
-    public CommentsAdapter(Context context, List<Comment> commentList) {
+    static int mContentId;
+
+    public CommentsAdapter(Context context, List<Comment> mCommentList, int mContentId) {
         this.context = context;
-        this.commentList = commentList;
+        this.mCommentList = mCommentList;
+        this.mContentId = mContentId;
     }
 
     @Override
@@ -51,7 +60,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
 
     @Override
     public int getItemViewType(int position) {
-        if (position != commentList.size()) {
+        if (position != mCommentList.size()) {
             return SHOW_COMMENT;
         } else {
             return ADD_NEW_COMMENT;
@@ -59,20 +68,71 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
 
-        if (commentList.size() != position) {
-            Comment comment = commentList.get(position);
+        if (mCommentList.size() != position) {
+            Comment comment = mCommentList.get(position);
             holder.commentUsernamee.setText(comment.getUsername());
             holder.commentMessage.setText(comment.getMessage());
         } else {
-            //add comment holder
+            //add comment holder (post comment is on bottom)
+            if (holder.addNewStatusButton != null) {
+                holder.addNewStatusButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        postComment(holder);
+                    }
+                });
+            }
         }
     }
 
+    /*
+         SEND COMMENT
+          */
+    private void postComment(final ViewHolder holder) {
+
+        String commentMessage = "";
+        if (holder.addNewStatusText.getText() != null) {
+            holder.addNewStatusText.getText().toString();
+        }
+        User user = ApiManager.getInstance().getUser();
+        int userId = user.getUserId();
+        String firstName = user.getFirstName();
+        String middleName = user.getMiddleName();
+        String lastName = user.getLastName();
+        String username = user.getUsername();
+
+        //TODO komentar se ne posta dobro jer po dokumentaciji request je samo id?? a od kud poruka dode
+        //
+
+        final Comment comment = new Comment(userId, commentMessage, firstName, lastName, middleName, username);
+
+        Call<Void> sendCommentCall = ApiManager.getInstance().getService().postComment(mContentId);
+        sendCommentCall.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Response<Void> response, Retrofit retrofit) {
+                if (response.isSuccess()) {
+                    mCommentList.add(comment);
+                    holder.addNewStatusText.setText("");
+                    NotesHelpers.toastMessage(context, "You have posted comment ");
+
+                } else {
+                    NotesHelpers.toastMessage(context, "Response is not success ");
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                NotesHelpers.toastMessage(context, "Failure " + t.getMessage());
+            }
+        });
+    }
+
+
     @Override
     public int getItemCount() {
-        return commentList.size() + 1;
+        return mCommentList.size() + 1;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -104,19 +164,10 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.add_new_status_btn:
-                    postComment(addNewStatusText.getText().toString());
                     break;
             }
         }
 
-        private void postComment(String commentMessage) {
-            /*
 
-            SEND COMMENT
-
-             */
-            NotesHelpers.toastMessage(context, "NOVI_KOMENTAR " + commentMessage);
-
-        }
     }
 }

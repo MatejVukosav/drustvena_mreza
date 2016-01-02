@@ -2,7 +2,9 @@ package com.example.vuki.drustvena_mreza_faks.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +16,12 @@ import android.widget.TextView;
 
 import com.example.vuki.drustvena_mreza_faks.R;
 import com.example.vuki.drustvena_mreza_faks.activities.ShowComments;
+import com.example.vuki.drustvena_mreza_faks.activities.UserWallFromFriend;
 import com.example.vuki.drustvena_mreza_faks.helpers.AdapterHelpers;
+import com.example.vuki.drustvena_mreza_faks.helpers.BundleKeys;
 import com.example.vuki.drustvena_mreza_faks.helpers.NotesHelpers;
 import com.example.vuki.drustvena_mreza_faks.models.HomeFeedOneModel;
+import com.example.vuki.drustvena_mreza_faks.network.ApiManager;
 
 import java.util.Calendar;
 import java.util.List;
@@ -24,18 +29,21 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * Created by vuki on 18.10.15..
  */
-public class CoreHomeRecyclerViewAdapter extends RecyclerView.Adapter<CoreHomeRecyclerViewAdapter.ViewHolder>  {
+public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerViewAdapter.ViewHolder> {
 
 
-    static List<HomeFeedOneModel> data;
+    static List<HomeFeedOneModel> mData;
     private static int i = 0;
     private static int j = 0;
     static Context context;
-
 
 
     private static final int TYPE_IMAGE = 1;
@@ -44,8 +52,8 @@ public class CoreHomeRecyclerViewAdapter extends RecyclerView.Adapter<CoreHomeRe
     private static final int ADD_NEW_STATUS = 2;
 
 
-    public CoreHomeRecyclerViewAdapter(List<HomeFeedOneModel> data, Context context ) {
-        this.data = data;
+    public HomeRecyclerViewAdapter(List<HomeFeedOneModel> mData, Context context) {
+        this.mData = mData;
         this.context = context;
 
     }
@@ -83,21 +91,22 @@ public class CoreHomeRecyclerViewAdapter extends RecyclerView.Adapter<CoreHomeRe
 
     @Override
     public int getItemCount() {
-        return data.size()+1;
+        return mData.size() + 1;
     }
 
 
     @Override
-    public void onBindViewHolder(CoreHomeRecyclerViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final HomeRecyclerViewAdapter.ViewHolder holder, final int position) {
 
+        //if zero position it is add new post
         if (position == ADD_NEW_STATUS - 2) {
             if (false) {
                 AdapterHelpers.setImage(context, R.drawable.dvorac1, holder.addNewStatusUserImage);
             }
 
         } else {
-            int itemPosition = position - 1;
-            HomeFeedOneModel homeFeedOneModel = data.get(itemPosition);
+            final int itemPosition = position - 1;
+            final HomeFeedOneModel homeFeedOneModel = mData.get(itemPosition);
 
             String message = "";
             int numOfLikes;
@@ -125,6 +134,34 @@ public class CoreHomeRecyclerViewAdapter extends RecyclerView.Adapter<CoreHomeRe
             holder.numOfLikes.setText(String.valueOf(numOfLikes));
             holder.postTime.setText(createdAt);
 
+            //I didn't like post
+            if (homeFeedOneModel.getiLike() == 0) {
+                holder.likeBtn.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context, R.drawable.thumb_up_outline_black_24dp), null, null, null);
+                holder.likeBtn.setTextColor(ContextCompat.getColor(context, R.color.not_liked));
+            } else {
+                holder.likeBtn.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context, R.drawable.thumb_up_24dp), null, null, null);
+                holder.likeBtn.setTextColor(ContextCompat.getColor(context,R.color.liked));
+            }
+
+                       holder.username.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(context, UserWallFromFriend.class);
+                    Bundle b=new Bundle();
+                    b.putInt(BundleKeys.FRIEND_USER_ID,mData.get(itemPosition).getAuthorId());
+                    context.startActivity(intent);
+                }
+            });
+
+            holder.likeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setLike(mData.get(position).getId(), holder, homeFeedOneModel);
+                    notifyItemChanged(position);
+                }
+            });
+
+
      /*   long now = getTimeNow();
         Calendar calYesterday = Calendar.getInstance();
         calYesterday.add(Calendar.DATE, -3);
@@ -144,13 +181,52 @@ public class CoreHomeRecyclerViewAdapter extends RecyclerView.Adapter<CoreHomeRe
 
     }
 
+    private static void turnOnLike(HomeFeedOneModel homeFeedOneModel, ViewHolder holder) {
+        if (homeFeedOneModel.getiLike() == 0) {
+            holder.likeBtn.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context, R.drawable.thumb_up_outline_black_24dp), null, null, null);
+            holder.likeBtn.setTextColor(ContextCompat.getColor(context, R.color.not_liked));
+            homeFeedOneModel.setiLike(1);
+        } else {
+            holder.likeBtn.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context, R.drawable.thumb_up_24dp), null, null, null);
+            holder.likeBtn.setTextColor(ContextCompat.getColor(context, R.color.liked));
+            homeFeedOneModel.setiLike(0);
+        }
+
+    }
+        /*
+        ADD LIKE
+         */
+
+    private static void setLike(int postId, final ViewHolder holder, final HomeFeedOneModel homeFeedOneModel) {
+
+        //TODO send like
+        Call<Void> setLikeCall = ApiManager.getInstance().getService().postLike(postId);
+        setLikeCall.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Response<Void> response, Retrofit retrofit) {
+                if (response.isSuccess()) {
+                    turnOnLike(homeFeedOneModel, holder);
+                } else {
+                    NotesHelpers.toastMessage(context, "Response is not success");
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                NotesHelpers.toastMessage(context, "Failure: " + t.getMessage());
+            }
+        });
+
+
+        NotesHelpers.toastMessage(context, "lajkoovi");
+    }
+
     private long getTimeNow() {
         Calendar calNow = Calendar.getInstance();
         calNow.add(Calendar.DATE, 0);
         return calNow.getTime().getTime();
 
     }
-
 
 
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -221,11 +297,9 @@ public class CoreHomeRecyclerViewAdapter extends RecyclerView.Adapter<CoreHomeRe
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.comments_btn:
-                    getComments(commentRecyclerView, getAdapterPosition());
+                    getComments(getAdapterPosition());
                     break;
-                case R.id.like_btn:
-                    getLike();
-                    break;
+
                 case R.id.add_new_status_btn:
                     postStatus(addNewStatusText.getText().toString());
                     break;
@@ -233,9 +307,19 @@ public class CoreHomeRecyclerViewAdapter extends RecyclerView.Adapter<CoreHomeRe
         }
     }
 
-    private static void getComments(RecyclerView recyclerView, int position) {
-        Intent intent=new Intent(context, ShowComments.class);
+    private static void getComments(int position) {
+        //TODO koji id je dobar?
+        int contentId = mData.get(position).getId();
+
+        Bundle b = new Bundle();
+        b.putInt(BundleKeys.COMMENT, contentId);
+        Intent intent = new Intent(context, ShowComments.class);
+        intent.putExtras(b);
         context.startActivity(intent);
+
+
+
+
 
      /*   List<ParentListItem> parentListItems = new ArrayList<>();
         ChildItem childItem=new ChildItem();
@@ -254,17 +338,10 @@ public class CoreHomeRecyclerViewAdapter extends RecyclerView.Adapter<CoreHomeRe
         // button.performClick();
     }
 
-    private static void getLike() {
-        /*
-        ADD LIKE
-
-         */
-        NotesHelpers.toastMessage(context, "lajkoovi");
-    }
 
     private static void postStatus(String postMessage) {
         /*
-
+        //TODO post status
         POST STATUS
          */
         NotesHelpers.toastMessage(context, "novi_statuuus " + postMessage);

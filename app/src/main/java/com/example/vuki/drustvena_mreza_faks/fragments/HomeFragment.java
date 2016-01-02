@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.vuki.drustvena_mreza_faks.R;
-import com.example.vuki.drustvena_mreza_faks.adapters.CoreHomeRecyclerViewAdapter;
+import com.example.vuki.drustvena_mreza_faks.adapters.HomeRecyclerViewAdapter;
 import com.example.vuki.drustvena_mreza_faks.helpers.NotesHelpers;
 import com.example.vuki.drustvena_mreza_faks.models.HomeFeedOneModel;
 import com.example.vuki.drustvena_mreza_faks.models.HomeFeedResponse;
@@ -34,12 +34,12 @@ public class HomeFragment extends Fragment  {
     private static String TAG;
     Context context;
 
-    public static HomeFragment newInstance() {
+    public static HomeFragment newInstance(int pageId) {
         return new HomeFragment();
     }
 
 
-    private CoreHomeRecyclerViewAdapter adapter;
+    private HomeRecyclerViewAdapter adapter;
     @Bind(R.id.core_home_empty_view)
     TextView emptyList;
 
@@ -115,7 +115,7 @@ public class HomeFragment extends Fragment  {
         }
 
         recyclerView.setVisibility(View.VISIBLE);
-        CoreHomeRecyclerViewAdapter adapter = new CoreHomeRecyclerViewAdapter(posts, getContext());
+        HomeRecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(posts, getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
     }

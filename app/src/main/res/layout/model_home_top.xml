@@ -15,6 +15,7 @@
         android:layout_height="60dp"
         android:orientation="horizontal"
         android:layout_margin="5dp"
+        android:paddingLeft="10dp"
         android:background="@color/post_top_background_color"
 
        >

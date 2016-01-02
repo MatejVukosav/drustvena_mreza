@@ -17,7 +17,8 @@ public class ApiManager implements ApiManagerInterface {
     private static final String TAG = "Network";
 
    // public static final String BASE_URL = "http://192.168.1.5:8080";
-    public static final String BASE_URL = "http://192.168.1.10:8080";
+    //public static final String BASE_URL = "http://192.168.1.10:8080";
+    public static final String BASE_URL = "http://www.bubbles.com.hr/";
     //public static final String BASE_URL = "http://10.129.36.202:8080";
 
     private Gson gson = new GsonBuilder()
@@ -53,6 +54,7 @@ public class ApiManager implements ApiManagerInterface {
         client.interceptors().add(new ReceivedCookiesInterceptor());
         // client.interceptors().add(new AddCookiesInterceptor());
        client.interceptors().add(new AddHeaderInterceptor());
+       client.interceptors().add(new LoggingInterceptor());
 
 
 
@@ -61,6 +63,7 @@ public class ApiManager implements ApiManagerInterface {
                 .baseUrl(BASE_URL)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
+
                 .build();
         service = retrofit.create(ApiManagerService.class);
     }

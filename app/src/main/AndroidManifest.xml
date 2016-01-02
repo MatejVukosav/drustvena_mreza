@@ -40,6 +40,7 @@
         <activity android:name=".activities.InviteFriendsActivity" />
         <activity android:name=".activities.AskForHelpActivity" />
         <activity android:name=".activities.ReportBugActivity" />
+        <activity android:name=".activities.UserWallFromFriend" />
         <activity android:name=".activities.UserWallAbout" />
         <activity android:name=".activities.UserWallPhotos" />
         <activity android:name=".activities.UserWallFriends" />
