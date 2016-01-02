@@ -1,0 +1,8 @@
+package com.example.vuki.drustvena_mreza_faks.network;
+
+/**
+ * Created by Vuki on 4.11.2015..
+ */
+public interface ApiManagerInterface {
+    ApiManagerService getService();
+}

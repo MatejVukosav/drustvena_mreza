@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/core_home_item_Root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/post_background"
+    >
+
+    <LinearLayout
+        android:id="@+id/core_home_item_header"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:layout_margin="5dp"
+        android:paddingLeft="10dp"
+        android:background="@color/post_top_background_color"
+
+       >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/core_home_user_personal_picture"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:src="@drawable/com_facebook_profile_picture_blank_portrait"
+            app:civ_border_color="@color/blue" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/default_spacing"
+            android:layout_marginStart="@dimen/default_spacing"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/core_home_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:text="user_name" />
+
+
+            <TextView
+                android:id="@+id/core_home_post_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                tools:text="2min ago" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/core_home_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/core_home_item_header"
+        android:background="@color/white"
+        android:layout_marginTop="10dp"
+        android:padding="15dp"
+        tools:text="ovo je primjer jako dobrog teksta"
+        android:textSize="15sp"
+        android:minLines="3"
+        android:maxLines="10"
+        tools:layout_height="100dp" />
+
+</RelativeLayout>

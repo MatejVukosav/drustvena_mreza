@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="tabs_number">4</integer>
+    <integer name="tabs_number_1_home">0</integer>
+    <integer name="tabs_number_2_inbox">1</integer>
+    <integer name="tabs_number_3_search">2</integer>
+    <integer name="tabs_number_4_user_wall">3</integer>
+
+</resources>

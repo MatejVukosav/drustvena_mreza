@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:orientation="http://schemas.android.com/apk/res-auto"
+    package="com.example.vuki.drustvena_mreza_faks">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:name=".SocialNetworkApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:orientation="vertical"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".activities.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.RegistrationActivity"
+            android:label="Registration" />
+        <activity
+            android:name=".activities.CoreActivity"
+            android:label="@string/title_activity_core"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.ForgottenPasswordActivity"
+            android:label="@string/title_activity_core"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.EditProfileActivity"
+            android:label="@string/title_activity_core"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.SettingsActivity" />
+        <activity android:name=".activities.InviteFriendsActivity" />
+        <activity android:name=".activities.AskForHelpActivity" />
+        <activity android:name=".activities.ReportBugActivity" />
+        <activity android:name=".activities.UserWallFromFriend" />
+        <activity android:name=".activities.UserWallAbout" />
+        <activity android:name=".activities.UserWallPhotos" />
+        <activity android:name=".activities.UserWallFriends" />
+        <activity android:name=".activities.ShowComments"></activity>
+    </application>
+
+</manifest>
