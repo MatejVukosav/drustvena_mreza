@@ -2,18 +2,25 @@ package com.example.vuki.drustvena_mreza_faks.network;
 
 import com.example.vuki.drustvena_mreza_faks.models.AboutUserResponse;
 import com.example.vuki.drustvena_mreza_faks.models.BubblesResponse;
+import com.example.vuki.drustvena_mreza_faks.models.CheckIfFriends;
+import com.example.vuki.drustvena_mreza_faks.models.CommentResponse;
 import com.example.vuki.drustvena_mreza_faks.models.CommentsResponse;
 import com.example.vuki.drustvena_mreza_faks.models.ContactsResponse;
+import com.example.vuki.drustvena_mreza_faks.models.GalleryResponse;
 import com.example.vuki.drustvena_mreza_faks.models.HomeFeedResponse;
 import com.example.vuki.drustvena_mreza_faks.models.IsEmailAvailable;
 import com.example.vuki.drustvena_mreza_faks.models.IsUsernameAvailable;
 import com.example.vuki.drustvena_mreza_faks.models.LoginRequest;
 import com.example.vuki.drustvena_mreza_faks.models.LoginResponse;
+import com.example.vuki.drustvena_mreza_faks.models.PostCommentRequest;
+import com.example.vuki.drustvena_mreza_faks.models.PostResponse;
+import com.example.vuki.drustvena_mreza_faks.models.PostStatusRequest;
 import com.example.vuki.drustvena_mreza_faks.models.RegisterRequest;
 import com.example.vuki.drustvena_mreza_faks.models.RegisterResponse;
 import com.example.vuki.drustvena_mreza_faks.models.SearchUserRequest;
 import com.example.vuki.drustvena_mreza_faks.models.SearchUsersResponse;
 import com.example.vuki.drustvena_mreza_faks.models.TimelineResponse;
+import com.example.vuki.drustvena_mreza_faks.models.UsersResponse;
 
 import retrofit.Call;
 import retrofit.http.Body;
@@ -47,9 +54,13 @@ public interface ApiManagerService {
     @GET("api/user/nonFriends")
     Call<SearchUsersResponse> getAllUsersExceptFriends();
 
-    //searchUsers add new user
+    //add friend
     @POST("api/user/contactRequest")
-    Call<Void> postAddUserAsFriend(@Body SearchUserRequest user_id);
+    Call<Void> addFriend(@Body SearchUserRequest user_id);
+
+    //remove friend
+    @POST("api/user/removeContact")
+    Call<Void> removeFriend(@Body SearchUserRequest user_id);
 
     //home news content
     @GET("api/home/feed")
@@ -57,9 +68,9 @@ public interface ApiManagerService {
 
     //user wall content
     @GET("api/content/timeline")
-    Call<TimelineResponse> getUserContent();
-
-    @GET("api/content/myBubbles")
+    Call<TimelineResponse> getUserContent(@Query("user_id") int userId);
+    //
+    @GET("api/content/myBubblesList")
     Call<BubblesResponse> getUserBubbles();
 
     //get all comments
@@ -67,8 +78,13 @@ public interface ApiManagerService {
     Call<CommentsResponse> getComments(@Path("content_id") int content_id);
     //post single comment
     @POST("api/content/comment/{content_id}")
-    Call<Void> postComment(@Path("content_id") int content_id);
+    Call<CommentResponse> postComment(@Path("content_id") int content_id,@Body PostCommentRequest comment);
 
+    //post single status
+    @POST("api/content/post/{bubble_id}")
+    Call<PostResponse> postStatus(@Path("bubble_id") int bubble_id, @Body PostStatusRequest statusRequest);
+
+    //post like for post
     @POST("api/content/like/{id}")
     Call<Void> postLike(@Path("id") int contentId);
 
@@ -77,6 +93,17 @@ public interface ApiManagerService {
 
     @GET("api/user/contacts")
     Call<ContactsResponse> getFriends(@Query("id") int userId);
+
+    @GET("api/user/gallery")
+    Call<GalleryResponse> getGalleries(@Query("user_id") int userId);
+//get users for given search term
+    @GET("api/user/search")
+    Call<UsersResponse> getSearchItem(@Query("term") String searchTerm);
+
+    //check if users are friends
+    @GET("api/user/isContact")
+    Call<CheckIfFriends> checkIfFriends(@Query("id") int friendId);
+
 
 
     /*******************************************************************************/

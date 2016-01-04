@@ -28,13 +28,13 @@ import retrofit.Retrofit;
 /**
  * Created by Vuki on 4.11.2015..
  */
-public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.ViewHolder> {
+public class AddFriendsAdapter extends RecyclerView.Adapter<AddFriendsAdapter.ViewHolder> {
 
     static List<User> users;
     static Context context;
     static boolean friendList;
 
-    public SearchUserAdapter(Context context, List<User> users,boolean friendList) {
+    public AddFriendsAdapter(Context context, List<User> users, boolean friendList) {
         this.users = users;
         this.context = context;
         this.friendList=friendList;
@@ -42,13 +42,13 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Vi
 
 
     @Override
-    public SearchUserAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AddFriendsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_search_user_item, parent, false);
         return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(final SearchUserAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final AddFriendsAdapter.ViewHolder holder, final int position) {
 
 
         User user = users.get(position);
@@ -134,10 +134,9 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Vi
             int adapterPosition = getAdapterPosition();
             int userAsFriend = users.get(adapterPosition).getUserId();
 
-            SearchUserRequest searchUserRequest = new SearchUserRequest();
-            searchUserRequest.setUserId(userAsFriend);
+            SearchUserRequest searchUserRequest = new SearchUserRequest(userAsFriend);
 
-            Call<Void> addUserAsFriendCall = ApiManager.getInstance().getService().postAddUserAsFriend(searchUserRequest);
+            Call<Void> addUserAsFriendCall = ApiManager.getInstance().getService().addFriend(searchUserRequest);
             addUserAsFriendCall.enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Response<Void> response, Retrofit retrofit) {

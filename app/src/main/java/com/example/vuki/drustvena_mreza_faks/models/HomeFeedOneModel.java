@@ -1,5 +1,6 @@
 package com.example.vuki.drustvena_mreza_faks.models;
 
+import com.example.vuki.drustvena_mreza_faks.network.ApiManager;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -19,7 +20,7 @@ public class HomeFeedOneModel implements Serializable {
     @SerializedName("username")
     private String author;
 
-    @SerializedName("author_id")
+    @SerializedName("user_id")
     private int authorId;
 
     @SerializedName("content_type_id")
@@ -84,7 +85,11 @@ public class HomeFeedOneModel implements Serializable {
     }
 
     public String getContent() {
-        return content;
+        if (contentTypeId == 2) {
+            return ApiManager.BASE_URL + content;
+        } else {
+            return content;
+        }
     }
 
     public String getDescription() {
@@ -118,4 +123,24 @@ public class HomeFeedOneModel implements Serializable {
     public int getAuthorId() {
         return authorId;
     }
+
+    public HomeFeedOneModel(int iDislike, int iLike, int numOfDislikes, int numOfLikes, String description,
+                            String content, String title, String updatedAt, String createdAt, int contentTypeId, int authorId, String author, int bubbleId, int id) {
+        this.iDislike = iDislike;
+        this.iLike = iLike;
+        this.numOfDislikes = numOfDislikes;
+        this.numOfLikes = numOfLikes;
+        this.description = description;
+        this.content = content;
+        this.title = title;
+        this.updatedAt = updatedAt;
+        this.createdAt = createdAt;
+        this.contentTypeId = contentTypeId;
+        this.authorId = authorId;
+        this.author = author;
+        this.bubbleId = bubbleId;
+        this.id = id;
+    }
+
+
 }

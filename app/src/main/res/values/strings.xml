@@ -2,6 +2,18 @@
     <string name="app_name">Drustvena_mreza_faks</string>
     <string name="title_activity_registration">RegistrationActivity</string>
 
+    <!-- time ago strings -->
+    <string name="just_now">just now</string>
+    <string name="time_ago">%s ago</string>
+    <string name="yesterday">yesterday</string>
+
+
+    <!-- Add as friend -->
+    <string name="add_as_friend">Add as friend</string>
+    <string name="remove_as_friend">Remove as friend</string>
+
+
+    <!-- First screen -->
     <string name="login_with_password">Prijavi se</string>
     <string name="register">Registriraj se</string>
     <string name="title_activity_core">Bubles</string>
@@ -43,6 +55,7 @@
     <string name="submenu_4">Ask For Help</string>
     <string name="submenu_5">Report bug</string>
     <string name="submenu_6">Log out</string>
+    <string name="submenu_7">Force log out</string>
 
     <!-- ACTION BAR FRAWER TOGGLE-->
     <string name="openDrawer">Open</string>

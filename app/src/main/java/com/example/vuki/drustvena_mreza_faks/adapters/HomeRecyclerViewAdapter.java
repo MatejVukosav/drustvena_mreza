@@ -7,11 +7,15 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.vuki.drustvena_mreza_faks.R;
@@ -20,9 +24,16 @@ import com.example.vuki.drustvena_mreza_faks.activities.UserWallFromFriend;
 import com.example.vuki.drustvena_mreza_faks.helpers.AdapterHelpers;
 import com.example.vuki.drustvena_mreza_faks.helpers.BundleKeys;
 import com.example.vuki.drustvena_mreza_faks.helpers.NotesHelpers;
+import com.example.vuki.drustvena_mreza_faks.models.Bubble;
+import com.example.vuki.drustvena_mreza_faks.models.BubblesResponse;
 import com.example.vuki.drustvena_mreza_faks.models.HomeFeedOneModel;
+import com.example.vuki.drustvena_mreza_faks.models.Post;
+import com.example.vuki.drustvena_mreza_faks.models.PostResponse;
+import com.example.vuki.drustvena_mreza_faks.models.PostStatusRequest;
+import com.example.vuki.drustvena_mreza_faks.models.User;
 import com.example.vuki.drustvena_mreza_faks.network.ApiManager;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -45,11 +56,17 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
     private static int j = 0;
     static Context context;
 
+    private static final int TYPE_STATUS_ONLY = 1;
+    private static final int TYPE_IMAGE = 2;
 
-    private static final int TYPE_IMAGE = 1;
-    private static final int TYPE_STATUS_ONLY = 0;
+    private static final int ADD_NEW_STATUS = 0;
 
-    private static final int ADD_NEW_STATUS = 2;
+    private static final int GALERY = 2;
+    private static final int TIMELINE = 1;
+    private static final int CUSTOM_BUBLE = 3;
+
+
+    private static final int BUBLE_ERROR = 0;
 
 
     public HomeRecyclerViewAdapter(List<HomeFeedOneModel> mData, Context context) {
@@ -81,10 +98,13 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
     @Override
     public int getItemViewType(int position) {
+        int postItemPosition = position - 1;
         if (position == 0) {
             return ADD_NEW_STATUS;
-        } else {
+        } else if (mData.get(postItemPosition).getContentTypeId() == TYPE_STATUS_ONLY) {
             return TYPE_STATUS_ONLY;
+        } else {
+            return TYPE_IMAGE;
         }
 
     }
@@ -94,17 +114,72 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         return mData.size() + 1;
     }
 
+    private static int mBubblesItemId;
+    private static List<Bubble> bubbleList = new ArrayList<>();
+
+    private static void getSpinnerItemsApiCall(final Spinner spinner) {
+
+        Call<BubblesResponse> userBubblesCall = ApiManager.getInstance().getService().getUserBubbles();
+        userBubblesCall.enqueue(new Callback<BubblesResponse>() {
+            @Override
+            public void onResponse(Response<BubblesResponse> response, Retrofit retrofit) {
+
+                if (response.isSuccess()) {
+                    if (response.body().getBubble() != null) {
+                        bubbleList = response.body().getBubble();
+                        List<String> itemsList = new ArrayList<String>();
+                        for (Bubble bubble : bubbleList) {
+                            itemsList.add(bubble.getTitle());
+                        }
+                        String[] items = itemsList.toArray(new String[itemsList.size()]);
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, items);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinner.setAdapter(adapter);
+                    } else {
+                        NotesHelpers.toastMessage(context, "There is no bubbles available");
+                    }
+                } else {
+                    NotesHelpers.toastMessage(context, "Error: " + "response is not success");
+                }
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                NotesHelpers.toastMessage(context, "Failure: " + t.getMessage());
+                t.printStackTrace();
+            }
+        });
+
+
+    }
+
 
     @Override
     public void onBindViewHolder(final HomeRecyclerViewAdapter.ViewHolder holder, final int position) {
 
         //if zero position it is add new post
-        if (position == ADD_NEW_STATUS - 2) {
-            if (false) {
-                AdapterHelpers.setImage(context, R.drawable.dvorac1, holder.addNewStatusUserImage);
+        if (position == ADD_NEW_STATUS) {
+            if (holder.showBubbles != null) {
+
+                holder.showBubbles.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            mBubblesItemId = bubbleList.get(position).getId();
+
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
             }
 
-        } else {
+
+        } else
+
+        {
             final int itemPosition = position - 1;
             final HomeFeedOneModel homeFeedOneModel = mData.get(itemPosition);
 
@@ -113,15 +188,13 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
             int numOfDislikes;
             String createdAt = "";
             String author = "";
+            String url = "";
 
             if (homeFeedOneModel.getAuthor() != null) {
                 author = homeFeedOneModel.getAuthor();
             }
             holder.username.setText(author);
 
-            if (homeFeedOneModel.getContent() != null) {
-                message = homeFeedOneModel.getContent();
-            }
 
             if (homeFeedOneModel.getCreatedAt() != null) {
                 createdAt = homeFeedOneModel.getCreatedAt();
@@ -130,9 +203,28 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
             numOfLikes = homeFeedOneModel.getNumOfLikes();
             numOfDislikes = homeFeedOneModel.getNumOfDislikes();
 
-            holder.message.setText(message);
+
             holder.numOfLikes.setText(String.valueOf(numOfLikes));
-            holder.postTime.setText(createdAt);
+            holder.postTime.setText(AdapterHelpers.setTime(createdAt));
+
+            // AdapterHelpers.setCircleImage(context, homeFeedOneModel..getProfileImage(), holder.personal_picture);
+
+
+
+            //show user picture
+            AdapterHelpers.setCircleImage(context, url, holder.personal_picture);
+            //show content_type2
+
+            if (homeFeedOneModel.getContentTypeId() == TYPE_IMAGE) {
+                if (holder.itemPicture != null) {
+                    url = homeFeedOneModel.getContent();
+                    AdapterHelpers.setImage(context, url, holder.itemPicture);
+
+                }
+                holder.message.setText(homeFeedOneModel.getDescription());
+            } else {
+                holder.message.setText(homeFeedOneModel.getContent());
+            }
 
             //I didn't like post
             if (homeFeedOneModel.getiLike() == 0) {
@@ -140,15 +232,16 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
                 holder.likeBtn.setTextColor(ContextCompat.getColor(context, R.color.not_liked));
             } else {
                 holder.likeBtn.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context, R.drawable.thumb_up_24dp), null, null, null);
-                holder.likeBtn.setTextColor(ContextCompat.getColor(context,R.color.liked));
+                holder.likeBtn.setTextColor(ContextCompat.getColor(context, R.color.liked));
             }
 
-                       holder.username.setOnClickListener(new View.OnClickListener() {
+            holder.username.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent=new Intent(context, UserWallFromFriend.class);
-                    Bundle b=new Bundle();
-                    b.putInt(BundleKeys.FRIEND_USER_ID,mData.get(itemPosition).getAuthorId());
+                    Intent intent = new Intent(context, UserWallFromFriend.class);
+                    Bundle b = new Bundle();
+                    b.putInt(BundleKeys.FRIEND_USER_ID, mData.get(itemPosition).getAuthorId());
+                    intent.putExtras(b);
                     context.startActivity(intent);
                 }
             });
@@ -156,10 +249,11 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
             holder.likeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    setLike(mData.get(position).getId(), holder, homeFeedOneModel);
-                    notifyItemChanged(position);
+                    setLike(mData.get(itemPosition).getId(), holder, homeFeedOneModel);
+                    notifyItemChanged(itemPosition);
                 }
             });
+
 
 
      /*   long now = getTimeNow();
@@ -182,16 +276,15 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
     }
 
     private static void turnOnLike(HomeFeedOneModel homeFeedOneModel, ViewHolder holder) {
-        if (homeFeedOneModel.getiLike() == 0) {
+        if (homeFeedOneModel.getiLike() == 1) {
             holder.likeBtn.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context, R.drawable.thumb_up_outline_black_24dp), null, null, null);
             holder.likeBtn.setTextColor(ContextCompat.getColor(context, R.color.not_liked));
-            homeFeedOneModel.setiLike(1);
+            homeFeedOneModel.setiLike(0);
         } else {
             holder.likeBtn.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context, R.drawable.thumb_up_24dp), null, null, null);
             holder.likeBtn.setTextColor(ContextCompat.getColor(context, R.color.liked));
-            homeFeedOneModel.setiLike(0);
+            homeFeedOneModel.setiLike(1);
         }
-
     }
         /*
         ADD LIKE
@@ -218,7 +311,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         });
 
 
-        NotesHelpers.toastMessage(context, "lajkoovi");
+        //   NotesHelpers.toastMessage(context, "lajkoovi");
     }
 
     private long getTimeNow() {
@@ -274,6 +367,9 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         @Nullable
         @Bind(R.id.add_new_status_user_image)
         CircleImageView addNewStatusUserImage;
+        @Nullable
+        @Bind(R.id.spinner_show_bubbles)
+        Spinner showBubbles;
 
 
         public ViewHolder(View itemView) {
@@ -290,36 +386,50 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
                 addNewStatusButton.setOnClickListener(this);
             }
 
+            if (showBubbles != null) {
+
+                showBubbles.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            getSpinnerItemsApiCall(showBubbles);
+                        }
+                        return false;
+                    }
+                });
+            }
+
 
         }
 
         @Override
         public void onClick(View v) {
+            int getPostItemPosition = getAdapterPosition() - 1;
+            int newPostBubbleid = TIMELINE;
             switch (v.getId()) {
                 case R.id.comments_btn:
-                    getComments(getAdapterPosition());
+                    getComments(getPostItemPosition);
                     break;
-
                 case R.id.add_new_status_btn:
-                    postStatus(addNewStatusText.getText().toString());
+                    int bubbleId = mBubblesItemId;
+                    if(bubbleId!=BUBLE_ERROR) {
+                        postStatus(bubbleId, addNewStatusText, showBubbles);
+                    }else{
+                        NotesHelpers.toastMessage(context, "You must choose bubble");
+                    }
                     break;
             }
         }
+
     }
 
     private static void getComments(int position) {
-        //TODO koji id je dobar?
         int contentId = mData.get(position).getId();
-
         Bundle b = new Bundle();
         b.putInt(BundleKeys.COMMENT, contentId);
         Intent intent = new Intent(context, ShowComments.class);
         intent.putExtras(b);
         context.startActivity(intent);
-
-
-
-
 
      /*   List<ParentListItem> parentListItems = new ArrayList<>();
         ChildItem childItem=new ChildItem();
@@ -339,13 +449,44 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
     }
 
 
-    private static void postStatus(String postMessage) {
-        /*
-        //TODO post status
-        POST STATUS
-         */
-        NotesHelpers.toastMessage(context, "novi_statuuus " + postMessage);
+    /*
+       //TODO post status
+       POST STATUS
+        */
+    private static void postStatus(final int bubbleId, final EditText editTextPost, final Spinner spinner) {
+        String postMessage = editTextPost.getText().toString();
 
+        PostStatusRequest postStatusRequest = new PostStatusRequest(postMessage);
+        Call<PostResponse> postResponseCall = ApiManager.getInstance().getService().postStatus(bubbleId, postStatusRequest);
+        postResponseCall.enqueue(new Callback<PostResponse>() {
+                                     @Override
+                                     public void onResponse(Response<PostResponse> response, Retrofit retrofit) {
+                                         if (response.isSuccess()) {
+                                             if (response.body().getPost() != null) {
+                                                 Post post = response.body().getPost();
+                                                 User author = ApiManager.getInstance().getUser();
+                                                 //TODO dodat u listu i osvjezit 2
+                                                 HomeFeedOneModel homeFeedOneModel = new HomeFeedOneModel(0, 0, 0, 0, post.getDescription(), post.getContent(), post.getTitle(), post.getUpdatedAt(), post.getCreatedAt(),
+                                                         post.getContentTypeId(), author.getUserId(), author.getUsername(), post.getBubbleId(), post.getId());
+                                                 mData.add(homeFeedOneModel);
+                                                 editTextPost.setText("");
+                                                 spinner.setSelection(0);
+                                                 NotesHelpers.toastMessage(context, "You have added a new post");
+                                             } else {
+                                                 NotesHelpers.toastMessage(context, "Error: " + "response body is empty");
+                                             }
+                                         } else {
+                                             NotesHelpers.toastMessage(context, "Please choose bubble");
+                                         }
+                                     }
+
+                                     @Override
+                                     public void onFailure(Throwable t) {
+                                         NotesHelpers.toastMessage(context, "Failure " + t.getMessage());
+                                         t.printStackTrace();
+                                     }
+                                 }
+        );
     }
 
 }

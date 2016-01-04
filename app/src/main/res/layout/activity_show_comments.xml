@@ -13,7 +13,9 @@
         android:layout_marginTop="10dp"
         android:background="@color/post_background"
         android:padding="10dp"
-        tools:visibility="visible" />
+        tools:visibility="visible"
+        tools:context="com.example.vuki.drustvena_mreza_faks.activities.ShowComments"
+        />
 
     <TextView
         android:layout_width="match_parent"

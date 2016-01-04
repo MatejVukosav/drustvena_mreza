@@ -3,6 +3,7 @@ package com.example.vuki.drustvena_mreza_faks.models;
 import android.support.annotation.Nullable;
 
 import com.example.vuki.drustvena_mreza_faks.enums.UserAuthorized;
+import com.example.vuki.drustvena_mreza_faks.network.ApiManager;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -63,8 +64,8 @@ public class User implements Serializable{
     @SerializedName("is_authorized")
     private UserAuthorized authorized;
 
-    @SerializedName("image_url")
-    private String profileImage;
+    @SerializedName("avatar")
+    String profileImage;
 
     public User() {
     }
@@ -151,7 +152,11 @@ public class User implements Serializable{
     }
 
     public String getProfileImage() {
-        return profileImage;
+        if(profileImage!=null) {
+            return ApiManager.BASE_URL+profileImage;
+        }else{
+            return null;
+        }
     }
 
     public void setToken(String token) {
@@ -194,10 +199,6 @@ public class User implements Serializable{
         this.authorized = authorized;
     }
 
-    public void setProfileImage(String profileImage) {
-        this.profileImage = profileImage;
-    }
-
     public int getUserId() {
         return userId;
     }
@@ -211,4 +212,8 @@ public class User implements Serializable{
     public int getGenderId() {
         return genderId;
     }
+
+
+
+
 }

@@ -31,6 +31,9 @@ public class Comment implements Serializable {
     @SerializedName("username")
     String username;
 
+    @SerializedName("avatar")
+    String avatar;
+
     public Comment() {
     }
 
@@ -122,5 +125,9 @@ public class Comment implements Serializable {
 
     public int getContentId() {
         return contentId;
+    }
+
+    public String getAvatar() {
+        return avatar;
     }
 }

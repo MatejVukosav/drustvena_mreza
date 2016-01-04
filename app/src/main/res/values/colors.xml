@@ -23,6 +23,10 @@
     <color name="not_liked">@color/black</color>
 
 
+    <color name="add_as_friend_color">@color/CornflowerBlue</color>
+    <color name="remove_as_friend_color">@color/holo_red_dark</color>
+
+
 
 
     <!-- Android style -->

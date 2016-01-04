@@ -5,28 +5,28 @@
     android:id="@+id/core_home_item_Root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:background="@color/post_background"
-    >
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/core_home_item_header"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:orientation="horizontal"
         android:layout_margin="5dp"
-        android:paddingLeft="10dp"
         android:background="@color/post_top_background_color"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp">
 
-       >
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/core_home_user_personal_picture"
             android:layout_width="55dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:padding="5dp"
             android:src="@drawable/com_facebook_profile_picture_blank_portrait"
-            app:civ_border_color="@color/blue" />
+            app:civ_border_color="#FF000000"
+            app:civ_border_width="1dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -62,13 +62,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/core_home_item_header"
-        android:background="@color/white"
         android:layout_marginTop="10dp"
-        android:padding="15dp"
-        tools:text="ovo je primjer jako dobrog teksta"
-        android:textSize="15sp"
-        android:minLines="3"
+        android:background="@color/white"
         android:maxLines="10"
-        tools:layout_height="100dp" />
+        android:minLines="3"
+        android:padding="15dp"
+        android:textSize="15sp"
+        tools:layout_height="100dp"
+        tools:text="ovo je primjer jako dobrog teksta" />
 
 </RelativeLayout>

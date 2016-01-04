@@ -38,6 +38,7 @@ public class UserWallFragment extends Fragment {
     @Bind(R.id.user_wall_recycler_view)
     RecyclerView recyclerView;
     static Context context;
+    int mUserId;
 
 
     @Override
@@ -54,20 +55,26 @@ public class UserWallFragment extends Fragment {
         ButterKnife.bind(this, v);
         context = getContext();
 
-        getApiCall();
+        if(ApiManager.getInstance().getUser()!=null){
+            mUserId=ApiManager.getInstance().getUser().getUserId();
+            getApiCall(mUserId);
+        }else{
+            NotesHelpers.toastMessage(context,"Server error: please log out and try again");
+        }
+
         return v;
     }
 
-    private void getApiCall() {
+    private void getApiCall(int userId) {
 //TODO dohvatit user wall od usera
 
-        Call<TimelineResponse> timelineResponseCall = ApiManager.getInstance().getService().getUserContent();
+        Call<TimelineResponse> timelineResponseCall = ApiManager.getInstance().getService().getUserContent(userId);
         timelineResponseCall.enqueue(new Callback<TimelineResponse>() {
             @Override
             public void onResponse(Response<TimelineResponse> response, Retrofit retrofit) {
                 if (response.isSuccess()) {
-                    if (response.body().getPost() != null) {
-                        populateRecyclerView(response.body().getPost());
+                    if (response.body().getPosts() != null) {
+                        populateRecyclerView(response.body().getPosts());
                     } else {
                         NotesHelpers.toastMessage(context, "Error " + "Response body is empty");
                     }
@@ -79,6 +86,7 @@ public class UserWallFragment extends Fragment {
             @Override
             public void onFailure(Throwable t) {
                 NotesHelpers.toastMessage(context, "Failure " + t.getMessage());
+                NotesHelpers.logMessage("USER WALL","user wall failure");
                 t.printStackTrace();
             }
         });
@@ -87,7 +95,7 @@ public class UserWallFragment extends Fragment {
     }
 
     private void populateRecyclerView(List<Post> posts) {
-        UserWallAdapter adapter = new UserWallAdapter(ApiManager.getInstance().getUser(), posts, getActivity());
+        UserWallAdapter adapter = new UserWallAdapter(ApiManager.getInstance().getUser(), posts, getActivity(),true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
     }

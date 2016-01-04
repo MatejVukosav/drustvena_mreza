@@ -8,6 +8,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.vuki.drustvena_mreza_faks.R;
 import com.example.vuki.drustvena_mreza_faks.adapters.FriendsAdapter;
@@ -27,6 +29,9 @@ import retrofit.Response;
 import retrofit.Retrofit;
 
 public class UserWallFriends extends AppCompatActivity {
+
+    @Bind(R.id.empty_list)
+    TextView emptyList;
 
     @Bind(R.id.user_wall_friends_recycler_view)
     RecyclerView recyclerView;
@@ -106,11 +111,11 @@ public class UserWallFriends extends AppCompatActivity {
 
 
     private void populateRecyclerView(List<ContactRawInfo> contactRawInfoList) {
-     /*   if (users.size() == 0) {
+       if (contactRawInfoList.size() == 0) {
             emptyList.setVisibility(View.VISIBLE);
         } else {
             emptyList.setVisibility(View.INVISIBLE);
-        }*/
+        }
 
         FriendsAdapter adapter = new FriendsAdapter(this, contactRawInfoList, true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

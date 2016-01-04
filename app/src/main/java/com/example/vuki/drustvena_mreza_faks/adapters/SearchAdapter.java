@@ -10,7 +10,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-import com.example.vuki.drustvena_mreza_faks.R;
+import com.example.vuki.drustvena_mreza_faks.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,15 +24,17 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
     private ArrayList<String> data;
 
     private String[] typeAheadData;
+    List<User> mUsersList;
 
     LayoutInflater inflater;
     Context context;
 
-    public SearchAdapter(Context context) {
+    public SearchAdapter(Context context,List<User> usersList) {
         inflater = LayoutInflater.from(context);
         data = new ArrayList<String>();
+        this.mUsersList=usersList;
 
-        typeAheadData = context.getResources().getStringArray(R.array.state_array_full);
+       // typeAheadData=usernames.toArray(new String[usernames.size()]);//context.getResources().getStringArray(R.array.state_array_full);*/
     }
 
 
@@ -46,7 +48,8 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
                     // Retrieve the autocomplete results.
                     List<String> searchData = new ArrayList<>();
 
-                    for (String str : typeAheadData) {
+                    for (User user : mUsersList) {
+                        String str=user.getUsername();
                         if (str.toLowerCase().startsWith(constraint.toString().toLowerCase())) {
                             searchData.add(str);
                         }

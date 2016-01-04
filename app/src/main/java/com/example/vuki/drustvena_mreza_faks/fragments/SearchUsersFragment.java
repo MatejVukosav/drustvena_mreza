@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.vuki.drustvena_mreza_faks.R;
-import com.example.vuki.drustvena_mreza_faks.adapters.SearchUserAdapter;
+import com.example.vuki.drustvena_mreza_faks.adapters.AddFriendsAdapter;
 import com.example.vuki.drustvena_mreza_faks.helpers.NotesHelpers;
 import com.example.vuki.drustvena_mreza_faks.models.SearchUsersResponse;
 import com.example.vuki.drustvena_mreza_faks.models.User;
@@ -71,6 +71,7 @@ public class SearchUsersFragment extends Fragment {
             @Override
             public void onFailure(Throwable t) {
                 NotesHelpers.toastMessage(context, "Failure "+ t.getMessage());
+                NotesHelpers.logMessage("ADD FRIENDS", "add friends failure");
                 t.printStackTrace();
 
             }
@@ -94,7 +95,7 @@ public class SearchUsersFragment extends Fragment {
             emptyList.setVisibility(View.INVISIBLE);
         }
 
-        SearchUserAdapter adapter = new SearchUserAdapter(getContext(), users,false);
+        AddFriendsAdapter adapter = new AddFriendsAdapter(getContext(), users,false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);

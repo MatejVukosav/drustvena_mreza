@@ -10,37 +10,36 @@ import java.io.Serializable;
 public class Post implements Serializable{
 
     /*
-        1. for tekstual post
-        2.
-
+        1. for tekstual posts
+        2. for image
      */
 
     @SerializedName("id")
-    private int id;
+    int id;
 
     @SerializedName("bubble_id")
-    private int bubbleId;
+    int bubbleId;
 
     @SerializedName("content_type_id")
-    private int contentTypeId;
+    int contentTypeId;
 
 
     @SerializedName("created_at")
-    private String createdAt;
+    String createdAt;
 
 
     @SerializedName("updated_at")
-    private String updatedAt;
+    String updatedAt;
 
 
     @SerializedName("title")
-    private String title;
+    String title;
 
     @SerializedName("content")
-    private String content;
+    String content;
 
     @SerializedName("description")
-    private String description;
+    String description;
 
     @SerializedName("likes")
     int numOfLikes;
@@ -52,6 +51,24 @@ public class Post implements Serializable{
 
     @SerializedName("iDislike")
     int iDislike;
+
+    @SerializedName("username")
+    String username;
+
+    @SerializedName("avatar")
+    String profileImage;
+
+    public int getiDislike() {
+        return iDislike;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
 
     public int getContentTypeId() {
         return contentTypeId;
@@ -103,6 +120,14 @@ public class Post implements Serializable{
 
     public String getDescription() {
         return description;
+    }
+
+    public void setiLike(int iLike) {
+        this.iLike = iLike;
+    }
+
+    public void setiDislike(int iDislike) {
+        this.iDislike = iDislike;
     }
 
     public Post(int id, int bubbleId, int contetnTypeId, String createdAt, String updatedAt, String title, String content, String description) {

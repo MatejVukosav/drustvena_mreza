@@ -8,7 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.vuki.drustvena_mreza_faks.R;
-import com.example.vuki.drustvena_mreza_faks.models.User;
+import com.example.vuki.drustvena_mreza_faks.helpers.AdapterHelpers;
+import com.example.vuki.drustvena_mreza_faks.models.Post;
 
 import java.util.List;
 
@@ -20,24 +21,25 @@ import butterknife.ButterKnife;
  */
 public class ShowGaleryAdapter extends RecyclerView.Adapter<ShowGaleryAdapter.ViewHolder> {
 
-    static List<User> photos;
+    static List<Post> photos;
     static Context context;
 
 
-    public ShowGaleryAdapter(Context context, List<User> photos ) {
+    public ShowGaleryAdapter(Context context, List<Post> photos) {
         this.photos = photos;
         this.context = context;
     }
 
     @Override
     public ShowGaleryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_search_user_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_galery_item, parent, false);
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(final ShowGaleryAdapter.ViewHolder holder, final int position) {
-        //AdapterHelpers.setImage(context, R.drawable.lisica, holder.galeryitem);
+        Post post = photos.get(position);
+        AdapterHelpers.setImage(context, post.getContent(), holder.galeryitem);
     }
 
     @Override

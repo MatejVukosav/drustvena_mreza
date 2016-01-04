@@ -38,7 +38,7 @@
         android:id="@+id/menu_navigation_log_out2"
         android:checked="false"
         android:icon="@drawable/ic_reply_black_24dp"
-        android:title="@string/submenu_6" />
+        android:title="@string/submenu_7" />
 
 
 </menu>

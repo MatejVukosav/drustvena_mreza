@@ -28,16 +28,22 @@ import android.widget.TextView;
 import com.example.vuki.drustvena_mreza_faks.R;
 import com.example.vuki.drustvena_mreza_faks.adapters.HomeFragmentAdapter;
 import com.example.vuki.drustvena_mreza_faks.adapters.SearchAdapter;
+import com.example.vuki.drustvena_mreza_faks.helpers.AdapterHelpers;
+import com.example.vuki.drustvena_mreza_faks.helpers.BundleKeys;
 import com.example.vuki.drustvena_mreza_faks.helpers.InternetConnection;
 import com.example.vuki.drustvena_mreza_faks.helpers.NotesHelpers;
 import com.example.vuki.drustvena_mreza_faks.helpers.SendEmailHelper;
+import com.example.vuki.drustvena_mreza_faks.models.User;
+import com.example.vuki.drustvena_mreza_faks.models.UsersResponse;
 import com.example.vuki.drustvena_mreza_faks.network.ApiManager;
 import com.search.material.library.MaterialSearchView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
@@ -153,11 +159,15 @@ public class CoreActivity extends AppCompatActivity {
         //set navigation view user name
         String username = "";
         if (ApiManager.getInstance().getUser() != null) {
-            username = ApiManager.getInstance().getUser().getUsername();
-
+            User user = ApiManager.getInstance().getUser();
+            username = user.getUsername();
             View headerLayout = navigationView.getHeaderView(0);
-            TextView user = (TextView) headerLayout.findViewById(R.id.core_navigation_header_username);
-            user.setText(username);
+            TextView userNavigationName = (TextView) headerLayout.findViewById(R.id.core_navigation_header_username);
+            CircleImageView userNavigationPicture = (CircleImageView) headerLayout.findViewById(R.id.core_navigation_header_profile_picture);
+            //TODO profile picture
+            String url = user.getProfileImage();
+            AdapterHelpers.setCircleImage(this, url, userNavigationPicture);
+            userNavigationName.setText(username);
         }
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -298,9 +308,9 @@ public class CoreActivity extends AppCompatActivity {
                 //initial first item is selected
                 LinearLayout customTab = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.core_tab_custom, null);
                 if (i == TAB_HOME) {
-                    setTabIcon(customTab, R.mipmap.ic_home_black_24dp);
+                    setTabIcon(customTab, R.mipmap.app_home_white);
                 } else if (i == TAB_INBOX) {
-                    setTabIcon(customTab, R.mipmap.ic_message_black_24dp);
+                    setTabIcon(customTab, R.mipmap.app_inbox_black);
                 } else if (i == TAB_SEARCH) {
                     setTabIcon(customTab, R.mipmap.ic_person_add_black_24dp);
                 } else if (i == TAB_USER_WALL) {
@@ -316,7 +326,7 @@ public class CoreActivity extends AppCompatActivity {
         TabLayout.OnTabSelectedListener listener = new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                //TODO set selected tab icon
+
                 viewPager.setCurrentItem(tab.getPosition());
                 if (tab.getCustomView() != null) {
 
@@ -324,9 +334,9 @@ public class CoreActivity extends AppCompatActivity {
                     int i = tab.getPosition();
 
                     if (i == TAB_HOME) {
-                        setTabIcon(customTab, R.mipmap.ic_home_black_24dp);
+                        setTabIcon(customTab, R.mipmap.app_home_white);
                     } else if (i == TAB_INBOX) {
-                        setTabIcon(customTab, R.mipmap.ic_message_black_24dp);
+                        setTabIcon(customTab, R.mipmap.app_inbox_white);
                     } else if (i == TAB_SEARCH) {
                         setTabIcon(customTab, R.mipmap.ic_person_add_black_24dp);
                     } else if (i == TAB_USER_WALL) {
@@ -348,9 +358,9 @@ public class CoreActivity extends AppCompatActivity {
                     int i = tab.getPosition();
 
                     if (i == TAB_HOME) {
-                        setTabIcon(customTab, R.mipmap.ic_home_black_24dp);
+                        setTabIcon(customTab, R.mipmap.app_home_black);
                     } else if (i == TAB_INBOX) {
-                        setTabIcon(customTab, R.mipmap.ic_message_black_24dp);
+                        setTabIcon(customTab, R.mipmap.app_inbox_black);
                     } else if (i == TAB_SEARCH) {
                         setTabIcon(customTab, R.mipmap.ic_person_add_black_24dp);
                     } else if (i == TAB_USER_WALL) {
@@ -372,15 +382,17 @@ public class CoreActivity extends AppCompatActivity {
     }
 
     private void setMaterialSearchView() {
-        searchView = (MaterialSearchView) findViewById(R.id.search_view);
+        // searchView = (MaterialSearchView) findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                getSearchListApiCall(newText);
                 return false;
             }
         });
@@ -403,21 +415,67 @@ public class CoreActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //TODO search is applied for query input- open user wall with that mark
                 String itemContext = parent.getItemAtPosition(position).toString();
-                NotesHelpers.toastMessage(getApplicationContext(), itemContext);
+                //NotesHelpers.toastMessage(getApplicationContext(), itemContext);
 
-                Intent intent = new Intent(CoreActivity.this, UserWallFromFriend.class);
-                startActivity(intent);
+                for (User user : usersForSearchList) {
+                    if (user.getUsername().equals(itemContext)) {
+                        Intent intent = new Intent(CoreActivity.this, UserWallFromFriend.class);
+                        Bundle b = new Bundle();
+                        b.putInt(BundleKeys.FRIEND_USER_ID, user.getUserId());
+                        intent.putExtras(b);
+                        startActivity(intent);
+                        break;
+                    }
+                }
+
+
             }
         });
 
 
-        SearchAdapter adapter = new SearchAdapter(this);
+        SearchAdapter adapter = new SearchAdapter(this, new ArrayList<User>());
         searchView.setAdapter(adapter);
+
     }
 
     private void setTabIcon(View tab, int picture) {
         ImageView imageView = ButterKnife.findById(tab, R.id.core_tab_icon);
         imageView.setImageDrawable(ContextCompat.getDrawable(CoreActivity.this, picture));
+    }
+
+    static List<User> usersForSearchList;
+
+    //TODO ,dohvatit listu
+    private void getSearchListApiCall(String searchTterm) {
+        Call<UsersResponse> usersResponseCall = ApiManager.getInstance().getService().getSearchItem(searchTterm);
+        usersResponseCall.enqueue(new Callback<UsersResponse>() {
+            @Override
+            public void onResponse(Response<UsersResponse> response, Retrofit retrofit) {
+                if (response.isSuccess()) {
+                    if (response.body().getUsers() != null) {
+                        usersForSearchList = response.body().getUsers();
+
+
+                        SearchAdapter adapter = new SearchAdapter(context, usersForSearchList);
+                        searchView.setAdapter(adapter);
+
+
+                    } else {
+                        NotesHelpers.toastMessage(context, "Error " + "Response body is empty");
+                    }
+                } else {
+                    NotesHelpers.toastMessage(context, "Response is not success");
+
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                NotesHelpers.toastMessage(context, "Failure " + t.getMessage());
+                t.printStackTrace();
+            }
+        });
+
     }
 
 

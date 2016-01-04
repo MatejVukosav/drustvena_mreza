@@ -38,6 +38,11 @@ public class UserWallAbout extends AppCompatActivity {
     @Bind(R.id.about_city)
     TextView city;
 
+    @Bind(R.id.about_relationship_status)
+    TextView relationshipStatus;
+    @Bind(R.id.about_email)
+    TextView email;
+
     int mUserId;
     static Context context;
 
@@ -47,13 +52,13 @@ public class UserWallAbout extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_wall_about);
         ButterKnife.bind(this);
-        context=this;
+        context = this;
 
-        Bundle b=getIntent().getExtras();
-        if(b!=null){
-            mUserId=b.getInt(BundleKeys.USER_ABOUT);
-        }else{
-            mUserId=ApiManager.getInstance().getUser().getUserId();
+        Bundle b = getIntent().getExtras();
+        if (b != null) {
+            mUserId = b.getInt(BundleKeys.USER_ABOUT);
+        } else {
+            mUserId = ApiManager.getInstance().getUser().getUserId();
         }
 
         getApiCall(mUserId);
@@ -63,6 +68,7 @@ public class UserWallAbout extends AppCompatActivity {
             getSupportActionBar().setTitle("About");
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
@@ -85,17 +91,17 @@ public class UserWallAbout extends AppCompatActivity {
         //GET USER ABOUT
 
 
-        Call<AboutUserResponse> aboutUserResponseCall=ApiManager.getInstance().getService().getUserAbout(userId);
+        Call<AboutUserResponse> aboutUserResponseCall = ApiManager.getInstance().getService().getUserAbout(userId);
         aboutUserResponseCall.enqueue(new Callback<AboutUserResponse>() {
             @Override
             public void onResponse(Response<AboutUserResponse> response, Retrofit retrofit) {
-                if(response.isSuccess()){
-                    if(response.body().getUser()!=null){
+                if (response.isSuccess()) {
+                    if (response.body().getUser() != null) {
                         fillData(response.body().getUser());
-                    }else{
+                    } else {
                         NotesHelpers.toastMessage(context, "Error " + "Response body is empty");
                     }
-                }else{
+                } else {
                     NotesHelpers.toastMessage(context, "Response is not success");
                 }
             }
@@ -122,6 +128,12 @@ public class UserWallAbout extends AppCompatActivity {
         }
         if (user.getLastName() != null) {
             lastName.setText(user.getLastName());
+        }
+
+        relationshipStatus.setText("" + user.getRelationshipStatusId());
+
+        if (user.getEmail() != null) {
+            email.setText(user.getEmail());
         }
 
         age.setText("no data");

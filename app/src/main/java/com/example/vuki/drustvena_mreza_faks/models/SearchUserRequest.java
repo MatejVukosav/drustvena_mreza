@@ -11,7 +11,8 @@ public class SearchUserRequest implements Serializable {
     @SerializedName("user_id")
     int userId;
 
-    public void setUserId(int userId) {
+
+    public SearchUserRequest(int userId) {
         this.userId = userId;
     }
 }

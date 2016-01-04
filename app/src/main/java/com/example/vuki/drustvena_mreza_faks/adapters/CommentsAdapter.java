@@ -11,15 +11,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.vuki.drustvena_mreza_faks.R;
+import com.example.vuki.drustvena_mreza_faks.helpers.AdapterHelpers;
 import com.example.vuki.drustvena_mreza_faks.helpers.NotesHelpers;
 import com.example.vuki.drustvena_mreza_faks.models.Comment;
-import com.example.vuki.drustvena_mreza_faks.models.User;
+import com.example.vuki.drustvena_mreza_faks.models.CommentResponse;
+import com.example.vuki.drustvena_mreza_faks.models.PostCommentRequest;
 import com.example.vuki.drustvena_mreza_faks.network.ApiManager;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
@@ -52,7 +55,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
                 View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_comment_child, parent, false);
                 return new ViewHolder(v);
             default:
-                View v2 = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_add_status, parent, false);
+                View v2 = LayoutInflater.from(parent.getContext()).inflate(R.layout.add_new_comment, parent, false);
                 return new ViewHolder(v2);
         }
 
@@ -74,6 +77,9 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
             Comment comment = mCommentList.get(position);
             holder.commentUsernamee.setText(comment.getUsername());
             holder.commentMessage.setText(comment.getMessage());
+            holder.commentPostTime.setText(AdapterHelpers.setTime(comment.getCreatedAt()));
+            AdapterHelpers.setCircleImage(context, comment.getAvatar(), holder.commentUserProfilePicture);
+
         } else {
             //add comment holder (post comment is on bottom)
             if (holder.addNewStatusButton != null) {
@@ -94,29 +100,30 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
 
         String commentMessage = "";
         if (holder.addNewStatusText.getText() != null) {
-            holder.addNewStatusText.getText().toString();
+            commentMessage = holder.addNewStatusText.getText().toString();
         }
-        User user = ApiManager.getInstance().getUser();
-        int userId = user.getUserId();
-        String firstName = user.getFirstName();
-        String middleName = user.getMiddleName();
-        String lastName = user.getLastName();
-        String username = user.getUsername();
+
 
         //TODO komentar se ne posta dobro jer po dokumentaciji request je samo id?? a od kud poruka dode
         //
+        PostCommentRequest postCommentRequest = new PostCommentRequest(commentMessage);
 
-        final Comment comment = new Comment(userId, commentMessage, firstName, lastName, middleName, username);
-
-        Call<Void> sendCommentCall = ApiManager.getInstance().getService().postComment(mContentId);
-        sendCommentCall.enqueue(new Callback<Void>() {
+        Call<CommentResponse> sendCommentCall = ApiManager.getInstance().getService().postComment(mContentId, postCommentRequest);
+        sendCommentCall.enqueue(new Callback<CommentResponse>() {
             @Override
-            public void onResponse(Response<Void> response, Retrofit retrofit) {
+            public void onResponse(Response<CommentResponse> response, Retrofit retrofit) {
                 if (response.isSuccess()) {
-                    mCommentList.add(comment);
-                    holder.addNewStatusText.setText("");
-                    NotesHelpers.toastMessage(context, "You have posted comment ");
-
+                    if (response.body().getComment() != null) {
+                        Comment comment=response.body().getComment();
+                        comment.setUsername(ApiManager.getInstance().getUser().getUsername());
+                        mCommentList.add(comment);
+                        //TODO ulijepsat prikaz komentara
+                        notifyDataSetChanged();
+                        holder.addNewStatusText.setText("");
+                        NotesHelpers.toastMessage(context, "You have posted comment ");
+                    } else {
+                        NotesHelpers.toastMessage(context, "Error: response body is empty ");
+                    }
                 } else {
                     NotesHelpers.toastMessage(context, "Response is not success ");
                 }
@@ -136,6 +143,16 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        @Nullable
+        @Bind(R.id.comment_child_user_personal_picture)
+        CircleImageView commentUserProfilePicture;
+
+        @Nullable
+        @Bind(R.id.comment_child_post_time)
+        TextView commentPostTime;
+
+
         @Nullable
         @Bind(R.id.comment_child_message)
         TextView commentMessage;

@@ -2,10 +2,13 @@ package com.example.vuki.drustvena_mreza_faks.network;
 
 import com.example.vuki.drustvena_mreza_faks.enums.UserAuthorized;
 import com.example.vuki.drustvena_mreza_faks.models.User;
+import com.example.vuki.drustvena_mreza_faks.network.deserializers.DateDeserializers;
 import com.example.vuki.drustvena_mreza_faks.network.deserializers.UserAuthorizedDeserializer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.OkHttpClient;
+
+import java.util.Date;
 
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
@@ -17,12 +20,15 @@ public class ApiManager implements ApiManagerInterface {
     private static final String TAG = "Network";
 
    // public static final String BASE_URL = "http://192.168.1.5:8080";
-    //public static final String BASE_URL = "http://192.168.1.10:8080";
-    public static final String BASE_URL = "http://www.bubbles.com.hr/";
+   public static final String BASE_URL = "http://192.168.1.11:8000";
+   //public static final String BASE_URL = "http://bubbles.vukilab.com:8080/";
+
+   // public static final String BASE_URL = "http://www.bubbles.com.hr/";
     //public static final String BASE_URL = "http://10.129.36.202:8080";
 
     private Gson gson = new GsonBuilder()
             .registerTypeAdapter(UserAuthorized.class, new UserAuthorizedDeserializer())
+            .registerTypeAdapter(Date.class, new DateDeserializers())
             .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
             .create();
 
@@ -60,9 +66,11 @@ public class ApiManager implements ApiManagerInterface {
 
 
         Retrofit retrofit = new Retrofit.Builder()
+                //.addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl(BASE_URL)
                 .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
+
 
                 .build();
         service = retrofit.create(ApiManagerService.class);

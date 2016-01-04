@@ -6,9 +6,9 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by Vuki on 24.12.2015..
+ * Created by Vuki on 3.1.2016..
  */
-public class TimelineResponse implements Serializable {
+public class GalleryResponse implements Serializable {
 
     @SerializedName("response")
     List<Post> posts;
