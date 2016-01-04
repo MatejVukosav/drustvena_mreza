@@ -1,5 +1,6 @@
 package com.example.vuki.drustvena_mreza_faks.models;
 
+import com.example.vuki.drustvena_mreza_faks.adapters.HomeRecyclerViewAdapter;
 import com.example.vuki.drustvena_mreza_faks.network.ApiManager;
 import com.google.gson.annotations.SerializedName;
 
@@ -56,6 +57,13 @@ public class HomeFeedOneModel implements Serializable {
     @SerializedName("iDislike")
     int iDislike;
 
+    @SerializedName("avatar")
+    String userProfilePicture;
+
+    public String getUserProfilePicture() {
+        return ApiManager.BASE_URL+userProfilePicture;
+    }
+
     public int getId() {
         return id;
     }
@@ -85,8 +93,8 @@ public class HomeFeedOneModel implements Serializable {
     }
 
     public String getContent() {
-        if (contentTypeId == 2) {
-            return ApiManager.BASE_URL + content;
+        if (contentTypeId == HomeRecyclerViewAdapter.TYPE_IMAGE) {
+            return ApiManager.BASE_URL + content+"?size=small";
         } else {
             return content;
         }

@@ -11,7 +11,7 @@ import java.util.Set;
  */
 public class SharedPrefsHelpers {
 
-    private static final String SHARED_PREFS_ID = "com.example.vuki.drustvena_mreza_faks";
+    public static final String SHARED_PREFS_ID = "com.example.vuki.drustvena_mreza_faks";
     public static final String SHARED_PREFS_TOKEN = "com.example.vuki.drustvena_mreza_faks_token";
     public static final String SHARED_PREFS_COOKIES = "com.example.vuki.drustvena_mreza_faks_cookies";
     public static final String SHARED_PREFS_COOKIES_CONNECT_SID = "com.example.vuki.drustvena_mreza_faks_cookies_connect_sid";
@@ -24,7 +24,7 @@ public class SharedPrefsHelpers {
 
     public static String getToken(Context context) {
         SharedPreferences prefs = getPreferences(context);
-        return prefs.getString(SHARED_PREFS_TOKEN, null);
+        return prefs.getString(SHARED_PREFS_TOKEN, "");
     }
 
     public static void setToken(Context context, String token) {

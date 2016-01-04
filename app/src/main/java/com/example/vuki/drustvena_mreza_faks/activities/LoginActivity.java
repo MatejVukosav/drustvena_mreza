@@ -3,13 +3,16 @@ package com.example.vuki.drustvena_mreza_faks.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.example.vuki.drustvena_mreza_faks.R;
 import com.example.vuki.drustvena_mreza_faks.helpers.InternetConnection;
 import com.example.vuki.drustvena_mreza_faks.helpers.NotesHelpers;
+import com.example.vuki.drustvena_mreza_faks.helpers.PrefsHelper;
 import com.example.vuki.drustvena_mreza_faks.models.LoginRequest;
 import com.example.vuki.drustvena_mreza_faks.models.LoginResponse;
+import com.example.vuki.drustvena_mreza_faks.models.User;
 import com.example.vuki.drustvena_mreza_faks.network.ApiManager;
 
 import butterknife.Bind;
@@ -30,15 +33,19 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.login_password)
     EditText mLoginPassword;
 
+    PrefsHelper prefsHelper;
+    boolean mLoginSave = false;
+
 
 
     private String TAG = getClass().getSimpleName();
-    ;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
@@ -58,6 +65,29 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void init() {
+        prefsHelper=new PrefsHelper(this);
+
+        String json = prefsHelper.getString(PrefsHelper.LOGGED_IN_USER_APPUSER_DATA, "");
+        String password = prefsHelper.getString(PrefsHelper.LOGGED_IN_USER_APPUSER_DATA_PASSWORD, "");
+        mLoginSave = prefsHelper.getBoolean(PrefsHelper.REMEMBER_USER_LOGIN_SKIP, false);
+
+        if (!json.isEmpty() && json != null) {
+            User user = ApiManager.getGson().fromJson(json, User.class);
+            if (user != null) {
+                ApiManager.getInstance().setUser(user);
+
+                mLoginUsername.setText(user.getUsername()); //SET LAST LOGIN MAIL
+                mLoginPassword.setText(password);
+
+                if (mLoginSave) {
+                    if (password != null & !password.isEmpty()) {
+                        mLoginPassword.setText(password);
+                    }
+                }
+            }
+
+        }
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Bubbles");
         }
@@ -69,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onLoginClick() {
 
         String username = mLoginUsername.getText().toString();
-        String password = mLoginPassword.getText().toString();
+        final String password = mLoginPassword.getText().toString();
         LoginRequest loginRequest = new LoginRequest(username, password);
         Call<LoginResponse> loginResponseCall = ApiManager.getInstance().getService().postSignIn(loginRequest);
         loginResponseCall.enqueue(new Callback<LoginResponse>() {
@@ -79,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (response.body().getUser() != null) {
                         ApiManager.getInstance().setUser(response.body().getUser());
 
-                        loginSuccesfull();
+                        loginSuccesfull(ApiManager.getInstance().getUser(),password);
 
                     } else {
                         try {
@@ -97,13 +127,20 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Throwable t) {
-                NotesHelpers.toastMessage(getApplicationContext(), getResources().getString(R.string.error_something_is_wrong));
+                NotesHelpers.toastMessage(getApplicationContext(), getResources().getString(R.string.error_something_went_wrong));
             }
         });
 
     }
 
-    private void loginSuccesfull() {
+    private void loginSuccesfull(User user, String password) {
+
+
+        String json = ApiManager.getGson().toJson(user);
+        prefsHelper.putString(PrefsHelper.LOGGED_IN_USER_APPUSER_DATA, json);
+        prefsHelper.putString(PrefsHelper.LOGGED_IN_USER_APPUSER_DATA_PASSWORD, password);
+        prefsHelper.putBoolean(PrefsHelper.REMEMBER_USER_LOGIN_SKIP, true);
+
         Intent intent = new Intent(this, CoreActivity.class);
         startActivity(intent);
         finish();

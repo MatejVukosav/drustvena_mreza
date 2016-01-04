@@ -47,11 +47,11 @@
                     android:id="@+id/login_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="email"
+                    android:hint="@string/hint_username"
                     android:inputType="textEmailAddress"
                     android:singleLine="true"
                     android:textColor="@color/black"
-                    android:text="vuki" />
+                    />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -66,11 +66,11 @@
                     android:id="@+id/login_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="password"
+                    android:hint="@string/hint_password"
                     android:inputType="textPassword"
                     android:singleLine="true"
                     android:textColor="@color/black"
-                    android:text="vukivuki1" />
+                  />
             </android.support.design.widget.TextInputLayout>
 
             </LinearLayout>

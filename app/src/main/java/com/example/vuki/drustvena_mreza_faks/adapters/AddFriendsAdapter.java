@@ -9,7 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.vuki.drustvena_mreza_faks.R;
+import com.example.vuki.drustvena_mreza_faks.helpers.AdapterHelpers;
 import com.example.vuki.drustvena_mreza_faks.helpers.NotesHelpers;
+import com.example.vuki.drustvena_mreza_faks.helpers.RetrofitHelper;
 import com.example.vuki.drustvena_mreza_faks.models.SearchUserRequest;
 import com.example.vuki.drustvena_mreza_faks.models.User;
 import com.example.vuki.drustvena_mreza_faks.network.ApiManager;
@@ -66,7 +68,7 @@ public class AddFriendsAdapter extends RecyclerView.Adapter<AddFriendsAdapter.Vi
         String location = country + " " + city;
         holder.location.setText(location);
 
-        //AdapterHelpers.setImage(context, R.drawable.lisica, holder.profileImage);
+        AdapterHelpers.setImage(context, user.getProfileImage(), holder.profileImage);
     }
 
     @Override
@@ -145,7 +147,7 @@ public class AddFriendsAdapter extends RecyclerView.Adapter<AddFriendsAdapter.Vi
                         addUserAsFriend.setImageResource(android.R.drawable.star_big_on);
                         addUserAsFriend.setClickable(false);
                     } else {
-                        NotesHelpers.toastMessage(context, context.getResources().getString(R.string.error_something_went_wrong));
+                        RetrofitHelper.checkCode(response.code(),context );
                     }
                 }
 

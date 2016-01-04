@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.vuki.drustvena_mreza_faks.R;
 import com.example.vuki.drustvena_mreza_faks.adapters.AddFriendsAdapter;
 import com.example.vuki.drustvena_mreza_faks.helpers.NotesHelpers;
+import com.example.vuki.drustvena_mreza_faks.helpers.RetrofitHelper;
 import com.example.vuki.drustvena_mreza_faks.models.SearchUsersResponse;
 import com.example.vuki.drustvena_mreza_faks.models.User;
 import com.example.vuki.drustvena_mreza_faks.network.ApiManager;
@@ -64,7 +65,7 @@ public class SearchUsersFragment extends Fragment {
                         NotesHelpers.toastMessage(context, getResources().getString(R.string.error_something_went_wrong));
                     }
                 } else {
-                    NotesHelpers.toastMessage(context, getResources().getString(R.string.error_download));
+                    RetrofitHelper.checkCode(response.code(),context );
                 }
             }
 

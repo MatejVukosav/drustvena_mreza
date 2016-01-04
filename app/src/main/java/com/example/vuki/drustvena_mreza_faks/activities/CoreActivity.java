@@ -32,6 +32,8 @@ import com.example.vuki.drustvena_mreza_faks.helpers.AdapterHelpers;
 import com.example.vuki.drustvena_mreza_faks.helpers.BundleKeys;
 import com.example.vuki.drustvena_mreza_faks.helpers.InternetConnection;
 import com.example.vuki.drustvena_mreza_faks.helpers.NotesHelpers;
+import com.example.vuki.drustvena_mreza_faks.helpers.PrefsHelper;
+import com.example.vuki.drustvena_mreza_faks.helpers.RetrofitHelper;
 import com.example.vuki.drustvena_mreza_faks.helpers.SendEmailHelper;
 import com.example.vuki.drustvena_mreza_faks.models.User;
 import com.example.vuki.drustvena_mreza_faks.models.UsersResponse;
@@ -89,6 +91,7 @@ public class CoreActivity extends AppCompatActivity {
     String bugMessage = "";
     String messageTitle = "";
     String receiver = "vuki146@gmail.com";
+    PrefsHelper prefsHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,18 +111,10 @@ public class CoreActivity extends AppCompatActivity {
             }
         });
         internetConnection.checkInternetConnection();
-
-    /*    if(AppStatus.getInstance(this).isOnline()){
-            init();
-        }else{
-            finish();
-        }*/
-
-
     }
 
-
     private void init() {
+        prefsHelper = new PrefsHelper(this);
         context = this;
 
         numOfTabs = getResources().getInteger(R.integer.tabs_number);
@@ -164,9 +159,10 @@ public class CoreActivity extends AppCompatActivity {
             View headerLayout = navigationView.getHeaderView(0);
             TextView userNavigationName = (TextView) headerLayout.findViewById(R.id.core_navigation_header_username);
             CircleImageView userNavigationPicture = (CircleImageView) headerLayout.findViewById(R.id.core_navigation_header_profile_picture);
-            //TODO profile picture
+
             String url = user.getProfileImage();
             AdapterHelpers.setCircleImage(this, url, userNavigationPicture);
+
             userNavigationName.setText(username);
         }
 
@@ -188,12 +184,16 @@ public class CoreActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
                         Intent settings = new Intent(CoreActivity.this, SettingsActivity.class);
                         startActivity(settings);
-                        break;
-                    case R.id.menu_navigation_invite_friends:
-                        Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
-                        Intent inviteFriends = new Intent(CoreActivity.this, InviteFriendsActivity.class);
-                        startActivity(inviteFriends);
                         break;*/
+                    case R.id.menu_navigation_invite_friends:
+                        bugMessage = "Hi, i have found new super cool social network called Bubbles! Please check it out: " + ApiManager.BASE_URL;
+                        messageTitle = "This is so cool: Bubbles";
+                        SendEmailHelper.sendEmail(context, "", messageTitle, bugMessage);
+
+                       /* Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
+                        Intent inviteFriends = new Intent(CoreActivity.this, InviteFriendsActivity.class);
+                        startActivity(inviteFriends);*/
+                        break;
                     case R.id.menu_navigation_ask_helpe:
                        /* Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
                         Intent askForHelp = new Intent(CoreActivity.this, AskForHelpActivity.class);
@@ -227,9 +227,12 @@ public class CoreActivity extends AppCompatActivity {
                             public void onResponse(Response<Void> response, Retrofit retrofit) {
                                 if (response.isSuccess()) {
                                     Intent logOut = new Intent(CoreActivity.this, LoginActivity.class);
+                                    prefsHelper.putString(PrefsHelper.LOGGED_IN_USER_APPUSER_DATA_PASSWORD, "");
                                     NotesHelpers.toastMessage(getApplicationContext(), title);
                                     startActivity(logOut);
                                     finish();
+                                } else {
+                                    RetrofitHelper.checkCode(response.code(), context);
                                 }
                             }
 
@@ -239,7 +242,7 @@ public class CoreActivity extends AppCompatActivity {
                             }
                         });
                         break;
-
+/*
                     case R.id.menu_navigation_log_out2:
                         String title1 = item.getTitle().toString();
                         Intent logOut = new Intent(CoreActivity.this, LoginActivity.class);
@@ -247,7 +250,7 @@ public class CoreActivity extends AppCompatActivity {
                         startActivity(logOut);
                         finish();
 
-                        break;
+                        break;*/
                 }
                 return true;
             }
@@ -464,7 +467,7 @@ public class CoreActivity extends AppCompatActivity {
                         NotesHelpers.toastMessage(context, "Error " + "Response body is empty");
                     }
                 } else {
-                    NotesHelpers.toastMessage(context, "Response is not success");
+                    RetrofitHelper.checkCode(response.code(), context);
 
                 }
             }

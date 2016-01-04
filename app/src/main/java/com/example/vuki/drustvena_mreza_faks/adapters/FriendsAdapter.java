@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.vuki.drustvena_mreza_faks.R;
+import com.example.vuki.drustvena_mreza_faks.helpers.AdapterHelpers;
 import com.example.vuki.drustvena_mreza_faks.models.ContactRawInfo;
 
 import java.util.List;
@@ -43,6 +44,11 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     public void onBindViewHolder(final FriendsAdapter.ViewHolder holder, final int position) {
         ContactRawInfo contactRawInfo = contactRawInfos.get(position);
         holder.username.setText(contactRawInfo.getUsername());
+        String location=contactRawInfo.getCountry()+" "+contactRawInfo.getCity();
+        holder.location.setText(location);
+        if (contactRawInfo.getUserProfilePicture() != null) {
+            AdapterHelpers.setCircleImage(context, contactRawInfo.getUserProfilePicture(),holder.profileImage);
+        }
 
     }
 
@@ -73,7 +79,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            if(friendList){
+            if (friendList) {
                 addUserAsFriend.setVisibility(View.GONE);
             }
 

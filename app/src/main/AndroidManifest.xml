@@ -9,7 +9,7 @@
     <application
         android:name=".SocialNetworkApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/bubble_logo"
         android:label="@string/app_name"
         android:orientation="vertical"
         android:supportsRtl="true"

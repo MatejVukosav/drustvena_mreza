@@ -57,6 +57,8 @@ public class UserWallAdapter extends RecyclerView.Adapter<UserWallAdapter.ViewHo
     private static final int TYPE_STATUS_ONLY = 1;
     private static final int TYPE_HEADER = 2;
 
+    static boolean isFriends;
+
 
     public UserWallAdapter(User user, List<Post> mData, Context context, boolean myWall) {
         this.mData = mData;
@@ -97,14 +99,6 @@ public class UserWallAdapter extends RecyclerView.Adapter<UserWallAdapter.ViewHo
         } else {
             return TYPE_IMAGE;
         }
-
-
-         /*else if (data.get(position).getContetnTypeId() == 0) {
-            return 0;
-        } else {
-            return 1;
-        }*/
-
     }
 
 
@@ -120,7 +114,8 @@ public class UserWallAdapter extends RecyclerView.Adapter<UserWallAdapter.ViewHo
             if (!myWall) {
                 if (holder.addAsFriend != null) {
                     holder.addAsFriend.setVisibility(View.VISIBLE);
-                    final boolean isFriends = getCheckIfFriendsApiCall(mUser.getUserId(), holder);
+
+                    getCheckIfFriendsApiCall(mUser.getUserId(), holder);
                     setAddFriendSettings(isFriends, holder);
                     holder.addAsFriend.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -144,12 +139,16 @@ public class UserWallAdapter extends RecyclerView.Adapter<UserWallAdapter.ViewHo
 
             final int itemPosition = position - 1;
             final Post post = mData.get(itemPosition);
+            try {
 
-            holder.message.setText(post.getContent().toString());
-            holder.numOfComments.setText("");
-            holder.numOfLikes.setText(String.valueOf(post.getNumOfLikes()));
-            holder.username.setText(mUser.getUsername());
-            holder.postTime.setText(AdapterHelpers.setTime(post.getCreatedAt()));
+                holder.message.setText(post.getContent().toString());
+                holder.numOfComments.setText("");
+                holder.numOfLikes.setText(String.valueOf(post.getNumOfLikes()));
+                holder.username.setText(mUser.getUsername());
+                holder.postTime.setText(AdapterHelpers.setTime(post.getCreatedAt()));
+            }catch (NullPointerException e){
+                e.printStackTrace();
+            }
 
 
             //I didn't like post
@@ -205,6 +204,7 @@ public class UserWallAdapter extends RecyclerView.Adapter<UserWallAdapter.ViewHo
             public void onResponse(Response<Void> response, Retrofit retrofit) {
                 if (response.isSuccess()) {
                     NotesHelpers.toastMessage(context, "You have removed " + friendUsername + " as friend");
+                    notifyDataSetChanged();
                 } else {
                     NotesHelpers.toastMessage(context, context.getResources().getString(R.string.error_something_went_wrong));
                 }
@@ -218,15 +218,17 @@ public class UserWallAdapter extends RecyclerView.Adapter<UserWallAdapter.ViewHo
         });
     }
 
-    private boolean getCheckIfFriendsApiCall(int userId, final ViewHolder holder) {
-        final boolean[] ifFriends = new boolean[1];
+
+
+    private void getCheckIfFriendsApiCall(int userId, final ViewHolder holder) {
+
         Call<CheckIfFriends> checkIfFriendsCall = ApiManager.getInstance().getService().checkIfFriends(userId);
         checkIfFriendsCall.enqueue(new Callback<CheckIfFriends>() {
             @Override
             public void onResponse(Response<CheckIfFriends> response, Retrofit retrofit) {
                 if (response.isSuccess()) {
-                    ifFriends[0] = response.body().isFriends();
-                    setAddFriendSettings(ifFriends[0], holder);
+                    isFriends = response.body().isFriends();
+                    setAddFriendSettings(isFriends, holder);
                 } else {
                     NotesHelpers.toastMessage(context, "Error: " + "response body is empty");
                 }
@@ -238,8 +240,6 @@ public class UserWallAdapter extends RecyclerView.Adapter<UserWallAdapter.ViewHo
                 t.printStackTrace();
             }
         });
-
-        return ifFriends[0];
     }
 
 

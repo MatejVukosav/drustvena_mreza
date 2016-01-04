@@ -24,6 +24,7 @@ import com.example.vuki.drustvena_mreza_faks.activities.UserWallFromFriend;
 import com.example.vuki.drustvena_mreza_faks.helpers.AdapterHelpers;
 import com.example.vuki.drustvena_mreza_faks.helpers.BundleKeys;
 import com.example.vuki.drustvena_mreza_faks.helpers.NotesHelpers;
+import com.example.vuki.drustvena_mreza_faks.helpers.RetrofitHelper;
 import com.example.vuki.drustvena_mreza_faks.models.Bubble;
 import com.example.vuki.drustvena_mreza_faks.models.BubblesResponse;
 import com.example.vuki.drustvena_mreza_faks.models.HomeFeedOneModel;
@@ -56,8 +57,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
     private static int j = 0;
     static Context context;
 
-    private static final int TYPE_STATUS_ONLY = 1;
-    private static final int TYPE_IMAGE = 2;
+    public static final int TYPE_STATUS_ONLY = 1;
+    public static final int TYPE_IMAGE = 2;
 
     private static final int ADD_NEW_STATUS = 0;
 
@@ -139,9 +140,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
                         NotesHelpers.toastMessage(context, "There is no bubbles available");
                     }
                 } else {
-                    NotesHelpers.toastMessage(context, "Error: " + "response is not success");
+                    RetrofitHelper.checkCode(response.code(),context );
                 }
-
             }
 
             @Override
@@ -160,13 +160,14 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
         //if zero position it is add new post
         if (position == ADD_NEW_STATUS) {
-            if (holder.showBubbles != null) {
+            if (holder.showBubbles != null && holder.addNewStatusButton != null && holder.addNewStatusText != null) {
+                // addNewStatusUserImage
+                AdapterHelpers.setCircleImage(context, ApiManager.getInstance().getUser().getProfileImage(), holder.addNewStatusUserImage);
 
                 holder.showBubbles.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            mBubblesItemId = bubbleList.get(position).getId();
-
+                        mBubblesItemId = bubbleList.get(position).getId();
                     }
 
                     @Override
@@ -174,12 +175,23 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
                     }
                 });
+
+                holder.addNewStatusButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int bubbleId = mBubblesItemId;
+                        if (bubbleId != BUBLE_ERROR) {
+                            postStatus(bubbleId, holder.addNewStatusText, holder.showBubbles);
+
+                        } else {
+                            NotesHelpers.toastMessage(context, "You must choose bubble");
+                        }
+                    }
+                });
             }
 
 
-        } else
-
-        {
+        } else{
             final int itemPosition = position - 1;
             final HomeFeedOneModel homeFeedOneModel = mData.get(itemPosition);
 
@@ -209,8 +221,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
             // AdapterHelpers.setCircleImage(context, homeFeedOneModel..getProfileImage(), holder.personal_picture);
 
-
-
+            url=homeFeedOneModel.getUserProfilePicture();
             //show user picture
             AdapterHelpers.setCircleImage(context, url, holder.personal_picture);
             //show content_type2
@@ -300,7 +311,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
                 if (response.isSuccess()) {
                     turnOnLike(homeFeedOneModel, holder);
                 } else {
-                    NotesHelpers.toastMessage(context, "Response is not success");
+                    RetrofitHelper.checkCode(response.code(), context);
                 }
             }
 
@@ -376,15 +387,11 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            if (likeBtn != null) {
-                likeBtn.setOnClickListener(this);
-            }
+
             if (commentsBtn != null) {
                 commentsBtn.setOnClickListener(this);
             }
-            if (addNewStatusButton != null) {
-                addNewStatusButton.setOnClickListener(this);
-            }
+
 
             if (showBubbles != null) {
 
@@ -409,14 +416,6 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
             switch (v.getId()) {
                 case R.id.comments_btn:
                     getComments(getPostItemPosition);
-                    break;
-                case R.id.add_new_status_btn:
-                    int bubbleId = mBubblesItemId;
-                    if(bubbleId!=BUBLE_ERROR) {
-                        postStatus(bubbleId, addNewStatusText, showBubbles);
-                    }else{
-                        NotesHelpers.toastMessage(context, "You must choose bubble");
-                    }
                     break;
             }
         }
@@ -465,17 +464,21 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
                                              if (response.body().getPost() != null) {
                                                  Post post = response.body().getPost();
                                                  User author = ApiManager.getInstance().getUser();
-                                                 //TODO dodat u listu i osvjezit 2
                                                  HomeFeedOneModel homeFeedOneModel = new HomeFeedOneModel(0, 0, 0, 0, post.getDescription(), post.getContent(), post.getTitle(), post.getUpdatedAt(), post.getCreatedAt(),
                                                          post.getContentTypeId(), author.getUserId(), author.getUsername(), post.getBubbleId(), post.getId());
-                                                 mData.add(homeFeedOneModel);
+                                                 mData.add(0, homeFeedOneModel);
+                                                // swap(mData);
                                                  editTextPost.setText("");
                                                  spinner.setSelection(0);
                                                  NotesHelpers.toastMessage(context, "You have added a new post");
+
+                                             } else if (response.body().getError() != null) {
+                                                 NotesHelpers.toastMessage(context, response.body().getError());
                                              } else {
                                                  NotesHelpers.toastMessage(context, "Error: " + "response body is empty");
                                              }
                                          } else {
+                                             RetrofitHelper.checkCode(response.code(),context );
                                              NotesHelpers.toastMessage(context, "Please choose bubble");
                                          }
                                      }
@@ -488,5 +491,14 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
                                  }
         );
     }
+
+    public void swap(List<HomeFeedOneModel> datas){
+        mData.clear();
+        mData.addAll(datas);
+        notifyDataSetChanged();
+    }
+
+
+
 
 }

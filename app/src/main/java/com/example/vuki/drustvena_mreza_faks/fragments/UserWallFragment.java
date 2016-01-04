@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.example.vuki.drustvena_mreza_faks.R;
 import com.example.vuki.drustvena_mreza_faks.adapters.UserWallAdapter;
 import com.example.vuki.drustvena_mreza_faks.helpers.NotesHelpers;
+import com.example.vuki.drustvena_mreza_faks.helpers.RetrofitHelper;
 import com.example.vuki.drustvena_mreza_faks.models.Post;
 import com.example.vuki.drustvena_mreza_faks.models.TimelineResponse;
 import com.example.vuki.drustvena_mreza_faks.network.ApiManager;
@@ -55,11 +56,11 @@ public class UserWallFragment extends Fragment {
         ButterKnife.bind(this, v);
         context = getContext();
 
-        if(ApiManager.getInstance().getUser()!=null){
-            mUserId=ApiManager.getInstance().getUser().getUserId();
+        if (ApiManager.getInstance().getUser() != null) {
+            mUserId = ApiManager.getInstance().getUser().getUserId();
             getApiCall(mUserId);
-        }else{
-            NotesHelpers.toastMessage(context,"Server error: please log out and try again");
+        } else {
+            NotesHelpers.toastMessage(context, "Server error: please log out and try again");
         }
 
         return v;
@@ -79,14 +80,13 @@ public class UserWallFragment extends Fragment {
                         NotesHelpers.toastMessage(context, "Error " + "Response body is empty");
                     }
                 } else {
-                    NotesHelpers.toastMessage(context, "Response is not success");
+                    RetrofitHelper.checkCode(response.code(), context);
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
                 NotesHelpers.toastMessage(context, "Failure " + t.getMessage());
-                NotesHelpers.logMessage("USER WALL","user wall failure");
                 t.printStackTrace();
             }
         });
@@ -95,7 +95,7 @@ public class UserWallFragment extends Fragment {
     }
 
     private void populateRecyclerView(List<Post> posts) {
-        UserWallAdapter adapter = new UserWallAdapter(ApiManager.getInstance().getUser(), posts, getActivity(),true);
+        UserWallAdapter adapter = new UserWallAdapter(ApiManager.getInstance().getUser(), posts, getActivity(), true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
     }

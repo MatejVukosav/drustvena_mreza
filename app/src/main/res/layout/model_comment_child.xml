@@ -65,7 +65,7 @@
         android:layout_marginTop="10dp"
         android:background="@color/white"
         android:maxLines="10"
-        android:minLines="3"
+        android:minLines="1"
         android:padding="15dp"
         android:textSize="15sp"
         tools:layout_height="100dp"

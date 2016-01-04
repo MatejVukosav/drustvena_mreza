@@ -1,5 +1,6 @@
 package com.example.vuki.drustvena_mreza_faks.models;
 
+import com.example.vuki.drustvena_mreza_faks.network.ApiManager;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -128,6 +129,6 @@ public class Comment implements Serializable {
     }
 
     public String getAvatar() {
-        return avatar;
+        return ApiManager.BASE_URL+avatar;
     }
 }

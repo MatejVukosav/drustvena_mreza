@@ -33,7 +33,8 @@
                 android:layout_marginRight="10dp"
                 android:background="@color/post_background"
                 android:hint="What\'s on your mind?"
-                android:maxLines="5"
+                android:layout_marginTop="8dp"
+                android:maxLines="10"
                 android:minLines="3"
                 android:padding="5dp"
                 tools:text="simulacija komentara" />

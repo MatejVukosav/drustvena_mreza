@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.vuki.drustvena_mreza_faks.R;
 import com.example.vuki.drustvena_mreza_faks.helpers.AdapterHelpers;
 import com.example.vuki.drustvena_mreza_faks.helpers.NotesHelpers;
+import com.example.vuki.drustvena_mreza_faks.helpers.RetrofitHelper;
 import com.example.vuki.drustvena_mreza_faks.models.Comment;
 import com.example.vuki.drustvena_mreza_faks.models.CommentResponse;
 import com.example.vuki.drustvena_mreza_faks.models.PostCommentRequest;
@@ -55,7 +56,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
                 View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_comment_child, parent, false);
                 return new ViewHolder(v);
             default:
-                View v2 = LayoutInflater.from(parent.getContext()).inflate(R.layout.add_new_comment, parent, false);
+                View v2 = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_add_new_comment, parent, false);
                 return new ViewHolder(v2);
         }
 
@@ -78,6 +79,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
             holder.commentUsernamee.setText(comment.getUsername());
             holder.commentMessage.setText(comment.getMessage());
             holder.commentPostTime.setText(AdapterHelpers.setTime(comment.getCreatedAt()));
+            //set user profile picture
             AdapterHelpers.setCircleImage(context, comment.getAvatar(), holder.commentUserProfilePicture);
 
         } else {
@@ -125,7 +127,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
                         NotesHelpers.toastMessage(context, "Error: response body is empty ");
                     }
                 } else {
-                    NotesHelpers.toastMessage(context, "Response is not success ");
+                    RetrofitHelper.checkCode(response.code(),context );
                 }
             }
 

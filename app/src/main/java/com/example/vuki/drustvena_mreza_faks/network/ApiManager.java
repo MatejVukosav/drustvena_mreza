@@ -20,18 +20,22 @@ public class ApiManager implements ApiManagerInterface {
     private static final String TAG = "Network";
 
    // public static final String BASE_URL = "http://192.168.1.5:8080";
-   public static final String BASE_URL = "http://192.168.1.11:8000";
+   //public static final String BASE_URL = "http://192.168.1.11:8000";
    //public static final String BASE_URL = "http://bubbles.vukilab.com:8080/";
 
-   // public static final String BASE_URL = "http://www.bubbles.com.hr/";
+    public static final String BASE_URL = "http://www.bubbles.com.hr/";
     //public static final String BASE_URL = "http://10.129.36.202:8080";
 
-    private Gson gson = new GsonBuilder()
+    private static Gson gson = new GsonBuilder()
             .registerTypeAdapter(UserAuthorized.class, new UserAuthorizedDeserializer())
             .registerTypeAdapter(Date.class, new DateDeserializers())
             .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
             .create();
 
+
+    public static Gson getGson() {
+        return gson;
+    }
 
     private static ApiManager managerInstance;
     private ApiManagerService service;

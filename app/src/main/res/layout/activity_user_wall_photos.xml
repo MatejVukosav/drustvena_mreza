@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="You have no photos yet!" />
+        android:text="There is no photos yet!" />
 
 
 </RelativeLayout>

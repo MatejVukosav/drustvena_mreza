@@ -24,7 +24,7 @@ public class AddHeaderInterceptor implements com.squareup.okhttp.Interceptor {
 
         TAG = getClass().getSimpleName();
         HashSet<String> cookies = new HashSet<>();
-        String authToken = "";
+        String authToken;
 
         authToken = SharedPrefsHelpers.getToken(SocialNetworkApplication.getInstance());
         String connectSid = SharedPrefsHelpers.getCookiesConnectSid(SocialNetworkApplication.getInstance());

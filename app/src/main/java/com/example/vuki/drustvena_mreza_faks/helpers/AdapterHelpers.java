@@ -19,7 +19,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class AdapterHelpers {
 
-    String dvorac="http://www.ffzg.unizg.hr/kspuff/wp-content/uploads/2014/06/dvorac1.png";
+    static String dvorac = "http://www.ffzg.unizg.hr/kspuff/wp-content/uploads/2014/06/dvorac1.png";
+    static String dd = "http://192.168.1.11:8000/res/img/dec366abfc77ebd247e7f3275261545a_20150926_210301.jpg";
 
     public static void setImage(Context context, String url, ImageView imageView) {
         Glide.with(context)
