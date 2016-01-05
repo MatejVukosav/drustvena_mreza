@@ -311,13 +311,13 @@ public class CoreActivity extends AppCompatActivity {
                 //initial first item is selected
                 LinearLayout customTab = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.core_tab_custom, null);
                 if (i == TAB_HOME) {
-                    setTabIcon(customTab, R.mipmap.app_home_white);
+                    setTabIcon(customTab, R.mipmap.app_ic_home_white_24dp);
                 } else if (i == TAB_INBOX) {
-                    setTabIcon(customTab, R.mipmap.app_inbox_black);
+                    setTabIcon(customTab, R.mipmap.app_ic_chat_black_24dp);
                 } else if (i == TAB_SEARCH) {
-                    setTabIcon(customTab, R.mipmap.ic_person_add_black_24dp);
+                    setTabIcon(customTab, R.mipmap.app_ic_group_add_black_24dp);
                 } else if (i == TAB_USER_WALL) {
-                    setTabIcon(customTab, R.mipmap.ic_person_black_24dp);
+                    setTabIcon(customTab, R.mipmap.app_ic_person_black_24dp);
                 } else {
                     setTabIcon(customTab, R.mipmap.ic_error_black_24dp);
                 }
@@ -337,13 +337,13 @@ public class CoreActivity extends AppCompatActivity {
                     int i = tab.getPosition();
 
                     if (i == TAB_HOME) {
-                        setTabIcon(customTab, R.mipmap.app_home_white);
+                        setTabIcon(customTab, R.mipmap.app_ic_home_white_24dp);
                     } else if (i == TAB_INBOX) {
-                        setTabIcon(customTab, R.mipmap.app_inbox_white);
+                        setTabIcon(customTab, R.mipmap.app_ic_chat_white_24dp);
                     } else if (i == TAB_SEARCH) {
-                        setTabIcon(customTab, R.mipmap.ic_person_add_black_24dp);
+                        setTabIcon(customTab, R.mipmap.app_ic_group_add_white_24dp);
                     } else if (i == TAB_USER_WALL) {
-                        setTabIcon(customTab, R.mipmap.ic_person_black_24dp);
+                        setTabIcon(customTab, R.mipmap.app_ic_person_white_24dp);
                     } else {
                         setTabIcon(customTab, R.mipmap.ic_error_black_24dp);
                     }
@@ -361,13 +361,13 @@ public class CoreActivity extends AppCompatActivity {
                     int i = tab.getPosition();
 
                     if (i == TAB_HOME) {
-                        setTabIcon(customTab, R.mipmap.app_home_black);
+                        setTabIcon(customTab, R.mipmap.app_ic_home_black_24dp);
                     } else if (i == TAB_INBOX) {
-                        setTabIcon(customTab, R.mipmap.app_inbox_black);
+                        setTabIcon(customTab, R.mipmap.app_ic_chat_black_24dp);
                     } else if (i == TAB_SEARCH) {
-                        setTabIcon(customTab, R.mipmap.ic_person_add_black_24dp);
+                        setTabIcon(customTab, R.mipmap.app_ic_group_add_black_24dp);
                     } else if (i == TAB_USER_WALL) {
-                        setTabIcon(customTab, R.mipmap.ic_person_black_24dp);
+                        setTabIcon(customTab, R.mipmap.app_ic_person_black_24dp);
                     } else {
                         setTabIcon(customTab, R.mipmap.ic_error_black_24dp);
                     }

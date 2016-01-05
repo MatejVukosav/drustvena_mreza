@@ -6,6 +6,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.example.vuki.drustvena_mreza_faks.R;
+import com.example.vuki.drustvena_mreza_faks.network.ApiManager;
 import com.example.vuki.drustvena_mreza_faks.network.deserializers.DateDeserializers;
 
 import java.text.ParseException;
@@ -19,21 +20,20 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class AdapterHelpers {
 
-    static String dvorac = "http://www.ffzg.unizg.hr/kspuff/wp-content/uploads/2014/06/dvorac1.png";
-    static String dd = "http://192.168.1.11:8000/res/img/dec366abfc77ebd247e7f3275261545a_20150926_210301.jpg";
-
     public static void setImage(Context context, String url, ImageView imageView) {
+        String urlModified= ApiManager.BASE_URL+url+"?size=medium";
+
         Glide.with(context)
-                .load(url)
+                .load(urlModified)
                 .asBitmap()
-                .centerCrop()
+                //.centerCrop()
                 .dontAnimate()
                 .placeholder(R.drawable.com_facebook_profile_picture_blank_portrait)
                 .into(imageView);
     }
 
+/*
     public static void setImage(Context context, int url, ImageView imageView) {
-
         Glide.with(context)
                 .load(url)
                 .asBitmap()
@@ -41,10 +41,12 @@ public class AdapterHelpers {
                 .placeholder(R.drawable.com_facebook_profile_picture_blank_portrait)
                 .into(imageView);
     }
+*/
 
     public static void setCircleImage(Context context, String url, CircleImageView circleImageView) {
+        String urlModified= ApiManager.BASE_URL+url;
         Glide.with(context)
-                .load(url)
+                .load(urlModified)
                 .asBitmap()
                 .centerCrop()
                 .dontAnimate()

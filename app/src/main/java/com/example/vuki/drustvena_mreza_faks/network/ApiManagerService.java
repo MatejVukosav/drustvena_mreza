@@ -96,7 +96,7 @@ public interface ApiManagerService {
 
     @GET("api/user/gallery")
     Call<GalleryResponse> getGalleries(@Query("user_id") int userId);
-//get users for given search term
+    //get users for given search term
     @GET("api/user/search")
     Call<UsersResponse> getSearchItem(@Query("term") String searchTerm);
 
@@ -111,7 +111,6 @@ public interface ApiManagerService {
 
     /*@POST("/api/v1/users/login")
     void login(@Body LoginRequest request, Callback<LoginResponse> callback);
-
 
     @POST("/api/v1/users/register")
     void postResetPassword(@Body String email, Callback<ForgottenPasswordResponse> callback);

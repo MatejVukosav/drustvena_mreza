@@ -1,6 +1,8 @@
 package com.example.vuki.drustvena_mreza_faks.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.vuki.drustvena_mreza_faks.R;
+import com.example.vuki.drustvena_mreza_faks.activities.UserWallFromFriend;
 import com.example.vuki.drustvena_mreza_faks.helpers.AdapterHelpers;
+import com.example.vuki.drustvena_mreza_faks.helpers.BundleKeys;
 import com.example.vuki.drustvena_mreza_faks.models.ContactRawInfo;
 
 import java.util.List;
@@ -42,13 +46,24 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(final FriendsAdapter.ViewHolder holder, final int position) {
-        ContactRawInfo contactRawInfo = contactRawInfos.get(position);
+        final ContactRawInfo contactRawInfo = contactRawInfos.get(position);
         holder.username.setText(contactRawInfo.getUsername());
-        String location=contactRawInfo.getCountry()+" "+contactRawInfo.getCity();
+        String location = contactRawInfo.getCountry() + " " + contactRawInfo.getCity();
         holder.location.setText(location);
         if (contactRawInfo.getUserProfilePicture() != null) {
-            AdapterHelpers.setCircleImage(context, contactRawInfo.getUserProfilePicture(),holder.profileImage);
+            AdapterHelpers.setCircleImage(context, contactRawInfo.getUserProfilePicture(), holder.profileImage);
         }
+
+        holder.username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, UserWallFromFriend.class);
+                Bundle b = new Bundle();
+                b.putInt(BundleKeys.FRIEND_USER_ID, contactRawInfo.getUserId());
+                intent.putExtras(b);
+                context.startActivity(intent);
+            }
+        });
 
     }
 

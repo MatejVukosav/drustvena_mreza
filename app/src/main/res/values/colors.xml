@@ -5,6 +5,7 @@
     <color name="primary_dark">#FF8C00</color>
     <color name="primary_red">#FF4500</color>
     <color name="primary_accent">#FF4500</color>
+    <color name="transparent_85_percent_black">#D8000000</color>
 
     <color name="tab_core_color">@color/primary_dark</color>
     <color name="navigation_header_color">@color/primary_dark</color>

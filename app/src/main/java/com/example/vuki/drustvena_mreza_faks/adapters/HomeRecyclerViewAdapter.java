@@ -25,6 +25,7 @@ import com.example.vuki.drustvena_mreza_faks.helpers.AdapterHelpers;
 import com.example.vuki.drustvena_mreza_faks.helpers.BundleKeys;
 import com.example.vuki.drustvena_mreza_faks.helpers.NotesHelpers;
 import com.example.vuki.drustvena_mreza_faks.helpers.RetrofitHelper;
+import com.example.vuki.drustvena_mreza_faks.listeners.OnImageClickListener;
 import com.example.vuki.drustvena_mreza_faks.models.Bubble;
 import com.example.vuki.drustvena_mreza_faks.models.BubblesResponse;
 import com.example.vuki.drustvena_mreza_faks.models.HomeFeedOneModel;
@@ -68,12 +69,13 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
 
     private static final int BUBLE_ERROR = 0;
+    static OnImageClickListener onImageClickListener;
 
 
-    public HomeRecyclerViewAdapter(List<HomeFeedOneModel> mData, Context context) {
+    public HomeRecyclerViewAdapter(List<HomeFeedOneModel> mData, Context context,OnImageClickListener onImageClickListener) {
         this.mData = mData;
         this.context = context;
-
+        this.onImageClickListener=onImageClickListener;
     }
 
     @Override
@@ -387,6 +389,10 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
             super(itemView);
             ButterKnife.bind(this, itemView);
 
+            if(itemPicture!=null){
+                itemPicture.setOnClickListener(this);
+            }
+
 
             if (commentsBtn != null) {
                 commentsBtn.setOnClickListener(this);
@@ -416,6 +422,9 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
             switch (v.getId()) {
                 case R.id.comments_btn:
                     getComments(getPostItemPosition);
+                    break;
+                case R.id.core_home_item_picture:
+                    onImageClickListener.OnImageClick(itemPicture);
                     break;
             }
         }

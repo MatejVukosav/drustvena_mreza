@@ -1,6 +1,8 @@
 package com.example.vuki.drustvena_mreza_faks.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.vuki.drustvena_mreza_faks.R;
+import com.example.vuki.drustvena_mreza_faks.activities.UserWallFromFriend;
 import com.example.vuki.drustvena_mreza_faks.helpers.AdapterHelpers;
+import com.example.vuki.drustvena_mreza_faks.helpers.BundleKeys;
 import com.example.vuki.drustvena_mreza_faks.helpers.NotesHelpers;
 import com.example.vuki.drustvena_mreza_faks.helpers.RetrofitHelper;
 import com.example.vuki.drustvena_mreza_faks.models.SearchUserRequest;
@@ -53,7 +57,7 @@ public class AddFriendsAdapter extends RecyclerView.Adapter<AddFriendsAdapter.Vi
     public void onBindViewHolder(final AddFriendsAdapter.ViewHolder holder, final int position) {
 
 
-        User user = users.get(position);
+        final User user = users.get(position);
         holder.username.setText(user.getUsername());
         String country = "";
         if (user.getCountryId() != null) {
@@ -67,6 +71,17 @@ public class AddFriendsAdapter extends RecyclerView.Adapter<AddFriendsAdapter.Vi
 
         String location = country + " " + city;
         holder.location.setText(location);
+
+        holder.username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, UserWallFromFriend.class);
+                Bundle b = new Bundle();
+                b.putInt(BundleKeys.FRIEND_USER_ID, user.getUserId());
+                intent.putExtras(b);
+                context.startActivity(intent);
+            }
+        });
 
         AdapterHelpers.setImage(context, user.getProfileImage(), holder.profileImage);
     }

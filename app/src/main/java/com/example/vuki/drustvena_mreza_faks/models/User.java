@@ -3,7 +3,6 @@ package com.example.vuki.drustvena_mreza_faks.models;
 import android.support.annotation.Nullable;
 
 import com.example.vuki.drustvena_mreza_faks.enums.UserAuthorized;
-import com.example.vuki.drustvena_mreza_faks.network.ApiManager;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -153,7 +152,7 @@ public class User implements Serializable{
 
     public String getProfileImage() {
         if(profileImage!=null) {
-            return ApiManager.BASE_URL+profileImage;
+            return /*ApiManager.BASE_URL+*/profileImage;
         }else{
             return null;
         }

@@ -25,6 +25,7 @@ public class ShowGaleryAdapter extends RecyclerView.Adapter<ShowGaleryAdapter.Vi
     static Context context;
 
 
+
     public ShowGaleryAdapter(Context context, List<Post> photos) {
         this.photos = photos;
         this.context = context;
@@ -40,6 +41,7 @@ public class ShowGaleryAdapter extends RecyclerView.Adapter<ShowGaleryAdapter.Vi
     public void onBindViewHolder(final ShowGaleryAdapter.ViewHolder holder, final int position) {
         Post post = photos.get(position);
         AdapterHelpers.setImage(context, post.getContent(), holder.galeryitem);
+
     }
 
     @Override
@@ -66,7 +68,7 @@ public class ShowGaleryAdapter extends RecyclerView.Adapter<ShowGaleryAdapter.Vi
     }
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.galery_item_image_view)
         ImageView galeryitem;
 
@@ -74,11 +76,7 @@ public class ShowGaleryAdapter extends RecyclerView.Adapter<ShowGaleryAdapter.Vi
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
-
-        @Override
-        public void onClick(View v) {
-            int adapterPosition = getAdapterPosition();
-
-        }
     }
+
+
 }

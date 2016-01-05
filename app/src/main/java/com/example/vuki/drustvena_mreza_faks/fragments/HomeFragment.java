@@ -4,17 +4,20 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.vuki.drustvena_mreza_faks.R;
 import com.example.vuki.drustvena_mreza_faks.adapters.HomeRecyclerViewAdapter;
 import com.example.vuki.drustvena_mreza_faks.helpers.NotesHelpers;
 import com.example.vuki.drustvena_mreza_faks.helpers.RetrofitHelper;
+import com.example.vuki.drustvena_mreza_faks.listeners.OnImageClickListener;
 import com.example.vuki.drustvena_mreza_faks.models.HomeFeedOneModel;
 import com.example.vuki.drustvena_mreza_faks.models.HomeFeedResponse;
 import com.example.vuki.drustvena_mreza_faks.network.ApiManager;
@@ -31,7 +34,7 @@ import retrofit.Retrofit;
 /**
  * Created by Vuki on 4.11.2015..
  */
-public class HomeFragment extends Fragment  {
+public class HomeFragment extends Fragment implements OnImageClickListener {
     private static String TAG;
     Context context;
 
@@ -48,12 +51,15 @@ public class HomeFragment extends Fragment  {
     RecyclerView recyclerView;
 
 
+    @Bind(R.id.bigger_picture)
+    ImageView biggerPicture;
+
 
     @Override
     public void onResume() {
         super.onResume();
 
-        Call<HomeFeedResponse> timelineResponseCall= ApiManager.getInstance().getService().getHomeFeed();
+        Call<HomeFeedResponse> timelineResponseCall = ApiManager.getInstance().getService().getHomeFeed();
         timelineResponseCall.enqueue(new Callback<HomeFeedResponse>() {
             @Override
             public void onResponse(Response<HomeFeedResponse> response, Retrofit retrofit) {
@@ -80,10 +86,10 @@ public class HomeFragment extends Fragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_core_home, container, false);
         ButterKnife.bind(this, v);
-        context=getContext();
+        context = getContext();
         TAG = getClass().getSimpleName();
 
-        Call<HomeFeedResponse> timelineResponseCall= ApiManager.getInstance().getService().getHomeFeed();
+        Call<HomeFeedResponse> timelineResponseCall = ApiManager.getInstance().getService().getHomeFeed();
         timelineResponseCall.enqueue(new Callback<HomeFeedResponse>() {
             @Override
             public void onResponse(Response<HomeFeedResponse> response, Retrofit retrofit) {
@@ -93,8 +99,8 @@ public class HomeFragment extends Fragment  {
                     } else {
                         NotesHelpers.toastMessage(context, getResources().getString(R.string.error_something_is_wrong));
                     }
-                }else{
-                    RetrofitHelper.checkCode(response.code(),context );
+                } else {
+                    RetrofitHelper.checkCode(response.code(), context);
                 }
             }
 
@@ -108,79 +114,31 @@ public class HomeFragment extends Fragment  {
     }
 
 
-
     private void populateRecycler(List<HomeFeedOneModel> posts) {
-        if(posts.size()==0){
+        if (posts.size() == 0) {
             emptyList.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             emptyList.setVisibility(View.GONE);
         }
 
         recyclerView.setVisibility(View.VISIBLE);
-        HomeRecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(posts, getContext());
+        HomeRecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(posts, getContext(),(OnImageClickListener)this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
-    }
 
 
-
-
- /*   @Override
-    public void onPostsListReceived(List<Post> posts) {
-        emptyList.setVisibility(View.GONE);
-        if (SocialNetworkApplication.DEBUG) {
-            populateRecycler(MockUsers.getFivePosts(15).getPosts());
-        } else {
-            populateRecycler(posts);
-        }
-    }
-
-
-    @Override
-    public void onPostsListEmpty() {
-        emptyList.setVisibility(View.VISIBLE);
+        biggerPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                biggerPicture.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
-    public void onTokenExpired() {
-        Intent intent=new Intent(getActivity(), LoginActivity.class);
-        startActivity(intent);
-        getActivity().finish();
+    public void OnImageClick(ImageView imageView) {
+        biggerPicture.setImageDrawable(imageView.getDrawable());
+        biggerPicture.setVisibility(View.VISIBLE);
+        biggerPicture.setBackgroundColor(ContextCompat.getColor(context, R.color.transparent_85_percent_black));
     }
-
-    @Override
-    public void showProgress() {
-
-    }
-
-    @Override
-    public void hideProgress() {
-
-    }
-
-    @Override
-    public void showError(@StringRes int error) {
-        showError(error);
-    }
-
-    @Override
-    public void onPictureClicked() {
-        NotesHelpers.toastMessage(getContext(),"picture clicked");
-    }
-
-    @Override
-    public void onUserClicked() {
-        NotesHelpers.toastMessage(getContext(),"ucer clicked");
-    }
-
-    @Override
-    public void onCommentNumClicked() {
-        NotesHelpers.toastMessage(getContext(),"comment num clicked");
-    }
-
-    @Override
-    public void onLikeNumClicked() {
-        NotesHelpers.toastMessage(getContext(),"like num clicked");
-    }*/
-
 }

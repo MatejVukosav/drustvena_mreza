@@ -11,7 +11,7 @@ import java.io.Serializable;
 public class ContactRawInfo implements Serializable {
 
     @SerializedName("id")
-    int id;
+    int userId;
 
     @SerializedName("username")
     String username;
@@ -41,8 +41,8 @@ public class ContactRawInfo implements Serializable {
         }
     }
 
-    public int getId() {
-        return id;
+    public int getUserId() {
+        return userId;
     }
 
     public String getUsername() {
