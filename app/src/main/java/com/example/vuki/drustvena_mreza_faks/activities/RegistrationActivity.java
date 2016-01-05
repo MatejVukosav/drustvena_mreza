@@ -129,6 +129,8 @@ public class RegistrationActivity extends BaseActivity {
                             NotesHelpers.toastMessage(getApplicationContext(), getResources().getString(R.string.error_something_went_wrong));
                         }
                     }
+                }{
+                    NotesHelpers.toastMessage(getApplicationContext(), getResources().getString(R.string.error_something_is_wrong));
                 }
             }
 

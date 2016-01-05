@@ -29,7 +29,6 @@
     <string name="error_field_required">This field is required</string>
 
 
-    <string name="error_something_went_wrong">Oops something went wrong!</string>
 
     <!-- INTERNET CONNECTION -->
     <string name="check_internet_connection">"Network ERROR"</string>
@@ -71,6 +70,8 @@
     <string name="error_empty_login">Username and password are mandatory</string>
     <string name="error_download">Greska kod dohvata</string>
     <string name="error_something_is_wrong">Error: something is wrong.Server side</string>
+
+    <string name="error_something_went_wrong">Oops something went wrong!</string>
 
 
     <!-- REST -->

@@ -122,6 +122,8 @@ public class LoginActivity extends AppCompatActivity {
                             NotesHelpers.toastMessage(getApplicationContext(), getResources().getString(R.string.error_something_went_wrong));
                         }
                     }
+                }else{
+                    NotesHelpers.toastMessage(getApplicationContext(), getResources().getString(R.string.error_something_is_wrong));
                 }
             }
 
