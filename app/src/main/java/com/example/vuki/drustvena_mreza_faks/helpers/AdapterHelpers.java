@@ -8,6 +8,8 @@ import com.bumptech.glide.Glide;
 import com.example.vuki.drustvena_mreza_faks.R;
 import com.example.vuki.drustvena_mreza_faks.network.ApiManager;
 import com.example.vuki.drustvena_mreza_faks.network.deserializers.DateDeserializers;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -20,49 +22,46 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class AdapterHelpers {
 
-    public static void setImage(Context context, String url, ImageView imageView) {
-        String urlModified= ApiManager.BASE_URL+url+"?size=medium";
-
-        Glide.with(context)
-                .load(urlModified)
-                .asBitmap()
-                //.centerCrop()
-                .dontAnimate()
-                .placeholder(R.drawable.com_facebook_profile_picture_blank_portrait)
-                .into(imageView);
+    public static void setImageWithGlide(Context context, String url, ImageView imageView) {
+        String urlModified = ApiManager.BASE_URL + url + "?size=medium";
+        getUniversalImageLoader(urlModified, imageView);
     }
 
-/*
-    public static void setImage(Context context, int url, ImageView imageView) {
+    public static void setCircleImage(Context context, String url, CircleImageView circleImageView) {
+        String urlModified = ApiManager.BASE_URL + url;
+        getUniversalImageLoader(urlModified, circleImageView);
+    }
+
+    private static void getUniversalImageLoader(String url, ImageView imageView) {
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.loading)
+                .showImageForEmptyUri(R.drawable.com_facebook_profile_picture_blank_portrait)
+                .showImageOnFail(R.drawable.ic_error_black_24dp)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .build();
+
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.displayImage(url, imageView, options);
+    }
+
+    private static void getGlideLoader(String url, ImageView imageView, Context context) {
         Glide.with(context)
                 .load(url)
                 .asBitmap()
                 .centerCrop()
+                .dontAnimate()
                 .placeholder(R.drawable.com_facebook_profile_picture_blank_portrait)
                 .into(imageView);
     }
-*/
 
-    public static void setCircleImage(Context context, String url, CircleImageView circleImageView) {
-        String urlModified= ApiManager.BASE_URL+url;
-        Glide.with(context)
-                .load(urlModified)
-                .asBitmap()
-                .centerCrop()
-                .dontAnimate()
-                .placeholder(R.drawable.com_facebook_profile_picture_blank_portrait)
-                .into(circleImageView);
-    }
 
     public static String setTime(String time) {
-
         long now = System.currentTimeMillis();
         long timeLong = getTimeInMilliseconds(time);
         //long millisStart = Calendar.getInstance().getTimeInMillis();
         final CharSequence relativeTimeSpan = DateUtils.getRelativeTimeSpanString(timeLong, now, DateUtils.SECOND_IN_MILLIS);
         return relativeTimeSpan.toString();
-
-
     }
 
     public static long getTimeInMilliseconds(String time) {

@@ -40,7 +40,7 @@ public class ShowGaleryAdapter extends RecyclerView.Adapter<ShowGaleryAdapter.Vi
     @Override
     public void onBindViewHolder(final ShowGaleryAdapter.ViewHolder holder, final int position) {
         Post post = photos.get(position);
-        AdapterHelpers.setImage(context, post.getContent(), holder.galeryitem);
+        AdapterHelpers.setImageWithGlide(context, post.getContent(), holder.galeryitem);
 
     }
 

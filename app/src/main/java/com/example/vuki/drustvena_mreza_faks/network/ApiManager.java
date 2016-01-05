@@ -23,7 +23,7 @@ public class ApiManager implements ApiManagerInterface {
     // public static final String BASE_URL = "http://192.168.1.10:8000";
     //public static final String BASE_URL = "http://bubbles.vukilab.com:8080/";
 
-    public static final String BASE_URL = "https://www.bubbles.com.hr/";
+    public static final String BASE_URL = "https://www.bubbles.com.hr";
     //public static final String BASE_URL = "http://10.129.36.202:8080";
 
     private static Gson gson = new GsonBuilder()
@@ -61,7 +61,7 @@ public class ApiManager implements ApiManagerInterface {
         OkHttpClient client = new OkHttpClient();
         client.interceptors().add(new ReceivedCookiesInterceptor());
         client.interceptors().add(new AddHeaderInterceptor());
-       // client.interceptors().add(new LoggingInterceptor());
+      // client.interceptors().add(new LoggingInterceptor());
 
 
         Retrofit retrofit = new Retrofit.Builder()

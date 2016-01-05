@@ -107,9 +107,9 @@ public class UserWallAdapter extends RecyclerView.Adapter<UserWallAdapter.ViewHo
 
         //header item
         if (holder.getItemViewType() == TYPE_HEADER) {
-            //AdapterHelpers.setImage(context,R.drawable.lisica,holder.userWallPicture);
+            //AdapterHelpers.setImageWithGlide(context,R.drawable.lisica,holder.userWallPicture);
             holder.userWallUsername.setText(mUser.getUsername());
-            AdapterHelpers.setImage(context, mUser.getProfileImage(), holder.userWallPicture);
+            AdapterHelpers.setImageWithGlide(context, mUser.getProfileImage(), holder.userWallPicture);
 
             if (!myWall) {
                 if (holder.addAsFriend != null) {

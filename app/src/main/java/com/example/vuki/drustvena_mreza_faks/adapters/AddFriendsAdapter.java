@@ -83,7 +83,7 @@ public class AddFriendsAdapter extends RecyclerView.Adapter<AddFriendsAdapter.Vi
             }
         });
 
-        AdapterHelpers.setImage(context, user.getProfileImage(), holder.profileImage);
+        AdapterHelpers.setImageWithGlide(context, user.getProfileImage(), holder.profileImage);
     }
 
     @Override

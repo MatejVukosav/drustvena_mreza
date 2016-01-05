@@ -274,7 +274,7 @@ public class CoreActivity extends AppCompatActivity {
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-        // AdapterHelpers.setImage(this, AdapterHelpers.profilePic, mHeaderProfileCircleImage);
+        // AdapterHelpers.setImageWithGlide(this, AdapterHelpers.profilePic, mHeaderProfileCircleImage);
         //mHaderUsername.setText(AdapterHelpers.userName);
 
 

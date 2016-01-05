@@ -233,7 +233,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
             if (homeFeedOneModel.getContentTypeId() == TYPE_IMAGE) {
                 if (holder.itemPicture != null) {
                     url = homeFeedOneModel.getContent();
-                    AdapterHelpers.setImage(context, url, holder.itemPicture);
+                    AdapterHelpers.setImageWithGlide(context, url, holder.itemPicture);
 
                 }
                 holder.message.setText(homeFeedOneModel.getDescription());
@@ -279,12 +279,12 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         holder.postTime.setText(relativeTimeSpan);*/
 
 
-            //AdapterHelpers.setImage(context, R.drawable.lisica, holder.personal_picture);
+            //AdapterHelpers.setImageWithGlide(context, R.drawable.lisica, holder.personal_picture);
 
 
             //sa slikom
       /*  if (post.getContetnTypeId() == TYPE_IMAGE) {
-            AdapterHelpers.setImage(context, R.drawable.dvorac1, holder.itemPicture);
+            AdapterHelpers.setImageWithGlide(context, R.drawable.dvorac1, holder.itemPicture);
         }*/
         }
 
