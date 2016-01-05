@@ -1,5 +1,6 @@
 package com.example.vuki.drustvena_mreza_faks.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -107,6 +108,10 @@ public class RegistrationActivity extends BaseActivity {
         String city = mCity.getText().toString();
         String country = mCountry.getText().toString();
 
+        final ProgressDialog mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setMessage("Loading...");
+        mProgressDialog.show();
 
         RegisterRequest registerRequest = new RegisterRequest(username, password, email, firstName, middleName, lastName, address, city, country);
 
@@ -129,14 +134,19 @@ public class RegistrationActivity extends BaseActivity {
                             NotesHelpers.toastMessage(getApplicationContext(), getResources().getString(R.string.error_something_went_wrong));
                         }
                     }
-                }{
+                }else{
                     NotesHelpers.toastMessage(getApplicationContext(), getResources().getString(R.string.error_something_is_wrong));
                 }
+                if (mProgressDialog.isShowing())
+                    mProgressDialog.dismiss();
             }
 
             @Override
             public void onFailure(Throwable t) {
                 NotesHelpers.toastMessage(getApplicationContext(), getResources().getString(R.string.error_something_is_wrong));
+                t.printStackTrace();
+                if (mProgressDialog.isShowing())
+                    mProgressDialog.dismiss();
             }
         });
 

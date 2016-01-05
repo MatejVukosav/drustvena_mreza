@@ -14,7 +14,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 
 /**
  * Created by Vuki on 4.1.2016..
@@ -25,7 +24,7 @@ public class DateDeserializers implements JsonDeserializer<Date>, JsonSerializer
 
     @Override
     public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        formatter.setTimeZone(TimeZone.getTimeZone("GMT+0100"));
+        //formatter.setTimeZone(TimeZone.getTimeZone("GMT+0100"));
 
         String jsonDate = json.getAsString();
         if (!TextUtils.isEmpty(jsonDate)) {

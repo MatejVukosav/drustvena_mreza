@@ -64,7 +64,7 @@
         android:layout_below="@+id/comment_child_item_header"
         android:layout_marginTop="10dp"
         android:background="@color/white"
-        android:maxLines="10"
+        android:maxLines="@integer/max_lines_text"
         android:minLines="1"
         android:padding="15dp"
         android:textSize="15sp"

@@ -1,10 +1,13 @@
 package com.example.vuki.drustvena_mreza_faks.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.vuki.drustvena_mreza_faks.R;
 import com.example.vuki.drustvena_mreza_faks.helpers.InternetConnection;
@@ -37,9 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     boolean mLoginSave = false;
 
 
-
     private String TAG = getClass().getSimpleName();
-
 
 
     @Override
@@ -65,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void init() {
-        prefsHelper=new PrefsHelper(this);
+        prefsHelper = new PrefsHelper(this);
 
         String json = prefsHelper.getString(PrefsHelper.LOGGED_IN_USER_APPUSER_DATA, "");
         String password = prefsHelper.getString(PrefsHelper.LOGGED_IN_USER_APPUSER_DATA_PASSWORD, "");
@@ -98,6 +99,11 @@ public class LoginActivity extends AppCompatActivity {
     @OnClick(R.id.login_btn)
     public void onLoginClick() {
 
+        final ProgressDialog mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setMessage("Loading...");
+        mProgressDialog.show();
+
         String username = mLoginUsername.getText().toString();
         final String password = mLoginPassword.getText().toString();
         LoginRequest loginRequest = new LoginRequest(username, password);
@@ -109,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (response.body().getUser() != null) {
                         ApiManager.getInstance().setUser(response.body().getUser());
 
-                        loginSuccesfull(ApiManager.getInstance().getUser(),password);
+                        loginSuccesfull(ApiManager.getInstance().getUser(), password);
 
                     } else {
                         try {
@@ -122,7 +128,12 @@ public class LoginActivity extends AppCompatActivity {
                             NotesHelpers.toastMessage(getApplicationContext(), getResources().getString(R.string.error_something_went_wrong));
                         }
                     }
-                }else{
+
+                    if (mProgressDialog.isShowing())
+                        mProgressDialog.dismiss();
+
+
+                } else {
                     NotesHelpers.toastMessage(getApplicationContext(), getResources().getString(R.string.error_something_is_wrong));
                 }
             }
@@ -130,6 +141,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Throwable t) {
                 NotesHelpers.toastMessage(getApplicationContext(), getResources().getString(R.string.error_something_went_wrong));
+                t.printStackTrace();
+                if (mProgressDialog.isShowing())
+                    mProgressDialog.dismiss();
+
+
             }
         });
 
@@ -149,7 +165,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.login_register_btn)
-    public void onRegisterClick(){
+    public void onRegisterClick() {
         Intent intent = new Intent(this, RegistrationActivity.class);
         startActivity(intent);
     }
@@ -160,6 +176,26 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this, ForgottenPasswordActivity.class);
         startActivity(intent);
     }*/
+
+    boolean doubleBackToExitPressedOnce = false;
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
+    }
 
 
 }

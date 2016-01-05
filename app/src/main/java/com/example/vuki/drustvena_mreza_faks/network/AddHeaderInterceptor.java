@@ -30,7 +30,6 @@ public class AddHeaderInterceptor implements com.squareup.okhttp.Interceptor {
         String connectSid = SharedPrefsHelpers.getCookiesConnectSid(SocialNetworkApplication.getInstance());
 
         if (connectSid != null) {
-            NotesHelpers.logMessage(TAG, "cookies");
             int i = 0;
             for (String cookie : cookies) {
                 NotesHelpers.logMessage("" + i, cookie);

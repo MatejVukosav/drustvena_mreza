@@ -72,10 +72,10 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
     static OnImageClickListener onImageClickListener;
 
 
-    public HomeRecyclerViewAdapter(List<HomeFeedOneModel> mData, Context context,OnImageClickListener onImageClickListener) {
+    public HomeRecyclerViewAdapter(List<HomeFeedOneModel> mData, Context context, OnImageClickListener onImageClickListener) {
         this.mData = mData;
         this.context = context;
-        this.onImageClickListener=onImageClickListener;
+        this.onImageClickListener = onImageClickListener;
     }
 
     @Override
@@ -142,7 +142,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
                         NotesHelpers.toastMessage(context, "There is no bubbles available");
                     }
                 } else {
-                    RetrofitHelper.checkCode(response.code(),context );
+                    RetrofitHelper.checkCode(response.code(), context);
                 }
             }
 
@@ -164,7 +164,9 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         if (position == ADD_NEW_STATUS) {
             if (holder.showBubbles != null && holder.addNewStatusButton != null && holder.addNewStatusText != null) {
                 // addNewStatusUserImage
-                AdapterHelpers.setCircleImage(context, ApiManager.getInstance().getUser().getProfileImage(), holder.addNewStatusUserImage);
+                if (ApiManager.getInstance().getUser() != null) {
+                    AdapterHelpers.setCircleImage(context, ApiManager.getInstance().getUser().getProfileImage(), holder.addNewStatusUserImage);
+                }
 
                 holder.showBubbles.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -193,7 +195,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
             }
 
 
-        } else{
+        } else {
             final int itemPosition = position - 1;
             final HomeFeedOneModel homeFeedOneModel = mData.get(itemPosition);
 
@@ -223,7 +225,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
             // AdapterHelpers.setCircleImage(context, homeFeedOneModel..getProfileImage(), holder.personal_picture);
 
-            url=homeFeedOneModel.getUserProfilePicture();
+            url = homeFeedOneModel.getUserProfilePicture();
             //show user picture
             AdapterHelpers.setCircleImage(context, url, holder.personal_picture);
             //show content_type2
@@ -389,7 +391,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            if(itemPicture!=null){
+            if (itemPicture != null) {
                 itemPicture.setOnClickListener(this);
             }
 
@@ -476,7 +478,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
                                                  HomeFeedOneModel homeFeedOneModel = new HomeFeedOneModel(0, 0, 0, 0, post.getDescription(), post.getContent(), post.getTitle(), post.getUpdatedAt(), post.getCreatedAt(),
                                                          post.getContentTypeId(), author.getUserId(), author.getUsername(), post.getBubbleId(), post.getId());
                                                  mData.add(0, homeFeedOneModel);
-                                                // swap(mData);
+                                                 // swap(mData);
                                                  editTextPost.setText("");
                                                  spinner.setSelection(0);
                                                  NotesHelpers.toastMessage(context, "You have added a new post");
@@ -487,7 +489,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
                                                  NotesHelpers.toastMessage(context, "Error: " + "response body is empty");
                                              }
                                          } else {
-                                             RetrofitHelper.checkCode(response.code(),context );
+                                             RetrofitHelper.checkCode(response.code(), context);
                                              NotesHelpers.toastMessage(context, "Please choose bubble");
                                          }
                                      }
@@ -501,13 +503,11 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         );
     }
 
-    public void swap(List<HomeFeedOneModel> datas){
+    public void swap(List<HomeFeedOneModel> datas) {
         mData.clear();
         mData.addAll(datas);
         notifyDataSetChanged();
     }
-
-
 
 
 }
