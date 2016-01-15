@@ -21,6 +21,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by Vuki on 6.11.2015..
  */
 public class AdapterHelpers {
+    private static int PLACEHOLDER=R.drawable.com_facebook_profile_picture_blank_portrait;
+    private static int ERROR=R.drawable.ic_error_black_24dp;
+    private static int LOADING=R.drawable.loading;
 
     public static void setImageWithGlide(Context context, String url, ImageView imageView) {
         String urlModified = ApiManager.BASE_URL + url + "?size=medium";
@@ -34,9 +37,9 @@ public class AdapterHelpers {
 
     private static void getUniversalImageLoader(String url, ImageView imageView) {
         DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.loading)
-                .showImageForEmptyUri(R.drawable.com_facebook_profile_picture_blank_portrait)
-                .showImageOnFail(R.drawable.ic_error_black_24dp)
+                .showImageOnLoading(LOADING)
+                .showImageForEmptyUri(PLACEHOLDER)
+                .showImageOnFail(ERROR)
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .build();

@@ -69,8 +69,6 @@ public class ApiManager implements ApiManagerInterface {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl(BASE_URL)
                 .client(client)
-
-
                 .build();
         service = retrofit.create(ApiManagerService.class);
     }

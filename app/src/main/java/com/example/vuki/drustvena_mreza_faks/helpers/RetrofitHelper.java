@@ -16,7 +16,6 @@ public class RetrofitHelper {
             if(statusCode==FORBIDDEN){
                 getOnLoginPage(context);
             }
-
     }
 
 
