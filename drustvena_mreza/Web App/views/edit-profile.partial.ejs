@@ -1,0 +1,138 @@
+    <style>
+        body {
+            margin: 20px auto;
+        }
+
+        .text_orange {
+            color: darkorange;
+            font-family: "Times New Roman";
+            font-size: 1.5em;
+        }
+        .text_other {
+            color: green;
+            font-family: "Times New Roman";
+            font-size: 1.2em;
+        }
+
+        .text_center {
+            text-align: center;
+        }
+        
+    </style>
+ 
+    
+    
+    <div class="container">
+        <form action="/profile/edit" method="post" id="loginForm" class="form-inline">
+         <div class="col-md-3">
+            <div class="well">
+                <label class= "text_orange"> PERSONAL INFORMATION</label>
+             </div>   
+             <div class="form-group">
+                <a class ="btn btn-danger" role="button" href="/">DECLINE</a>
+             </div>
+             <div class="form-group">
+               
+                    <input type="submit" class ="btn btn-info" role="button" value="SAVE" />
+          
+             </div>     
+        </div>
+             
+
+        <div class="col-md-4 col-sm-6">
+            <div class="well">
+            
+              
+                   
+                         <div class="control-group">
+                            <label class = "text_other control-label" for="firstName">FIRST NAME</label>
+                            <div class="controls">
+                            <input type="text" id="firstName" name="firstName" placeholder="" class="form-control" <% if(locals.user) { %>value="<%= user.first_name %>"<% } %> />
+                             </div>
+                             </div>
+                          <div class="control-group">
+                             <label class = "text_other control-label" for="middleName">MIDDLE NAME</label>
+                              <div class="controls">
+                                <input type="text" id="middleName" name="middleName" placeholder="" class="form-control" <% if(locals.user) { %>value="<%= user.middle_name %>"<% } %> />
+                              </div>
+                              </div>
+                              
+                          <div class="control-group">
+                             <label class = "text_other control-label" for="lastName">LAST NAME</label>
+                             <div class="controls">
+                              <input type="text" id="lastName" name="lastName" placeholder="" class="form-control" <% if(locals.user) { %>value="<%= user.last_name %>"<% } %>/>
+                              </div>
+                            </div>
+             
+        
+                
+                        <div class="control-group">
+                            <label for="country" class = "text_other">COUNTRY</label>
+                            
+                             <div class="controls">
+                            <input type="text" id="country" name="country" placeholder="" class="form-control" list="countries" <% if(locals.user) { %>value="<%= user.country %>"<% } %> />
+                            <% include countries-datalist.partial.ejs %>
+                            </div>
+                        </div>    
+                                
+                        <div class="control-group">
+                            <label for = "city" class = "text_other">CITY</label>
+                             <div class="controls">
+                                <input type="text" id="city" name="city" placeholder="" class="form-control" <% if(locals.user) { %>value="<%= user.city %>"<% } %> />
+                            </div>
+                        </div>        
+                        <div class="control-group">
+                    
+                            <label class = "text_other" for="address">ADDRESS</label>
+                             <div class="controls">
+                                 <input type="text" id="address" name="address" placeholder="" class="form-control" <% if(locals.user) { %>value="<%= user.address %>"<% } %> />
+                            </div>
+                        </div>
+                    
+            </div>
+        
+        </div>
+        
+        <div class="col-md-4 col-sm-6">
+            <div class="well">
+                
+                <div class="control-group">
+                    <label class = "text_other">RELATIONSHIP</label>
+                        <br />
+                          <label><input type="radio" name="relationshipStatusId" value="1"<% if(user.relationship_status_id==1){%> <%= checked="checked" %><%}%> /> Single</label>
+                        <br />
+                          <label><input type="radio" name="relationshipStatusId" value="2"<% if(user.relationship_status_id==2){%> <%= checked="checked" %><%}%> /> Complicated</label>
+                        <br />
+                          <label><input type="radio" name="relationshipStatusId" value="3"<% if(user.relationship_status_id==3){%> <%= checked="checked" %><%}%> /> In a relationship</label>
+                        <br />
+                          <label><input type="radio" name="relationshipStatusId" value="4"<% if(user.relationship_status_id==4){%> <%= checked="checked" %><%}%> /> Other</label>
+                </div>
+                  
+                    
+                 <div class="control-group">
+                    <label class = "text_other">GENDER</label>
+                     <br />
+                       <label><input type="radio" name="gender_id" value="2"<% if(user.gender_id==2){%> <%= checked="checked" %><%}%> /> Male</label>
+                    <br />
+                      <label><input type="radio" name="gender_id" value="1"<% if(user.gender_id==1){%> <%= checked="checked" %><%}%> /> Female</label>
+                    <br />
+                      <label><input type="radio" name="gender_id" value=""<% if(user.gender_id==''){%> <%= checked="checked" %><%}%> /> Other or not set</label>
+                 </div>
+                
+                     
+                    <div class="control-group">
+                        <label for="date" class = "text_other">DATE OF BIRTH</label>
+                        <div class="controls">
+							<input type="date" class="form-control" id="date" />
+                        </div>
+                    </div>
+                                
+           
+
+            </div>     
+        </div>    
+        
+     </form>    
+      
+</div> 
+        

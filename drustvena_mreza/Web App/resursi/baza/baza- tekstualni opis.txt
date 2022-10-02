@@ -1,0 +1,117 @@
+
+	baza v1.0
+
+		//Korisnik društvene mreže. 
+		//Sadrži informacije o korisničkom računu(username, password_hash, email, registration_date).
+		//Sve informacije korisničkog računa moraju biti definirane(NOT NULL).
+		//Sadrži strani ključ prema profilu korisnika(profile_id).
+		//Sadrži(redundantno) neke osobne podatke(first_name, middle_name, last_name).	
+		//Sadrži atribut "confirmed" koji kaže je li korisnički račun potvrđen(preko emaila).
+		user
+		-	id 					
+		-	username 					
+		-	password_hash					
+		-	email			
+		-	first_name					
+		-	middle_name							
+		-	last_name							
+		-	profile_id					
+		-	registration_date	
+		-	confirmed
+	
+		//Profil korisnika društvene mreže. 
+		//Sadrži osobne informacije o korisniku(first_name, last_name, middle_name, country, city,address, job).
+		//Od osobnih informacija samo first_name i last_name moraju biti definirani(NOT NULL).
+		//Sadrži strani ključ prema profilnoj slici(relacija picture) korisnika(profile_image_id).
+		//Sadrži strani ključ prema statusu veze(relacija relationship_status) korisnika(relationship_status_id).
+		profile
+		-	id					
+		-	first_name					
+		-	last_name					
+		-	middle_name 
+		-	profile_image_id			
+		-	relationship_status_id		
+		-	country						
+		-	city						
+		-	address						
+		-	job							
+		
+		//Trenutni status veze korisnika.
+		//Sadrži opis statusa veze korisnika(description) - npr., "single"
+		relationship_status
+		-	id		
+		-	description	
+	
+		//Tip veze između dva korisnika.
+		//Sadrži opis tipa veze između dva korisnika(description) - npr., "friends"
+		relationship_type
+		-	id		
+		-	description		
+		
+		//Veza između dva korisnika.
+		//Sadrži identifikatore prema ta dva korisnika koji su u nekoj vezi(
+		//strani ključevi prema user)
+		//Sadrži strani ključ prema tipu veze(relacija relationship_type) korisnika(relationship_type_id).
+		relationship
+		-	id							
+		-	user_id1					
+		-	user_id2					
+		-	relationship_type_id		
+		
+				
+		//Kolekcija slika, videa, dokumenata,..., vezana uz neki opis(npr., neko putovanje).
+		//Jedan korisnik može stvoriti proizvoljan broj bubblea, a pri kreiranju računa mu se
+		//automatski stvaraju dva bubblea: gallery(galerija slika) i timeline(bubble postova)
+		//Relacija sadrži strani ključ prema korisniku kome bubble pripada(user_id).
+		//Relacija sadrži strani ključ prema opisniku bubblea(content_info_id).
+		//Opisnik bubblea sadržava naslov bubblea i opis bubblea.
+		bubble
+		-	id	
+		-	user_id		
+		-	content_info_id	
+		
+		//Slika.
+		//Sadrži link pomoću kojeg se može dohvatiti slika u nekom formatu(embed_src).
+		//Sadrži strani ključ prema bubbleu kojem pripada(bubble_id). Po defaultu, slika pripada timeline bubbleu.
+		//Relacija sadrži strani ključ prema opisniku slike(content_info_id).
+		//Opisnik slike sadržava naslov slike, opis slike i mime-type slike.
+		picture
+		-	id	
+		-	bubble_id											  
+		-	embed_src																		
+		-	content_info_id	
+		
+		//Video.
+		//Sadrži link pomoću kojeg se može dohvatiti video u nekom formatu(embed_src).
+		//Sadrži strani ključ prema bubbleu kojem pripada(bubble_id). Po defaultu, video pripada timeline bubbleu.
+		//Relacija sadrži strani ključ prema opisniku videa(content_info_id).
+		//Opisnik slike sadržava naslov videa, opis videa i mime-type videa.
+		video
+		-	id	
+		-	bubble_id	
+		-	embed_src		
+		-	content_info_id	
+					
+		//Objava korisnika na nekom bubbleu.
+		//Relacija sadrži strani ključ prema bubbleu kome post pripada(bubble_id).
+		//Relacija sadrži strani ključ prema opisniku posta(content_info_id).
+		//Opisnik posta sadržava naslov posta i sadržaj posta.
+		//Sadržaj posta je text, koji može sadržavati poveznice(link) na slike,
+		//a, taj se tekst sprema u description atribut od content__info
+		post
+		-	id	
+		-	bubble_id	
+		-	content_info_id	
+		
+		//Opisnik sadržaja.
+		//Može opisati bilo koji sadržaj naslovom(title) i opisom(description).
+		//U slučaju da se radi o tekstualnom sadržaju, atribut description se može 
+		//koristiti za pohranjivanje tog sadržaja, umjesto opisa.
+		//Sadrži i atribut mime_type, koji za sadržaj koji je dohvatljiv preko weba 
+		//definira mime_type.
+		content_info
+		-	id	
+		-	title	
+		-	description	
+		-	mime_type	
+		

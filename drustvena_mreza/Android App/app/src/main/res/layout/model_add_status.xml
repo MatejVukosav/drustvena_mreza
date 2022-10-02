@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/post_top_background_color"
+    android:orientation="vertical">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/add_new_status_user_image"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/com_facebook_profile_picture_blank_portrait"
+                app:civ_border_color="#FF000000"
+                app:civ_border_width="1dp" />
+
+
+            <EditText
+                android:id="@+id/add_new_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/post_background"
+                android:hint="What\'s on your mind?"
+                android:maxLines="5"
+                android:minLines="3"
+                android:padding="5dp"
+                tools:text="simulacija posta" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp">
+
+        <Spinner
+            android:id="@+id/spinner_show_bubbles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/add_new_status_btn"
+            android:spinnerMode="dropdown" />
+
+
+        <Button
+            android:id="@+id/add_new_status_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="bottom"
+            android:layout_marginRight="10dp"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/ic_done_black_24dp"
+            android:drawablePadding="6dp"
+            android:drawableStart="@drawable/ic_done_black_24dp"
+            android:padding="5dp"
+            android:text="Post"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

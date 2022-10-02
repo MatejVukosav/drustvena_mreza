@@ -1,0 +1,973 @@
+swagger: '2.0'
+info:
+  title: Bubbles API
+  description: Mrzim svoj život.
+  version: 1.0.0
+produces:
+  - application/json
+paths:
+  /isUsernameAvailable:
+    get:
+      tags:
+        - Android
+      summary: Provjerava ima li registrirani korisnik s tim imenom
+      parameters:
+        - name: username
+          type: string
+          in: query
+          required: true
+      responses:
+        '200':
+          description: true ili false
+          schema:
+            $ref: '#/definitions/Available'
+  /isEmailAvailable:
+    get:
+      tags:
+        - Android
+      summary: Provjerava ima li registrirani korisnik s tim e-mailom
+      parameters:
+        - name: email
+          type: string
+          in: query
+          required: true
+      responses:
+        '200':
+          description: true ili false
+          schema:
+            $ref: '#/definitions/Available'
+  /sign-up:
+    post:
+      tags:
+        - General
+      summary: Registracija
+      parameters:
+        - name: username
+          in: formData
+          required: true
+          type: string
+        - name: email
+          in: formData
+          required: true
+          type: string
+        - name: password
+          in: formData
+          required: true
+          type: string
+        - name: firstName
+          in: formData
+          required: false
+          type: string
+        - name: lastName
+          in: formData
+          required: false
+          type: string
+        - name: middleName
+          in: formData
+          required: false
+          type: string
+        - name: address
+          in: formData
+          required: false
+          type: string
+        - name: city
+          in: formData
+          required: false
+          type: string
+        - name: country
+          in: formData
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Kod uspješne registracije.
+        default:
+          description: Vraća kolekciju pogreški vezane uz poejdino polje
+          schema:
+            $ref: '#/definitions/ValidationError'
+  /sign-in:
+    post:
+      tags:
+        - General
+      summary: Prijava
+      parameters:
+        - name: username
+          in: formData
+          required: true
+          type: string
+        - name: password
+          in: formData
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Uspješna prijava
+        default:
+          description: Poruka vezana uz neuspješnu prijavu.
+          schema:
+            $ref: '#/definitions/Error'
+  /sign-out:
+    post:
+      tags:
+        - General
+      summary: Odjava
+      responses:
+        '200':
+          description: Uspješna odjava
+  /content/timeline:
+    get:
+      tags:
+        - Content
+      summary: Vraća sve korisnikove contente izuzev one u galeriji.
+      responses:
+        '200':
+          description: Korisnikovi contenti
+          schema:
+            type: object
+            properties:
+              posts:
+                type: array
+                items:
+                  $ref: '#/definitions/Post'
+  /content/myBubbles:
+    get:
+      tags:
+        - Content
+      summary: Vraća sve bubbleove vlasnika session-a uključujući i timeline bubble.
+      responses:
+        '200':
+          description: Korisnikovi bubbleovi
+          schema:
+            type: object
+            properties:
+              bubbles:
+                type: array
+                items:
+                  $ref: '#/definitions/Bubble'
+  '/content/comments/{content_id}':
+    get:
+      tags:
+        - Content
+      summary: Vraća sve komentare za dani content_id
+      parameters:
+        - name: content_id
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Komentari
+          schema:
+            type: object
+            properties:
+              comments:
+                type: array
+                items:
+                  $ref: '#/definitions/ExtendedComment'
+  '/content/comment/{content_id}':
+    post:
+      tags:
+        - Content
+      summary: Posta komentar na content sa content_id-om
+      parameters:
+        - name: content_id
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Kod uspjesnog komentiranja
+  '/content/like/{id}':
+    post:
+      tags:
+        - Content
+      summary: Lajka/unlajka(toggle) content sa idem id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Uspješno lajkanje
+  '/content/likes/{id}':
+    get:
+      tags:
+        - Content
+      summary: Dohvaća kolekciju korisnika koji su lajkali content sa id-em id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Uspješno dohvaćanje
+          schema:
+            type: object
+            properties:
+              users:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                    middle_name:
+                      type: string
+                    username:
+                      type: string
+  /bubble/create:
+    post:
+      tags:
+        - Bubble
+      summary: Stvara novi bubble za aktualnog vlasnika session-a.
+      parameters:
+        - name: title
+          in: formData
+          required: true
+          type: string
+        - name: description
+          in: formData
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Uspješno spremanje u bazu. Vraća netom stvoreni bubble.
+          schema:
+            $ref: '#/definitions/Bubble'
+        '400':
+          description: Nevaljani formData.
+          schema:
+            $ref: '#/definitions/ValidationError'
+  '/bubble/edit/{id}':
+    post:
+      tags:
+        - Bubble
+      summary: Omogućava promjenu naslova i opisa postojećeg bubble-a.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+        - name: title
+          in: formData
+          required: true
+          type: string
+        - name: description
+          in: formData
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Uspješna promjena podataka. Vraća netom izmijenjeni bubble.
+          schema:
+            $ref: '#/definitions/Bubble'
+        '400':
+          description: Nevaljani formData.
+          schema:
+            $ref: '#/definitions/ValidationError'
+        '403':
+          description: Pokušaj promjene tuđeg bubble-a.
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Pokušaj promjene nepostojećeg bubble-a.
+          schema:
+            $ref: '#/definitions/Error'
+  '/bubble/{id}':
+    post:
+      tags:
+        - Bubble
+      summary: Dohvat contenta bubble-a sa id-em id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Dohvaćeni contenti.
+          schema:
+            $ref: '#/definitions/Content'
+  /home/feed:
+    get:
+      tags:
+        - Home
+      summary: Dohvaća sve contente od vlasnika sessiona i njegovih prijatelja
+      responses:
+        '200':
+          description: Uspješan dohvat
+          schema:
+            type: object
+            properties:
+              contents:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    bubble_id:
+                      type: integer
+                      format: int32
+                    id:
+                      type: integer
+                      format: int32
+                    created_at:
+                      type: string
+                    updated_at:
+                      type: string
+                    title:
+                      type: string
+                    content:
+                      type: string
+                    description:
+                      type: string
+                    likes:
+                      type: integer
+                      format: "int32'"
+  /user/isContact:
+    get:
+      tags:
+        - User
+      summary: Provjerava jel osoba sa id-em id prijatelj vlasnika session-a
+      parameters:
+        - name: id
+          in: query
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Nakon provjere
+          schema:
+            type: object
+            properties:
+              isContact:
+                type: boolean
+                description: true ako je osoba sa id-em id prijatelj vlasnika session-a
+  /user/info:
+    get:
+      tags:
+        - User
+      summary: Dohvaća podatke o korisniku s id-em id
+      parameters:
+        - name: id
+          in: query
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Uspješan dohvat
+          schema:
+            $ref: '#/definitions/User'
+  /user/contactRequest:
+    post:
+      tags:
+        - User
+      summary: Vlasnik session-a dodaje osobu sa id-em id za prijatelja (može gledati njegove stvari)
+      parameters:
+        - name: user_id
+          in: formData
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Uspješno dodavanje
+  /user/contacts:
+    get:
+      tags:
+        - User
+      summary: Vraća kontakte od korisnika s id-em id ili od vlasnika sessiona ako id nije pružen
+      parameters:
+        - name: id
+          in: query
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: Uspješno dohvaćanje
+          schema:
+            type: object
+            properties:
+              contacts:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    username:
+                      type: string
+  /profile/edit:
+    post:
+      tags:
+        - Profile
+      summary: Izmjena osobnih podataka vlasnika session-a
+      parameters:
+        - name: firstName
+          in: formData
+          required: false
+          type: string
+        - name: lastName
+          in: formData
+          required: false
+          type: string
+        - name: middleName
+          in: formData
+          required: false
+          type: string
+        - name: address
+          in: formData
+          required: false
+          type: string
+        - name: city
+          in: formData
+          required: false
+          type: string
+        - name: country
+          in: formData
+          required: false
+          type: string
+        - name: relationshipStatusId
+          in: formData
+          required: false
+          type: integer
+        - name: gender_id
+          in: formData
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: Uspješna izmjena podataka.
+          schema:
+            $ref: '#/definitions/User'
+        default:
+          description: Vraća kolekciju pogreški vezane uz poejdino polje.
+          schema:
+            $ref: '#/definitions/ValidationError'
+  /util/countries:
+    get:
+      tags:
+        - Util
+      summary: Dohvat popisa država i pripadajućih ISO kodova
+      responses:
+        '200':
+          description: Uspješan dohvat država.
+          schema:
+            type: object
+            properties:
+              countries:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+  /util/genders:
+    get:
+      tags:
+        - Util
+      summary: Dohvat popisa spolova i pripadajućih id-eva
+      responses:
+        '200':
+          description: Uspješan dohvat spolova.
+          schema:
+            type: object
+            properties:
+              genders:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    type:
+                      type: string
+  '/comment/edit/{id}':
+    post:
+      tags:
+        - Comment
+      summary: Omogućava vlasniku session-a da promijeni jedan od svojih komentara.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+        - name: comment
+          in: formData
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Uspješna izmjena komentara.
+          schema:
+            $ref: '#/definitions/ExtendedComment'
+        '400':
+          description: Nedozvoljeni podaci.
+          schema:
+            $ref: '#/definitions/ValidationError'
+        '403':
+          description: Pokušaj promjene tuđeg komentara.
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Pokušaj promjene nepostojećeg komentara.
+          schema:
+            $ref: '#/definitions/Error'
+  /account/changePassword:
+    post:
+      tags:
+        - Account
+      summary: Omogućava vlasniku session-a promjenu lozinke.
+      parameters:
+        - name: oldPassword
+          in: formData
+          required: true
+          type: string
+        - name: newPassword
+          in: formData
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Uspješna promjena lozinke.
+          schema:
+            $ref: '#/definitions/User'
+        '403':
+          description: Neispravna aktualna lozinka.
+          schema:
+            $ref: '#/definitions/Error'
+        '400':
+          description: Neispravni podaci.
+          schema:
+            $ref: '#/definitions/ValidationError'
+  '/content/post/{id}':
+    get:
+      tags:
+        - Content
+        - Android
+      summary: Dohvaća post s danim id-em.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          description: id posta kojeg treba dohvatiti
+      responses:
+        '200':
+          description: Uspješan dohvat posta.
+          schema:
+            $ref: '#/definitions/Post'
+        '404':
+          description: Post nije nađen.
+  '/content/post/{bubble_id}':
+    post:
+      tags:
+        - Content
+        - Android
+      summary: Dodaje post s danim parametrima u bubble s danim id-em.
+      parameters:
+        - name: bubble_id
+          in: path
+          required: true
+          type: integer
+          description: id bubblea u kojeg se dodaje post
+        - name: title
+          in: formData
+          required: true
+          type: string
+          description: naslov posta
+        - name: description
+          in: formData
+          required: false
+          type: string
+          description: opis posta
+        - name: content
+          in: formData
+          required: true
+          type: string
+          description: sadržaj posta
+      responses:
+        '200':
+          description: Post je uspješno dodan u bubble.
+          schema:
+            $ref: '#/definitions/Post'
+        '403':
+          description: Korisnik nema ovlasti dodati post u bubble s danim id-em.
+        '404':
+          description: Bubble s danim id-em ne postoji
+  '/content/image/{bubble_id}':
+    post:
+      tags:
+        - Content
+        - Android
+      summary: Dodaje sliku s danim parametrima u bubble s danim id-em.
+      parameters:
+        - name: bubble_id
+          in: path
+          required: true
+          type: integer
+          description: id bubblea u kojeg se dodaje slika
+        - name: title
+          in: multipart/formData
+          required: true
+          type: string
+          description: naslov slike
+        - name: description
+          in: multipart/formData
+          required: false
+          type: string
+          description: opis slike
+        - name: content
+          in: multipart/formData
+          required: true
+          type: string
+          description: datoteka slike
+      responses:
+        '200':
+          description: Slika je uspješno dodana u bubble.
+          schema:
+            $ref: '#/definitions/Image'
+        '403':
+          description: Korisnik nema ovlasti dodati sliku u bubble s danim id-em.
+        '404':
+          description: Bubble s danim id-em ne postoji
+  '/content/image/{id}':
+    get:
+      tags:
+        - Content
+        - Android
+      summary: Dodaje opisnik slike s danim id-em.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          description: id slike čiji se opisnik dohvaća
+      responses:
+        '200':
+          description: Opisnik slike je uspješno dohvaćen.
+          schema:
+            $ref: '#/definitions/Image'
+        '404':
+          description: Slika s danim id-em ne postoji
+  '/res/img/{img_file}':
+    get:
+      tags:
+        - Resource
+        - Android
+      summary: Dohvaća datoteku slike s danim imenom datoteke.
+      parameters:
+        - name: img_file
+          in: path
+          required: true
+          type: string
+          description: ime datoteke slike koju treba dohvatiti
+      parameters:
+        - name: size
+          in: query
+          required: false
+          type: string
+          enum: ["big", "medium", "small", "original"]
+          description: veličina slike, ako nije navedeno, pretpostavljena vrijednost je 'original'
+      responses:
+        '200':
+          description: Slika je uspješno dohvaćena.
+        '404':
+          description: Dana datoteka ne postoji
+  '/content/edit/image/{id}':
+    post:
+      tags:
+        - Content
+        - Android
+      summary: Uređuje sliku s danim id-em. Nove vrijednosti slike dane su kao parametri. Vraća opisnik uređene slike.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          description: id slike koju se uređuje
+        - name: title
+          in: multipart/formData
+          required: true
+          type: string
+          description: naslov slike
+        - name: description
+          in: multipart/formData
+          required: false
+          type: string
+          description: opis slike
+        - name: content
+          in: multipart/formData
+          required: true
+          type: string
+          description: datoteka slike
+      responses:
+        '200':
+          description: Slika je uspješno uređena.
+          schema:
+            $ref: '#/definitions/Image'
+        '403':
+          description: Korisnik nema ovlasti urediti sliku.
+        '404':
+          description: Slika ne postoji.
+  '/content/post/{id}':
+    post:
+      tags:
+        - Content
+        - Android
+      summary: Uređuje post s danim id-em. Nove vrijednosti slike dane su kao parametri. Vraća uređeni post.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          description: id posta kojeg se uređuje
+        - name: title
+          in: formData
+          required: true
+          type: string
+          description: naslov posta
+        - name: description
+          in: formData
+          required: false
+          type: string
+          description: opis posta
+        - name: content
+          in: formData
+          required: true
+          type: string
+          description: sadržaj posta
+      responses:
+        '200':
+          description: Post je uspješno uređen.
+          schema:
+            $ref: '#/definitions/Post'
+        '403':
+          description: Korisnik nema ovlasti urediti post.
+        '404':
+          description: Post s danim id-em ne postoji.
+  '/bubble/{id}/content':
+    post:
+      tags:
+        - Content
+        - Android
+      summary: Dohvaća sadržaj iz bubblea s danim id-em.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          description: id bubblea
+      responses:
+        '200':
+          description: Sadržaj bubblea je uspješno dohvaćen.
+          schema:
+            $ref: '#/definitions/BubbleContent'
+        '404':
+          description: Bubble s danim id-em ne postoji.
+  '/bubble/{id}/content':
+    post:
+      tags:
+        - Content
+        - Android
+      summary: Dohvaća opisnik bubblea s danim id-em.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          description: id bubblea
+      responses:
+        '200':
+          description: Bubble je uspješno dohvaćen.
+          schema:
+            $ref: '#/definitions/Bubble'
+        '404':
+          description: Bubble s danim id-em ne postoji.
+definitions:
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      username:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      middle_name:
+        type: string
+      country_id:
+        type: string
+      city:
+        type: string
+      address:
+        type: string
+      relationship_status_id:
+        type: integer
+      gender_id:
+        type: integer
+  ExtendedComment:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      content_id:
+        type: integer
+        format: int32
+      user_id:
+        type: integer
+        format: int32
+      created_at:
+        type: string
+      updated_at:
+        type: string
+      comment:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      middle_name:
+        type: string
+      username:
+        type: string
+  Bubble:
+    type: object
+    properties:
+      user_id:
+        type: integer
+      id:
+        type: integer
+      bubble_type_id:
+        type: integer
+      created_at:
+        type: string
+      updated_at:
+        type: string
+      title:
+        type: string
+      description:
+        type: string
+  Content:
+    type: object
+    properties:
+      id:
+        type: integer
+      bubble_id:
+        type: integer
+      content_type_id:
+        type: integer
+      created_at:
+        type: string
+      updated_at:
+        type: string
+      title:
+        type: string
+      content:
+        type: string
+  Post:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: id posta
+      bubble_id:
+        type: integer
+        format: int32
+        description: id bubblea kojem post pripada
+      content_type_id:
+        type: integer
+        format: int32
+        enum: [1]
+        description: tip posta, uvijek 1 za postove
+      created_at:
+        type: string
+        description: vrijeme stvaranja
+      updated_at:
+        type: string
+        description: vrijeme zadnje izmjene
+      title:
+        type: string
+        description: Naslov posta
+      content:
+        type: string
+        description: Sadržaj posta
+      description:
+        type: string
+        description: Opis posta
+  Image:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: id slike
+      bubble_id:
+        type: integer
+        format: int32
+        description: id bubblea kojem slika pripada
+      content_type_id:
+        type: integer
+        format: int32
+        enum: [2]
+        description: tip posta, uvijek 2 za postove
+      created_at:
+        type: string
+        description: vrijeme stvaranja
+      updated_at:
+        type: string
+        description: vrijeme zadnje izmjene
+      title:
+        type: string
+        description: naslov slike
+      content:
+        type: string
+        description: link za dohvat binarnog sadržaja slike
+      description:
+        type: string
+        description: opis slike
+  Available:
+    type: object
+    properties:
+      available:
+        type: boolean
+  Error:
+    type: object
+    properties:
+      error:
+        type: string
+  ValidationError:
+    type: object
+    properties:
+      errors:
+        type: array
+        items:
+          type: string
+  BubbleContent:
+    type: object
+    properties:
+      attributes:
+        type: object
+        schema: 
+          $ref: '#/definitions/Bubble'
+      contents:
+        type: array
+        items:
+          type: object
+          schema: 
+            $ref: '#/definitions/Content'

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><% if(locals.title) { %><%= title %> - <% } %>Bubbles</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="/stylesheets/bootstrap.css">
+    <style>
+        body {
+            margin: 15px auto;
+        }
+
+        .text-orange {
+            color: orange;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .form-inline label {
+            display: block;
+        }
+
+        legend {
+            background: white;
+            padding: 5px 20px;
+            border-radius: 15px;
+            border-bottom: 3px solid orange;
+        }
+
+        #sign-in label, .col-md-4 label {
+            border-bottom: 1px solid darkorange;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        @media only screen and (min-width: 768px) and (max-width: 992px) {
+            .logo-container {
+                height: 350px;
+            }
+        }
+
+        .logo {
+            align-self: center;
+            width: 181px;
+            height: 198px;
+            background: url(/images/bubbles-logo.png) no-repeat center center;
+        }
+
+        h1 {
+            color: darkorange;
+            font: 1.2em sans-serif;
+            text-transform: uppercase;
+        }
+
+        #sign-in {
+            margin-bottom: 25px;
+            z-index: 20;
+        }
+        
+        #sign-in:hover {
+			opacity: 1 !important;
+		}
+
+        #sign-up {
+            max-width: 600px;
+        }
+        
+        #sign-up:hover {
+			opacity: 1 !important;
+		}
+
+        .popover {
+            position: fixed;
+        }
+
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <!-- Login part of the page -->
+        <div class="col-md-4 col-xs-12" id="sign-in">
+            <div class="col-md-12 col-sm-4 col-xs-12 logo-container">
+                <div class="logo"></div>
+            </div>
+            <div class="">
+                <h3 class="text-orange text-center">Have an account?</h3>
+                <form action="/sign-in" method="post" id="loginForm" class="form-inline">
+                    <fieldset class="well">
+                        <legend>Sign in</legend>
+                        <% if(locals.loginError) { %>
+                        <div class="alert alert-danger controls">
+                            <%= loginError %>
+                        </div>
+                        <% } %>
+                        <div class="form-group">
+                            <label for="usernameLogin" class="control-label">Username</label>
+                            <input class="form-control input-lg" type="text" id="usernameLogin" name="username" maxlength="32">
+                        </div>
+                        <div class="form-group">
+                            <label for="passwordLogin" class="control-label">Password</label>
+                            <input class="form-control input-lg" type="password" id="passwordLogin" name="password">
+                        </div>
+                    </fieldset>
+                    <div class="control-group text-center">
+                        <input type="submit" class="btn btn-success input-lg" id="login-button" value="Sign in" />
+                        <button class="btn btn-link input-lg">Forgotten password?</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-8 col-xs-12" id="sign-up">
+            <!-- registration part of the page -->
+            <h3 class="text-orange text-center">Don't have an account?<br/><strong>Sign up</strong>, it's free!</h3>
+
+            <form action="/sign-up" method="post" id="registrationForm" class="form-horizontal">
+
+                <fieldset class="well">
+                    <legend>Account information</legend>
+                    
+                    <% if (locals.registerError) { %>
+                      <div class="alert alert-danger controls">
+                        <ul>
+                          <% registerError.forEach(function(name){ %>
+                            <li><%= name %></li>
+                          <% }) %>
+                        </ul>
+                      </div>
+                    <% } %>
+                    
+                    <em>All input fields are required</em>
+					
+                    <div class="control-group">
+                        <!-- Username -->
+                        <label class="control-label col-sm-2" for="username">Username</label>
+                        <div class="controls col-sm-10">
+                            <input type="text" id="username" name="username" maxlength="32"<% if(locals.registrationInput) { %>value="<%= registrationInput.username %>"<% } %> class="form-control" data-toggle="popover" data-trigger = "manual">
+                            <p class="help-block">Username can contain any letters or numbers, without spaces</p>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <!-- E-mail -->
+                        <label class="control-label col-sm-2" for="email">E-mail</label>
+                        <div class="controls col-sm-10">
+                            <input type="email" id="email" name="email" <% if(locals.registrationInput) { %>value="<%= registrationInput.email %>"<% } %> class="form-control" data-toggle="popover" data-trigger = "manual">
+                            <p class="help-block">Please provide your e-mail for password reset purposes</p>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <!-- Password-->
+                        <label class="control-label col-sm-2" for="password">Password</label>
+                        <div class="controls col-sm-10">
+                            <input type="password" id="password" name="password" placeholder="" class="form-control" data-toggle="popover" data-trigger = "manual">
+                            <p class="help-block">Password should be at least 8 characters</p>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <!-- Password -->
+                        <label class="control-label col-sm-2" for="retypePassword">Password (Confirm)</label>
+                        <div class="controls col-sm-10">
+                            <input type="password" id="retypePassword" placeholder class="form-control" data-toggle="popover" data-trigger = "manual">
+                            <p class="help-block alert-danger" id="passwordMatch" style="display:none">Passwords do not match</p>
+                        </div>
+                    </div>
+
+                </fieldset>
+
+                <fieldset class="well">
+                    <legend>Personal information</legend>
+
+                    <div class="control-group col-md-4">
+                        <!-- First Name -->
+                        <label class="control-label" for="firstName">First name</label>
+                        <input type="text" id="firstName" name="firstName" <% if(locals.registrationInput) { %>value="<%= registrationInput.firstName %>"<% } %> class="form-control">
+                    </div>
+
+                    <div class="control-group col-md-4">
+                        <!-- Middle Name -->
+                            <label class="control-label" for="middleName">Middle name</label>
+                            <input type="text" id="middleName" name="middleName" <% if(locals.registrationInput) { %>value="<%= registrationInput.middleName %>"<% } %> class="form-control">
+                    </div>
+
+                    <div class="control-group col-md-4">
+                        <!-- Last Name -->
+                        <label class="control-label" for="lastName">Last name</label>
+                        <input type="text" id="lastName" name="lastName" <% if(locals.registrationInput) { %>value="<%= registrationInput.lastName %>"<% } %> class="form-control">
+                    </div>
+                    
+                    <div class="location">
+
+                        <div class="control-group col-md-4">
+                            <!-- Address -->
+                            <label class="control-label" for="address">Address</label>
+                            <input type="text" id="address" name="address" <% if(locals.registrationInput) { %>value="<%= registrationInput.address %>"<% } %> class="form-control">
+                        </div>
+
+                        <div class="control-group col-md-4">
+                            <!-- City -->
+                            <label class="control-label" for="city">City</label>
+                            <input type="text" id="city" name="city" <% if(locals.registrationInput) { %>value="<%= registrationInput.city %>"<% } %> class="form-control">
+                        </div>
+
+                        <div class="control-group col-md-4">
+                            <!-- Country -->
+                            <label class="control-label" for="country">Country</label>
+                            <input type="text" id="country" name="country" list="countries" <% if(locals.registrationInput) { %>value="<%= registrationInput.country %>"<% } %> class="form-control">
+                        </div>
+                        
+                    </div>
+
+                </fieldset>
+
+
+                <div class="control-group">
+                    <!-- Button -->
+                    <div class="controls">
+                        <div id="alertID" class="alert alert-danger" style="display:none;"></div>
+                        <div class="col-md-4 col-sm-4">
+                            <input type="submit" id="register-button" class="btn btn-info input-lg" value="Sign up" />
+                        </div>
+                        <div class="col-md-8 col-sm-8 control-label">
+                            By signin up, you agree to our <a href="/tos">Terms of Service</a>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="/javascripts/bootstrap.js" crossorigin="anonymous"></script>
+    <script src="/javascripts/registrationPage.js"></script>
+    <script>
+      $("#login-button").click(login);
+      $("#username").change(checkUsernameDelayed);
+      $("#password").change(checkPassword);
+      $("#retypePassword").change(comparePasswords);
+      $("#email").change(checkEmail);
+      $("#register-button").click(register);
+        
+      $("#sign-up").click(function() {
+        $("#sign-in").css("opacity", "0.25");
+        $("#sign-up").css("opacity", "1");
+      });
+        
+      $("#sign-in").click(function() {
+        $("#sign-up").css("opacity", "0.25");
+        $("#sign-in").css("opacity", "1");
+      });
+		
+      $(document).ready(function(){
+        $.get('http://ip-api.com/json', function(data) {
+          if (data.status == 'success') {
+            if(data.address) document.getElementById('address').value = data.address;
+            if(data.city) document.getElementById('city').value = data.city;
+            if(data.country) document.getElementById('country').value = data.country;
+          }
+        });
+      });
+        
+    </script>
+    <% include countries-datalist.partial.ejs %>
+</body>
+</html>

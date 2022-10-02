@@ -1,0 +1,30 @@
+<div id="new-bubble-form" class="white-popup">
+    <h3><% if(locals.id) { %>Edit<% } else { %>New<% } %> bubble</h3>
+    <div class="form-group">
+        <label for="new-bubble-title">Title</label>
+        <input type="text" id="new-bubble-title" name="post-title" class="form-control" placeholder="(Required)" maxlength="64" value="<% if(locals.title) { %><%= title %><% } %>" />
+    </div>
+
+    <div class="form-group">
+        <label for="new-bubble-description">Description</label>
+        <textarea id="new-bubble-description" name="new-bubble-description" class="form-control"placeholder="(Optional)"><% if(locals.description) { %><%= description %><% } %></textarea>
+    </div>
+
+    <div class="form-group">
+        <button class="btn btn-primary"><% if(locals.id) { %>Save<% } else { %>Create<% } %></button>
+    </div>
+</div>
+
+<script>
+    $('#new-bubble-form button.btn-primary').on('click', function() {
+        var titleInput = $('#new-bubble-title');
+        if (titleInput.val().length > 0) {
+            var descriptionInput = $('#new-bubble-description');
+            $.post('/api/bubble/<% if(locals.id) { %>edit/<%= id %><% } else { %>create<% } %>', {title: titleInput.val(), description: descriptionInput.val()}, function() {
+                location.reload();
+            });
+        }
+        else {
+            titleInput.focus();
+        }});
+</script>

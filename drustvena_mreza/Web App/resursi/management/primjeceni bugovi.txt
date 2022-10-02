@@ -1,0 +1,2 @@
+-pri registraciji, dodavanje novog korisnika sa mailom koji već postoji u sustavu rezultira greškom na serveru i beskonačnim
+	učitavanjem stranice bez javljanja ičega korisniku

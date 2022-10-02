@@ -1,0 +1,27 @@
+{
+  "name": "bubbles",
+  "version": "0.0.0",
+  "author": "project team",
+  "scripts": {
+    "start": "nodem ./bin/www"
+  },
+  "dependencies": {
+    "bcrypt-nodejs": "*",
+    "bluebird": "^3.0.6",
+    "body-parser": "*",
+    "bookshelf": "^0.9.0",
+    "checkit": "^0.6.0",
+    "cookie-parser": "*",
+    "debug": "^2.2.0",
+    "ejs": "*",
+    "express": "4.x",
+    "express-session": "*",
+    "knex": "0.8",
+    "morgan": "^1.6.1",
+    "mysql": "*",
+    "nodemailer": "^1.9.0",
+    "passport": "*",
+    "passport-local": "*",
+    "serve-favicon": "^2.3.0"
+  }
+}

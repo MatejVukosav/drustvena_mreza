@@ -1,0 +1,129 @@
+<style>
+#editor {
+}
+.wysibb {
+	width: 100%;
+	-webkit-box-sizing: content-box !important;
+    -moz-box-sizing: content-box !important;
+    box-sizing: content-box !important;
+    float: left;
+
+}
+.wysibb-text-editor, .wysibb-texarea {
+	min-height: 150px !important;
+	padding: 15px; 
+}
+#main-content { box-sizing: border-box }
+</style>
+
+<form name="post-form" id="post-form">
+
+	<div class="form-group col-sm-8 col-xs-12">
+		<label for="post-title">Title</label>
+			<input type="text" id="post-title" name="post-title" class="form-control" maxlength="128" />
+	</div>
+	
+	<div class="form-group col-sm-4">
+		<label for="bubble-to-post-in">Bubble</label>
+		<select id="bubble-to-post-in" name="bubble-to-post-in" class="form-control">
+		</select>
+	</div>
+	
+	<div class="col-md-8 col-sm-8">
+		<label>Category</label>
+		<div class="form-group">
+			<div class="btn-group">
+				<label class="">
+					<input id="new-content-category-post" name="category" value="1" type="radio">
+					<span class="glyphicon glyphicon-font"></span> Post
+				</label>
+				<label class="">
+					<input id="new-content-category-picture" name="category" value="2" type="radio">
+					<span class="glyphicon glyphicon-picture"></span> Picture
+				</label>
+				<label class="">
+					<input id="new-content-category-music" name="category" value="3" type="radio">
+					<span class="glyphicon glyphicon-music"></span> Music
+				</label>
+				<label class="">
+					<input id="new-content-category-video" name="category" value="4" type="radio">
+					<span class="glyphicon glyphicon-facetime-video"></span> Video
+				</label>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-sm-3 col-xs-8">
+		<label>Actions</label>
+		<div class="form-group">
+			<input type="submit" class="btn btn-primary " value="Publish" />
+			<button class="btn btn-danger" onclick="Javascript:discard();">Discard</button>
+		</div>
+	</div>
+
+</form>
+
+	<div class="col-md-12 editor">
+			<textarea id="editor"></textarea>
+	</div>
+	
+
+<!-- Editor -->
+<script src="/javascripts/jquery.wysibb.min.js"></script>
+
+<!-- My Bubbles -->
+<script id="new-post-bubble-select-tmp" type="text/x-dot-template">
+	<option></option>
+	{{~it.bubbles :bubble:index}}
+		<option value="{{= bubble.id }}">{{= bubble.title }}</option>
+	{{~}}
+</script>
+
+<script>
+
+function setCategory(type) {
+	$('#new-content-category-' + type).attr('checked', 'checked');
+}
+
+function renderEditor() {
+    var wbbOpt = {
+    buttons: "bold,italic,underline,strike,mark,|,left,text-center,right,|,link,img,video,|,table,qoute,code|"
+    }
+    $("#editor").wysibb(wbbOpt);
+    
+    $.get('/api/content/myBubbles', function(data) {
+    var templateFunction = doT.template(document.getElementById('new-post-bubble-select-tmp').text);
+		var html = templateFunction(data);
+		$('#bubble-to-post-in').html(html);
+	});
+}
+
+function discard() {
+	window.history.back();
+}
+
+$('#post-form').on('submit', function(event) {
+	event.preventDefault();
+	
+	var title = document.getElementById('post-title').value;
+	var bubble = $('#bubble-to-post-in').val();
+	var content = $("#editor").bbcode();
+	var postData = {content: content,
+                  title: title,
+                  description: ''};
+	
+	if (title == '')	{ $('#post-title').focus();}
+	else if (bubble == '') { $('#bubble-to-post-in').focus();}
+	else if (content == '') { $('#editor').focus();}
+					
+	else {
+		$.post('/api/content/post/' + bubble, postData, function(success) {
+			window.history.back();
+		});
+	}
+	return false;
+});
+
+$(document).ready(renderEditor);
+
+</script>

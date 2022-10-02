@@ -1,0 +1,45 @@
+-Domagoj i Gordan
+	postovi(objave) i objava slika backend
+	
+-Gordan i Mate
+	promjena modela baze po mentorovom naputku(spojit u usera...)
+
+Željko i Mate
+	-postovi(objave) frontend
+	-slanje na backend
+	-renderiranje na frontendu(parsiranje teksta, linkova,...)
+	-riješit stavljanje postova na naslovnu stranicu:
+		-dohvatiti n postova korisnika vlasnika naslovne stranice 
+		-dohvatiti n postova od svakog prijatelja korisnika naslovne stranice
+		-postove dohvaćat ravnomjernom raspodjelom po svim bubbleovima korisnika, 
+			dakle, n/brojBubblea postova po bubbleu
+
+Željko 
+	search frontend
+	
+Mislav
+	-riješit dohvaćanje podataka o korisniku(user) pri vraćanju profila
+	-tj., treba u viewu odmah vratiti čitavog usera u EJS tagovima
+	-istu stvar(dohvaćanje podataka o korisniku(user) preko EJS tagova) pri vraćanju još 2 viewa:
+		-edit profile i manage account
+	
+Andrija
+	-riješit prikaz podataka korisnika na stranici profila(username, ime, prezime)
+	-riješit timeline tab
+	
+Katarina
+	-edit profile(prikaz i uređivanje osobnih podataka)
+	-manage account(prikaz i uređivanje podataka korisničkog računa)
+
+Objave(postovi) API:
+	GET /content/post?bubbleID=...&&n=brojPostova
+		-dohvaća n(default ako nije naveden) postova traženog bubblea
+	GET /content/image
+	GET /content/video
+	POST /content/post
+	POST /content/image
+	POST /content/video
+	
+	getovi vraćaju JSON identičan novoj tablici u bazi
+	postovi šalju serveru JSON identičan novoj tablici u bazi
+	

@@ -1,0 +1,10 @@
+<li class="dropdown-header">
+  <span class="glyphicon glyphicon-user"> Contacts
+<li>
+<li role="separator" class="divider"></li>
+
+  <% users.forEach(function(name) { %>
+    <li>
+      <a href="/profile/view/<%= name.username %>"><%= name.first_name %> <%= name.last_name %></a>
+    </li>
+  <% }) %>

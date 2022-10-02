@@ -1,0 +1,257 @@
+<style>
+
+    .jumbotron {
+        background: url("/images/bubbles-profile.jpg") center center; 
+        background-size: cover;
+        overflow: hidden;
+        height: 270px;
+        z-index: 0;
+    }
+
+    .image-profile {
+        height:200px;
+        width:200px;
+        margin-right: 3%;
+        border-bottom: groove;
+    }
+
+    .personal_info {
+        width: 85%;
+        margin: auto;
+        margin-top: 2.5%;
+    }
+
+    div[class="pinfo_part"] {
+        margin: 5%;
+    }
+
+    .pinfo_part > h4 {
+        color: dodgerblue;
+        font-weight: bold;
+    }
+
+    .pinfo_part > p {
+        text-indent: 5%;
+        font-weight: bold;
+    }
+
+    .avatar {
+        margin: -160px 10px 20px 0px;
+        z-index: 9;
+    }
+
+    .profile-name {
+        color: white;
+        padding: 25px;
+        text-shadow: 4px 4px 5px #000000;
+    }
+
+    .profile-name > h1 {
+        font-size: 40px;
+        font-weight: bold;
+    }
+    .profile-name > p {
+        font-size: 16px;
+        font-style: italic;
+    }
+
+    .btn-primary {
+        background-color: dodgerblue;
+        font-weight: bold;
+        border: 0px;
+    }
+
+    .btn-primary:hover {
+        background-color: lightblue;
+    }
+
+    #edit_btn {
+        float: right;
+        margin: 2% 5%;
+    }
+
+    .nav-pills a, .nav-pills a:hover, .nav-pills a:focus {
+        outline: 0;
+        color: black;
+        font-size: 1.2em;
+    }
+
+    .nav-pills > li.active > a:focus {
+        background-color: darkorange;
+        color: white;
+    } 
+</style>
+
+<div class="jumbotron">
+    <div align="right"  class="profile-name"><p>Been with us since <% if(locals.user) { %><%= user.created_at %> <% } %></p></div>
+</div>
+<div class="container">
+    <div class="avatar">
+        <img align="left" class="image-profile img-circle" src="/images/profile.jpg" alt="Profile image"/>
+        <div class="profile-name">
+            <h1><% if(locals.user) { %><%= user.username %><% } %></h1>
+            <h4><% if(locals.user) { %><%= user.first_name %> <%= user.last_name %><% } %></h4>
+        </div>
+    </div>
+    <ul class="nav nav-pills profile-tabs">
+        <li role="presentation" class="active"><a data-toggle="pill" href="#profile-account_info">Profile</a></li>
+        <li role="presentation"><a data-toggle="pill" href="#profile-bubbles">Bubbles</a></li>
+        <li role="presentation"><a data-toggle="pill" href="#profile-posts">Posts</a></li>
+        <li role="presentation"><a data-toggle="pill" href="#profile-friends">Friends</a></li>
+        <li role="presentation"><a data-toggle="pill" href="#profile-gallery-outer" id="galleryNavPill">Gallery</a></li>   
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane fade in active" id="profile-account_info">
+            <div class="well personal_info">
+                <a id="edit_btn" href="/profile/edit" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-wrench"></span> Edit</a>
+                <div class="pinfo_part">
+                    <h4>Full name:</h4>
+                    <p><% if(locals.user) { %><%= user.first_name %> <%= user.middle_name %> <%= user.last_name %><% } %></p>
+                    <h4>E-mail:</h4>
+                    <p><% if(locals.user) { %><%= user.email %><% } %></p>
+                    <h4>Birthday:</h4>
+                    <p><% if(locals.user) { %><%= user.date_of_birth %><% } %></p>
+                </div>
+
+                <div class="pinfo_part">
+                    <h4>Gender:</h4>
+                    <p><% if(user.gender_id==2){%>Male<%}%><% if(user.gender_id==1){%>Female<%}%><% if(user.gender_id==''){%>Unknown<%}%></p>
+                    <h4>Relationship status:</h4>
+                    <p><% if(user.relationship_status_id==1){%>Single<%}%><% if(user.relationship_status_id==2){%>Complicated<%}%><%                                              if(user.relationship_status_id==3){%>In a relationship<%}%><% if(user.relationship_status_id==4){%>Other<%}%> </p>
+                </div>
+
+                <div class="pinfo_part">
+                    <h4>Currently living at:</h4>
+                    <p><% if(locals.user) { %><%= user.address %>, <%= user.city %>, <%= user.country_id %><% } %> </p>
+                </div>
+
+                <div class="pinfo_part">
+                    <h4>Account created:</h4>
+                    <p>
+                        <% if(locals.user) { %>
+                        <%= user.created_at %> 
+                        <% } %>
+                    </p>
+                    <h4>Last account update:</h4>
+                    <p><% if(locals.user) { %><%= user.updated_at %> <% } %> </p>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="profile-bubbles">
+        </div>
+        <div class="tab-pane fade" id="profile-posts">
+        </div>
+        <div class="tab-pane fade" id="profile-friends">
+        </div>
+        <div class="tab-pane fade" id="profile-gallery-outer">
+            <div id="profile-gallery">
+                <!--  Ovdje će JQuery ubacit slike  -->
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                </div>
+
+                <div class="col-md-6">
+                    <button class="btn btn-primary" id="newImageButton">
+                        Add new..
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p style="display : none;" id="usernameTag"><%=user.username%></p>
+</div>
+
+<!--gallery tab script-->
+<script>
+    $("#galleryNavPill").click(function() {
+        //these two variables are dependant
+        var numOfImagesPerRow = 4;
+        var bootstrapOccupation = 3;
+
+        var numOfImagesInCurrentRow = 0;
+        var nextRowIndex = 0;
+        //kako ovo dohvatiti - ejs atributi ili
+        //neki zahtjev za ovo
+        var username = $("#usernameTag").text();
+
+        $("#newImageButton").click(function(){
+            window.location.href="/image/edit/";
+        });
+
+        //gets an array of image descriptors
+        //for all the images of the current user
+
+        //gets all the content of the current user
+        //one should sort the content by type and display it properly
+        //so far, if the content is an image, "content_type_id"==2
+        //there is probably a more intelligent way of checking this and we might implement it
+        //the bubble number 9 is just for testing, real bubble id(gallery in this case)
+        //goes here
+        $.get("/api/bubble/9/content/", addImages);
+
+        //adds all the images of the user to the gallery
+        function addImages(attrsAndContentJson, status) {
+            var contentsArray = attrsAndContentJson.contents;
+            var imageArray = [];
+            $.each(contentsArray, function(index, contentDescriptor) {
+                //add images to a separate array
+                if(contentDescriptor.content_type_id==2) {
+                    imageArray.push(contentDescriptor);
+                }
+            });
+
+
+            $.each(imageArray, function(index, imageDescriptor) {
+                var imageID = imageDescriptor.id;
+                addImage(imageDescriptor);
+            });
+        }
+
+
+        function addImage(imageDescriptor) {
+            //$.get("/content/image?id="+imageID, function(imageDescriptor, status) {
+            addNextImage(imageDescriptor);
+            //});
+        }
+
+        //adds an image to the gallery
+        //does all the necessary gallery formatting,
+        //like adding rows, etc..
+        function addNextImage(imageDescriptor) {
+            //add new row
+            if(numOfImagesInCurrentRow == 0) {
+                var rowHTML = '<div class="row" id="galleryRow'+nextRowIndex + '"> </div>';
+                nextRowIndex++;
+
+                $("#profile-gallery").append(rowHTML);
+            } 
+
+            //add image to the end of the current row
+            var currentRowIndex = nextRowIndex-1;
+            var imageHTML = constructImageHTML(imageDescriptor);
+            $("#galleryRow"+currentRowIndex).append(imageHTML);
+            numOfImagesInCurrentRow++;
+
+            //check if the row is filled
+            if(numOfImagesInCurrentRow == numOfImagesPerRow) {
+                numOfImagesInCurrentRow = 0;
+            }
+        }
+
+        function constructImageHTML(imageDescriptor) {
+            var imageSRC = imageDescriptor.content;
+            //add image page src here
+            var imagePageSRC='/image/edit/' + imageDescriptor.id;
+            var imageHTML = '<div class="col-md-'+bootstrapOccupation+'">';
+            imageHTML+='<a href="'+imagePageSRC+'" class="thumbnail">';
+            imageHTML+='<p>'+imageDescriptor.title+'</p>';
+            imageHTML+='<img src="/'+imageSRC+'" alt="Image" style="width:150px;height:150px">';
+            imageHTML+='</a></div>';
+            alert(imageHTML);
+            return imageHTML;
+        }
+    });
+</script>

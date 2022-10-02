@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title><% if(locals.title) { %><%= title %> - <% } %>Bubbles</title>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="/stylesheets/bootstrap.css">
+        <!-- Google font -->
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Comfortaa&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+        <!-- Editor -->
+        <link rel="stylesheet" href="/stylesheets/wbbtheme.css" />
+        <!-- Main style -->
+        <link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
+
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <!-- Latest compiled JavaScript -->
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+
+        <nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <div class="btn-group">
+                        <a href="/" class="navbar-brand dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Bubbles</a>
+                        <ul class="dropdown-menu" id="my-bubbles">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a href="/homepage">
+                                <span class="glyphicon glyphicon-home"></span> <span class="menu-item-text">Homepage</span> <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <span class="glyphicon glyphicon-plus-sign"></span> <span class="menu-item-text">New</span> <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/new/post" id="new-text"><span class="glyphicon glyphicon-font"></span> Post</a></li>
+                                <li><a href="/new/picture"><span class="glyphicon glyphicon-picture"></span> Picture</a></li>
+                                <li><a href="/new/music"><span class="glyphicon glyphicon-music"></span> Music</a></li>
+                                <li><a href="/new/video"><span class="glyphicon glyphicon-facetime-video"></span> Video</a></li>
+                                <li class="divider" role="separator">
+                                <li>
+                                    <a href="/partial/new-bubble" class="popup-ajax">
+                                        <span class="glyphicon glyphicon-folder-open"></span> 
+                                        Bubble
+                                    </a>
+                                </li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">Anything more?</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="/messages">
+                                <span class="glyphicon glyphicon-envelope"></span> <span class="menu-item-text">Messages</span> <span class="badge">2</span>
+                            </a>
+                        </li>
+                        <li><a href="/contacts"><span class="glyphicon glyphicon-user"></span> <span class="menu-item-text">Contacts</span></a></li>
+                    </ul>
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown open">
+                            <form method="get" class="navbar-form navbar-left search" role="search" id="search-form">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search..." name="query" id="search-term">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                                    </div>
+                                </div>
+                            </form>
+                            <ul class="dropdown-menu" id="search-results">
+
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle username" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret"></span> <em id="global-username"><%= user.username %></em>
+                            </a>
+                            <form id="sign-out-form" method="post" action="/sign-out"></form>
+                            <ul class="dropdown-menu">
+                                <li><a href="/profile/view">View profile</a></li>
+                                <li><a href="/profile/edit">Edit profile</a></li>
+                                <li><a href="/account/manage">Manage account</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="/sign-out"><span class="glyphicon glyphicon-off"></span> Sign out</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+        <div id="main-content" class="container">

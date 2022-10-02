@@ -1,0 +1,90 @@
+
+	baza v1.0
+
+		user
+		-	id 					(INT)	PK
+		-	username 					(?)		UNIQUE
+		-	password_hash				(INT)	
+		-	email						(?)		UNIQUE
+		-	first_name					(?)
+		-	middle_name							
+		-	last_name					(?)
+		-	profile_id					(INT)	FK(profile)
+		-	registration_date			(DATE)
+		-	confirmed
+	
+		profile
+		-	id					(INT)	PK
+		-	first_name					(?)
+		-	middle_name							
+		-	last_name					(?)
+		-	profile_image_id			(INT)	FK(picture)
+		-	relationship_status_id		(INT) 	FK(relationship_status)
+		-	country						(VARCHAR)
+		-	city						(?)
+		-	address						(?)
+		-	job							(?)
+		
+		relationship_status
+		-	id		(INT) 	PK
+		-	description		(?)	{Single, Complicated, In a relationship, Doomed}
+	
+		relationship_type
+		-	id		(INT) 	PK
+		-	description			(?) {friends, colleagues, }
+		
+		//Mate - moramo odlučit želimo li da sve veze budu asinkrone
+	//ako želimo, onda  to možemo možda napravit na način da nam je veza 
+	//definirana od usr1 prema usr2
+	//npr., usr1 može staviti da mu je usr2 prijatelj, a da usr2 ne stavi da 
+	// mu je usr1 prijatelj?
+		relationship
+		-	id							(INT)	PK
+		-	user_id1					(INT)	FK(user)
+		-	user_id2					(INT)	FK(user)
+		-	relationship_type_id		(INT)	FK(relationship_type)
+		
+		//bubble je kolekcija slika, videa, dokumenata,... vezana uz neki opis(npr., putovanje)
+		//mslm da nam nece trebat galerija uopće onda, nego da nam bubble može i to zamijenit
+		//npr., možemo se dogovorit da se automatski pri stvaranju korisnika stvore 2 generalna bubblea:
+			//gallery bubble(npr., id=0) i timeline(post) bubble(npr., id=1)
+				//svi generalni postovi idu na timeline bubble
+				//user može uploadat slike(kasnije evenutalno videe, dokumente) na gallery bubble
+		bubble
+		-	id	(INT)	PK
+		-	user_id		FK(user)
+		-	content_info_id	(INT) FK(content_info)
+		
+		picture
+		-	id	(INT)	PK
+		-	bubble_id	(INT) FK(bubble)  //ne moze biti null, npr., neka slika koja pripada samo nekom 
+										  //postu, pripada timeline bubbleu
+		-	embed_src		(VARCHAR)	//ovo je link na sliku, dakle slika je pohranjena na nekom serveru(npr., na našem serveru) 
+										//i get zahtjevom na ovaj link dohvaća se slika
+										//posebno ćemo morat obradit kako spremat slike na naš server
+		-	content_info_id	(INT) FK(content_info)
+		
+		//mslm da bi radi jednostavnosti razlikovanja trebali razdvojiti slike, videe i dokumente
+		//drugi pristup je da imamo jednu tablicu za svu multimediju
+		//pa da onda tip prepoznajemo po mime_type u content_info
+		video
+		-	id	(INT)	PK
+		-	bubble_id	(INT) FK(bubble)
+		-	embed_src		(VARCHAR)
+		-	content_info_id	(INT) FK(content_info)
+									
+		post
+		-	id	(INT)	PK
+		-	bubble_id	(INT) FK(bubble)
+		-	content_info_id	(INT) FK(content_info)
+		
+		content_info
+		-	id	(INT)	PK
+		-	title	title	(VARCHAR)
+		-	description	(text)	//ovo je npr., opis kod multimedije, a kod tekstualnih stvari(npr., post) može bit sadržaj(tekst iz posta)
+		-	mime_type	(varchar?)
+		
+		//Mate - mslm da nam ovo ne treba
+		country	(?)
+		-	country_id					(INT)	PK
+		-	country						(?)

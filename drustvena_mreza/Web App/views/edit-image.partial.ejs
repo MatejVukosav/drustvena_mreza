@@ -1,0 +1,125 @@
+<div class="container">
+    <!-- Upload slike na gallery - 9 stoji cisto radi testiranja, dok backend ne omoguci galeriju -->
+    <form id="imageUploadForm" role="form" method="POST" enctype="multipart/form-data" action="/api/content/image/9">
+        <input type="file" name="content" accept="image/*">
+
+        <!-- naslov slike -->
+        <textarea class="form-control" rows="1" id="titleArea" name="title"></textarea>
+
+        <!-- slika -->
+        <a href="" class="thumbnail" id="largeImageLink">
+            <img src="" alt="Medium Image" style="width:500px;height:500px" id="imageContainer">
+        </a>
+
+        <!-- opis ispod slike -->
+        <div class="row">
+            <div class="col-md-4" id="dateColumn">
+                <p id="dateModified"></p>
+            </div>
+            <div class="col-md-4">
+                <button type="button" class="btn btn-info" id="bubbleNameButton"></button>
+            </div>
+            <div class="col-md-4" id="authorNameColumn">
+                <p id="authorName"></p>
+            </div>
+        </div>
+
+        <!-- opis slike -->
+        <div class="row">
+            <textarea class="form-control" rows="5" id="descriptionArea" name="description"></textarea>
+        </div>
+
+
+        <!-- gumbi save i delete -->
+        <div class="row">
+            <div class="col-md-6">
+            </div>
+            <div class="col-md-3">
+                <button type="button" class="btn btn-warning" id="deleteImageButton">Delete</button>
+            </div>
+            <div class="col-md-3">
+                <input type="submit" id="submitButton" style="display : none;">
+                <button type="button" class="btn btn-primary" id="saveImageButton">Save</button>
+            </div>
+        </div>
+    </form>
+
+    <p style="display : none;"></p>
+</div>
+
+<script>
+    var bubbleID = "";
+    var url = document.location.href;
+    var imageID = url.substring(url.lastIndexOf("/")+1);
+
+    if(imageID == "") {
+        $("deleteImageButton").hide();
+    }
+
+    //upravljanje gumbima
+    //bubble name
+    $("#bubbleNameButton").click(function(){
+        window.location.href="/bubble/" + bubbleID;
+    });
+
+    //save button
+    $("#saveImageButton").click(function(){
+        /**
+        var imageTitle = $("#titleArea").text();
+        var imageDescription = $("#descriptionArea").text();
+        var imageJSON = {id : imageID, bubble_id:bubbleID, title:imageTitle, description:imageDescription};
+
+
+        $.post("/api/content/image", imageJSON);
+        **/
+
+        $("#submitButton").trigger("click");
+
+        //vjer. će trebat neki redirect odradit, na homepage ili galeriju
+    });
+
+    //delete button
+    $("#deleteImageButton").click(function(){
+        $.post("/api/content/image/"+imageID+ "/delete/");
+
+        ///content/image/:imageID/delete/
+        //vjer. će trebat neki redirect odradit, na homepage ili galeriju
+        //također, trebat će odradit upravljanje pogreškama, šta ako neko klikne 
+        //na delete, a radi se o novoj slici, tj., imageID=""
+    });
+
+    if(imageID != "") {
+        //popunjavanje naslova, opisa,...
+        ///api/content/image/:image_id
+        $.get("/api/content/image/"+imageID, function(imageDescriptor, status) {
+            //link na veliku sliku
+            //ovo bi trebao biti ok link, ali treba loadati partial za prikaz slike (samo slike) - Domagoj
+            $("#largeImageLink").attr("href",'/' + imageDescriptor.content + '?size=large');
+            //link na samu sliku - pomocu ovog se dohvaća slika
+            $("#imageContainer").attr("src",'/' + imageDescriptor.content);
+            
+            //naslov slike
+            $("#titleArea").append(imageDescriptor.title);
+            //date modified
+            $("#dateModified").append(imageDescriptor.updated_at);
+            //image description
+            $("#descriptionArea").append(imageDescriptor.description);
+
+            //get bubble info
+            //get user info        
+            $.get("/api/bubble/info?id="+imageDescriptor.bubble_id, function(bubbleDescriptor, status) {
+                bubbleID = bubbleDescriptor.bubble_id;
+
+                //naslov bubblea
+                $("#bubbleNameButton").append(bubbleDescriptor.title);
+
+                $.get("/api/user/info?id="+bubbleDescriptor.user_id, function(userDescriptor, status) {
+                    //ime autora
+                    $("#authorName").append(userDescriptor.username);
+                });
+            }); 
+        });
+    }
+
+
+</script>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+   <!-- <item
+        android:id="@+id/menu_navigation_edit_profile"
+        android:checked="false"
+        android:icon="@drawable/ic_account_circle_black_24dp"
+        android:title="@string/submenu_1" />
+    <item
+        android:id="@+id/menu_navigation_settings"
+        android:checked="false"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:title="@string/submenu_2" />  -->
+    <item
+        android:id="@+id/menu_navigation_invite_friends"
+        android:checked="false"
+        android:icon="@drawable/ic_person_add_black_24dp"
+        android:title="@string/submenu_3" />
+    <item
+        android:id="@+id/menu_navigation_ask_helpe"
+        android:checked="false"
+        android:icon="@drawable/ic_email_black_24dp"
+        android:title="@string/submenu_4" />
+
+    <item
+        android:id="@+id/menu_navigation_report_bug"
+        android:checked="false"
+        android:icon="@drawable/ic_bug_report_black_24dp"
+        android:title="@string/submenu_5" />
+
+    <item
+        android:id="@+id/menu_navigation_log_out"
+        android:checked="false"
+        android:icon="@drawable/ic_reply_black_24dp"
+        android:title="@string/submenu_6" />
+<!--
+    <item
+        android:id="@+id/menu_navigation_log_out2"
+        android:checked="false"
+        android:icon="@drawable/ic_reply_black_24dp"
+        android:title="@string/submenu_7" />-->
+
+
+</menu>
